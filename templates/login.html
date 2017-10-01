@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Login</title>
+
+      <!-- Bootstrap -->
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <link href="static/css/login.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="form">
+
+          <ul class="tab-group">
+            <li class="tab active"><a href="#signup">Sign Up</a></li>
+            <li class="tab"><a href="#login">Log In</a></li>
+          </ul>
+
+          <div class="tab-content">
+            <div id="signup">
+              <h1>Sign Up</h1>
+
+              <form id="roll_no_form" action="/api/v1/fetch_from_mis/" method="post">
+
+
+                <div class="field-wrap">
+                  <label>
+                    Roll No<span class="req">*</span>
+                  </label>
+                  <input type="text" required autocomplete="off" />
+                </div>
+
+
+              <button type="submit" class="button button-block"/>Continue</button>
+
+              <span id="id_error_roll_no_form"></span>
+
+              </form>
+
+            </div>
+
+            <div id="login">
+              <h1>Welcome Back!</h1>
+
+              <form action="/api/v1/login/" method="post">
+
+                <div class="field-wrap">
+                <label>
+                  Roll No<span class="req">*</span>
+                </label>
+                <input type="email"required autocomplete="off"/>
+              </div>
+
+              <div class="field-wrap">
+                <label>
+                  Password<span class="req">*</span>
+                </label>
+                <input type="password"required autocomplete="off"/>
+              </div>
+
+              <button class="button button-block"/>Log In</button>
+
+              </form>
+
+            </div>
+
+          </div>
+
+    </div> 
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}" >
+    </script>
+
+  </body>
+
+</html>
