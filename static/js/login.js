@@ -105,7 +105,11 @@ $(document).ready(function() {
       }),
       success: function(result) {
         if (result.success === 1) {
-          '#id_error_password_form'.text('success');
+          $('#id_password').invisible();
+          $('#id_label_password').invisible();
+          $('#id_password_form_submit_button').invisible();
+
+          $('#id_error_password_form').text(result.message);
         } else if (result.success === -99) {
           clearLoginCookie();
         } else {

@@ -182,7 +182,7 @@ textarea {
   text-align: right;
 }
 
-.password-form {
+.initial-hide {
   visibility: 'hidden';
   height: 0;
 }

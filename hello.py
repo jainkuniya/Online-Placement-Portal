@@ -6,6 +6,8 @@ import atexit
 import cf_deployment_tracker
 import os
 import json
+import string
+import random
 
 # Emit Bluemix deployment event
 cf_deployment_tracker.track()
@@ -15,6 +17,7 @@ app = Flask(__name__)
 db_name = 'mydb'
 client = None
 db = None
+DB_DOC_LOGIN = 'login'
 
 mis_db_name = 'mis'
 mis_client = None
@@ -27,9 +30,12 @@ SUCCESS_CODE_IN_VALID = 0
 
 DB_CONNECT_ERROR = 101
 NO_RECORD_FOUND_ERROR = 102
+ACCOUNT_ALREADY_EXIXT = 103
+
+TOEKN_LENGTH = 10
 
 def free_from_error(object):
-    if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR:
+    if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR or object == ACCOUNT_ALREADY_EXIXT:
         return False
     else:
         return True
@@ -128,6 +134,12 @@ def fetch_from_mis():
             'message': "Database not present",
             'data': {}
             })
+    elif student == ACCOUNT_ALREADY_EXIXT:
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Account already exists",
+            'data': {}
+            })
     elif student == NO_RECORD_FOUND_ERROR:
         return jsonify({
             'success': SUCCESS_CODE_IN_VALID,
@@ -146,12 +158,20 @@ def fetch_from_mis():
 
 
 def get_student_details_from_mis(rollNo):
-    if mis_client:
+    """Check if account already exists or not"""
+    if client:
         try:
-            student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
-            return student
-        except:
-            return NO_RECORD_FOUND_ERROR
+            student = db[DB_DOC_LOGIN][rollNo]
+            return ACCOUNT_ALREADY_EXIXT
+        except Exception, e:
+            if mis_client:
+                try:
+                    student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
+                    return student
+                except Exception, e:
+                    return NO_RECORD_FOUND_ERROR
+            else:
+                return DB_CONNECT_ERROR
     else:
         return DB_CONNECT_ERROR
 
@@ -159,19 +179,32 @@ def get_student_details_from_mis(rollNo):
 def create_account():
     rollNo = request.json['rollNo']
     password = request.json['password']
-    print request.json
     student = get_student_details_from_mis(rollNo)
     if free_from_error(student):
         """insert in out DB"""
-        return jsonify({
-            'success': SUCCESS_CODE_IN_VALID,
-            'message': "Please try again Hurray",
-            })
+        try:
+            newEntry = db[DB_DOC_LOGIN]
+            newEntry[rollNo] = { 'password': password }
+            newEntry.save()
+            return jsonify({
+                'success': SUCCESS_CODE_VALID,
+                'message': "Successfully registered! Please login to continue",
+                })
+        except Exception, e:
+            print str(e)
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID,
+                'message': "Please try again",
+                })
     else:
         return jsonify({
             'success': SUCCESS_CODE_IN_VALID,
             'message': "Please try again",
             })
+
+def getRandomString(length):
+    char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
+    return ''.join(random.sample(char_set*length, length))
 
 @atexit.register
 def shutdown():
