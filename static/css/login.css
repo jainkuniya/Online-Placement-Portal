@@ -181,3 +181,8 @@ textarea {
   margin-top: -20px;
   text-align: right;
 }
+
+.password-form {
+  visibility: 'hidden';
+  height: 0;
+}
