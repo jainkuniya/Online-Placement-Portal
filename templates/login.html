@@ -24,22 +24,49 @@
             <div id="signup">
               <h1>Sign Up</h1>
 
-              <form id="roll_no_form" action="/api/v1/fetch_from_mis/" method="post">
+              <form id="roll_no_form" action="/api/v1/fetch_from_mis" method="post">
 
 
                 <div class="field-wrap">
                   <label>
                     Roll No<span class="req">*</span>
                   </label>
-                  <input type="text" required autocomplete="off" />
+                  <input id="id_roll_no" type="text" required autocomplete="off" />
                 </div>
 
+                <h1 id="id_error_roll_no_form"></h1>
 
-              <button type="submit" class="button button-block"/>Continue</button>
-
-              <span id="id_error_roll_no_form"></span>
+              <button id="id_roll_no_form_submit_button" type="submit" class="button button-block"/>Continue</button>
 
               </form>
+
+
+              <form id="password_form" action="/api/v1/create_account" method="post">
+
+
+                <div class="top-row">
+                   <div class="field-wrap">
+                     <label id="id_label_first_name">
+                       First Name<span class="req">*</span>
+                     </label>
+                     <input id="id_first_name" type="text" required autocomplete="off" />
+                   </div>
+
+                   <div class="field-wrap">
+                     <label id="id_label_last_name">
+                       Last Name<span class="req">*</span>
+                     </label>
+                     <input id="id_last_name" type="text"required autocomplete="off"/>
+                   </div>
+                 </div>
+
+                <h1 id="id_error_password_form"></h1>
+
+              <button id="id_password_form_submit_button" type="submit" class="button button-block"/>Continue</button>
+
+              </form>
+
+
 
             </div>
 
@@ -70,7 +97,7 @@
 
           </div>
 
-    </div> 
+    </div>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="{{ url_for('static', filename='js/login.js') }}" >
     </script>

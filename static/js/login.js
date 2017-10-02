@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $('#password_form').invisible();
   $('.form')
     .find('input, textarea')
     .on('keyup blur focus', function(e) {
@@ -55,23 +56,51 @@ $(document).ready(function() {
     $.ajax({
       type: frm.attr('method'),
       url: frm.attr('action'),
-      data: {
+      contentType: 'application/json',
+      data: JSON.stringify({
         rollNo: rollNo,
-      },
-      dataType: 'json',
-      success: function(data) {
-        if (data.success === 1) {
-        } else if (data.success === -99) {
+      }),
+      success: function(result) {
+        if (result.success === 1) {
+          $('#id_roll_no_form_submit_button').invisible();
+          $('#password_form').visible();
+
+          var student = result.data.student;
+
+          $('#id_first_name').val(student.first_name);
+          $('#id_last_name').val(student.last_name);
+
+          $('#id_label_first_name').addClass('active highlight');
+          $('#id_label_last_name').addClass('active highlight');
+
+          $('#id_roll_no').attr('disabled', 'disabled');
+          $('#id_first_name').attr('disabled', 'disabled');
+          $('#id_last_name').attr('disabled', 'disabled');
+        } else if (result.success === -99) {
           clearLoginCookie();
         } else {
-          $('#id_error_roll_no_form').text(data.message);
+          $('#id_error_roll_no_form').text(result.message);
         }
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-        alert('Status: ' + textStatus);
-        alert('Error: ' + errorThrown);
+        $('#id_error_roll_no_form').text('Error: ' + errorThrown);
       },
     });
     return false;
   });
 });
+
+(function($) {
+  $.fn.invisible = function() {
+    return this.each(function() {
+      $(this).css('visibility', 'hidden');
+      $(this).css('height', 0);
+    });
+  };
+  $.fn.visible = function() {
+    return this.each(function() {
+      $(this).css('visibility', 'visible');
+      $(this).css('height', 'auto');
+    });
+  };
+})(jQuery);
