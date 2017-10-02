@@ -83,7 +83,12 @@ port = int(os.getenv('PORT', 8000))
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            return render_template('index.html')
+        return redirect("./login")
+    return redirect("./login")
 
 @app.route('/login')
 def login_page():
