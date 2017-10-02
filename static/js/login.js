@@ -88,6 +88,36 @@ $(document).ready(function() {
     });
     return false;
   });
+
+  $('#password_form').submit(function() {
+    $('#id_error_password_form').text('');
+
+    var frm = $('#password_form');
+    var rollNo = $('#id_roll_no').val();
+    var password = $('#id_password').val();
+    $.ajax({
+      type: frm.attr('method'),
+      url: frm.attr('action'),
+      contentType: 'application/json',
+      data: JSON.stringify({
+        rollNo: rollNo,
+        password: password,
+      }),
+      success: function(result) {
+        if (result.success === 1) {
+          '#id_error_password_form'.text('success');
+        } else if (result.success === -99) {
+          clearLoginCookie();
+        } else {
+          $('#id_error_password_form').text(result.message);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('#id_error_password_form').text('Error: ' + errorThrown);
+      },
+    });
+    return false;
+  });
 });
 
 (function($) {

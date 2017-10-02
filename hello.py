@@ -25,6 +25,15 @@ MIS_DB_DOC_STUDENTS_STUDENT_LIST = 'student_list'
 SUCCESS_CODE_VALID = 1
 SUCCESS_CODE_IN_VALID = 0
 
+DB_CONNECT_ERROR = 101
+NO_RECORD_FOUND_ERROR = 102
+
+def free_from_error(object):
+    if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR:
+        return False
+    else:
+        return True
+
 if 'VCAP_SERVICES' in os.environ:
     vcap = json.loads(os.getenv('VCAP_SERVICES'))
     print('Found VCAP_SERVICES')
@@ -112,28 +121,56 @@ def put_visitor():
 @app.route(api_path + 'fetch_from_mis', methods=['POST'])
 def fetch_from_mis():
     rollNo = request.json['rollNo']
-    if mis_client:
-        """Search in MIS database"""
-        try:
-            student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
-            return jsonify({
-                'success': SUCCESS_CODE_VALID,
-                'message': "Successfully retrived student",
-                'data': {
-                    'student': student
-                    }
-                })
-        except:
-            return jsonify({
-                'success': SUCCESS_CODE_IN_VALID,
-                'message': "Invalid Roll No",
-                'data': {}
-                })
-    else:
+    student = get_student_details_from_mis(rollNo)
+    if student == DB_CONNECT_ERROR:
         return jsonify({
             'success': SUCCESS_CODE_IN_VALID,
             'message': "Database not present",
             'data': {}
+            })
+    elif student == NO_RECORD_FOUND_ERROR:
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Invalid Roll No",
+            'data': {}
+            })
+    else:
+        return jsonify({
+            'success': SUCCESS_CODE_VALID,
+            'message': "Successfully retrived student",
+            'data': {
+                'student': student
+                }
+            })
+
+
+
+def get_student_details_from_mis(rollNo):
+    if mis_client:
+        try:
+            student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
+            return student
+        except:
+            return NO_RECORD_FOUND_ERROR
+    else:
+        return DB_CONNECT_ERROR
+
+@app.route(api_path + 'create_account', methods=['POST'])
+def create_account():
+    rollNo = request.json['rollNo']
+    password = request.json['password']
+    print request.json
+    student = get_student_details_from_mis(rollNo)
+    if free_from_error(student):
+        """insert in out DB"""
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Please try again Hurray",
+            })
+    else:
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Please try again",
             })
 
 @atexit.register
