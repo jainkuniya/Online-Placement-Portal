@@ -1,7 +1,7 @@
 from cloudant import Cloudant
 from cloudant.error import CloudantException
 from cloudant.result import Result, ResultByKey
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect
 import atexit
 import cf_deployment_tracker
 import os
@@ -87,7 +87,12 @@ def home():
 
 @app.route('/login')
 def login_page():
-    
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            return redirect("./")
+        else:
+            return render_template('login.html')
     return render_template('login.html')
 
 # /* Endpoint to greet and add a new visitor to database.
