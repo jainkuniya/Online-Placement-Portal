@@ -1,7 +1,7 @@
 from cloudant import Cloudant
 from cloudant.error import CloudantException
 from cloudant.result import Result, ResultByKey
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request, jsonify, redirect, make_response
 import atexit
 import cf_deployment_tracker
 import os
@@ -89,6 +89,12 @@ def home():
             return render_template('index.html')
         return redirect("./login")
     return redirect("./login")
+
+@app.route('/logout')
+def logout():
+    resp = make_response(render_template('login.html'))
+    resp.set_cookie('token', expires=0)
+    return resp
 
 @app.route('/login')
 def login_page():
