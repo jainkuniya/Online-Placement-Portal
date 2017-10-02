@@ -247,6 +247,22 @@ def get_random_string(length):
     char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
     return ''.join(random.sample(char_set*length, length))
 
+@app.route('/family')
+def family_page():
+    return render_template('family.html')
+
+@app.route('/academic')
+def academic_page():
+    return render_template('academic.html')
+
+@app.route('/projects')
+def projects_page():
+    return render_template('projects.html')
+
+@app.route('/exprience')
+def exprience_page():
+    return render_template('projects.html')
+
 @atexit.register
 def shutdown():
     if client:

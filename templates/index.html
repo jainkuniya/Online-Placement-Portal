@@ -1,182 +1,76 @@
 {% extends './base.html' %}
 {% block title %}Dashboard{% endblock %}
-
 {% block extrastyles %}
-
 {% endblock %}
-
 {% block body %}
-
-
-      <div id="page-wrapper" class="gray-bg dashbard-1">
-      <div class="row border-bottom">
-      <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-      <div class="navbar-header">
-          <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " ><i class="fa fa-bars"></i> </a>
-      </div>
-          <ul class="nav navbar-top-links navbar-right">
-              <li>
-                  <span class="m-r-sm text-muted welcome-message">Welcome to LNMIIT Placement Portal</span>
-              </li>
-              <li class="dropdown">
-
-              </li>
-              <li class="dropdown">
-                  <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
-                      <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-alerts">
-                      <li>
-                          <a href="#">
-                              <div>
-                                  <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                  <span class="pull-right text-muted small">4 minutes ago</span>
-                              </div>
-                          </a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                          <a href="#">
-                              <div>
-                                  <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                  <span class="pull-right text-muted small">12 minutes ago</span>
-                              </div>
-                          </a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                          <a href="#">
-                              <div>
-                                  <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                  <span class="pull-right text-muted small">4 minutes ago</span>
-                              </div>
-                          </a>
-                      </li>
-                      <li class="divider"></li>
-                      <li>
-                          <div class="text-center link-block">
-                              <a href="#">
-                                  <strong>See All Alerts</strong>
-                                  <i class="fa fa-angle-right"></i>
-                              </a>
-                          </div>
-                      </li>
-                  </ul>
-              </li>
-
-
-              <li>
-                  <a href="./logout">
-                      <i id="id_log_out" class="fa fa-sign-out"></i> Log out
-                  </a>
-              </li>
-
-          </ul>
-
-      </nav>
-      </div>
-              <div style =" height:auto;" class="row  border-bottom white-bg dashboard-header">
-
-                  <div class="col-md-3">
-                      <h2>Welcome User</h2>
-                      <small style="color:red;">You have to complete your profile before final verification</small>
-
-                      <div class="container" id="form1">
-                          <h1 class="well">Basic Details</h1>
-                          <div class="col-lg-12 well">
-                          <div class="row">
-                          <form>
-
-
-
-                          <div class="col-sm-12">
-                          <div class="form-group">
-                              <label>Roll Number</label>
-                              <input type="text" placeholder="Enter Roll Number Here.." class="form-control">
-                          </div>
-                      <div class="row">
-                          <div class="col-sm-6 form-group">
-                              <label>First Name</label>
-                              <input type="text" placeholder="Enter First Name Here.." class="form-control">
-                          </div>
-                          <div class="col-sm-6 form-group">
-                              <label>Last Name</label>
-                              <input type="text" placeholder="Enter Last Name Here.." class="form-control">
-                          </div>
-                      </div>
-
-                      <div class="row">
-                          <div class="col-sm-4 form-group">
-                              <label>Gender</label>
-                              <select class="form-control" id="sel3">
-                              <option>Male</option>
-                              <option>Female</option>
-
-                          </select>
-                          </div>
-                          <div class="col-sm-4 form-group">
-                              <label>Date Of Birth</label>
-                              <input type="text" placeholder="Enter State Name Here.." class="form-control">
-                          </div>
-                          <div class="col-sm-4 form-group">
-                              <label>Marital Status</label>
-                              <select class="form-control" id="sel2">
-                              <option>Single</option>
-                              <option>Married</option>
-                          </select>
-
-                          </div>
-                      </div>
-                      <div class="form-group">
-                              <label>Course</label>
-                               <select class="form-control" id="sel1">
-                              <option>B.TECH -ECE</option>
-                              <option>B.TECH -CSE</option>
-                              <option>B.TECH -MME</option>
-                              <option>B.TECH -CCE</option>
-                              <option>B.TECH -ME</option>
-                          </select>
-                          </div>
-                          <div class="form-group">
-                              <label>Official Email</label>
-                              <input type="text" placeholder="Enter Phone Number Here.." class="form-control">
-                          </div>
-                          <div class="form-group">
-                              <label>Phone Number</label>
-                              <input type="text" placeholder="Enter Roll Number Here.." class="form-control">
-                          </div>
-                          <div class="form-group">
-                          <label>Address</label>
-                          <textarea placeholder="Enter Address Here.." rows="3" class="form-control"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label>Medical History</label>
-                          <textarea placeholder="Enter Medical History Here.." rows="3" class="form-control"></textarea>
-                      </div>
-
-                  <a href="form2.html" button class="btn btn-lg btn-info">Next</button> </a>
-
-                  </div>
-              </form>
-              </div>
-
-  </div>
-  </div>
-  </div>
-
-                  <div style="position:fixed;bottom:0;">
-                      <strong>Copyright</strong> B12 &copy; 2014-2017
-                  </div>
-              </div>
-          </div>
-      </div>
-
-      </div>
-
-
-          </div>
-
-
-
-      </div>
+<h1 class="well">Basic Details</h1>
+<div class="col-lg-12 well">
+   <div class="row">
+      <form>
+         <div class="col-sm-12">
+            <div class="form-group">
+               <label>Roll Number</label>
+               <input type="text" placeholder="Enter Roll Number Here.." class="form-control">
+            </div>
+            <div class="row">
+               <div class="col-sm-6 form-group">
+                  <label>First Name</label>
+                  <input type="text" placeholder="Enter First Name Here.." class="form-control">
+               </div>
+               <div class="col-sm-6 form-group">
+                  <label>Last Name</label>
+                  <input type="text" placeholder="Enter Last Name Here.." class="form-control">
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-sm-4 form-group">
+                  <label>Gender</label>
+                  <select class="form-control" id="sel3">
+                     <option>Male</option>
+                     <option>Female</option>
+                  </select>
+               </div>
+               <div class="col-sm-4 form-group">
+                  <label>Date Of Birth</label>
+                  <input type="text" placeholder="Enter State Name Here.." class="form-control">
+               </div>
+               <div class="col-sm-4 form-group">
+                  <label>Marital Status</label>
+                  <select class="form-control" id="sel2">
+                     <option>Single</option>
+                     <option>Married</option>
+                  </select>
+               </div>
+            </div>
+            <div class="form-group">
+               <label>Course</label>
+               <select class="form-control" id="sel1">
+                  <option>B.TECH -ECE</option>
+                  <option>B.TECH -CSE</option>
+                  <option>B.TECH -MME</option>
+                  <option>B.TECH -CCE</option>
+                  <option>B.TECH -ME</option>
+               </select>
+            </div>
+            <div class="form-group">
+               <label>Official Email</label>
+               <input type="text" placeholder="Enter Phone Number Here.." class="form-control">
+            </div>
+            <div class="form-group">
+               <label>Phone Number</label>
+               <input type="text" placeholder="Enter Roll Number Here.." class="form-control">
+            </div>
+            <div class="form-group">
+               <label>Address</label>
+               <textarea placeholder="Enter Address Here.." rows="3" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+               <label>Medical History</label>
+               <textarea placeholder="Enter Medical History Here.." rows="3" class="form-control"></textarea>
+            </div>
+            <a href="form2.html" button class="btn btn-lg btn-info">Next</button> </a>
+         </div>
+      </form>
+   </div>
+</div>
 {% endblock %}
