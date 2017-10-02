@@ -105,14 +105,6 @@ def login_page():
 api_version = 'v1'
 api_path = '/api/' + api_version +'/'
 
-@app.route('/api/visitors', methods=['GET'])
-def get_visitor():
-    if client:
-        return jsonify(list(map(lambda doc: doc['name'], db)))
-    else:
-        print('No database')
-        return jsonify([])
-
 # /**
 #  * Endpoint to get a JSON array of all the visitors in the database
 #  * REST API example:
@@ -124,16 +116,6 @@ def get_visitor():
 #  * [ "Bob", "Jane" ]
 #  * @return An array of all the visitor names
 #  */
-@app.route('/api/visitors', methods=['POST'])
-def put_visitor():
-    user = request.json['name']
-    if client:
-        data = {'name':user}
-        db.create_document(data)
-        return 'Hello %s! I added you to the database.' % user
-    else:
-        print('No database')
-        return 'Hello %s!' % user
 
 @app.route(api_path + 'fetch_from_mis', methods=['POST'])
 def fetch_from_mis():
