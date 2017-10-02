@@ -122,6 +122,38 @@ $(document).ready(function() {
     });
     return false;
   });
+
+  $('#id_login_form').submit(function() {
+    $('#id_error_login_form').text('');
+
+    var frm = $('#id_login_form');
+    var rollNo = $('#id_login_form_roll_no').val();
+    var password = $('#id_login_form_password').val();
+    $.ajax({
+      type: frm.attr('method'),
+      url: frm.attr('action'),
+      contentType: 'application/json',
+      data: JSON.stringify({
+        rollNo: rollNo,
+        password: password,
+      }),
+      success: function(result) {
+        if (result.success === 1) {
+          $('#id_error_login_form').text(result.message);
+          document.cookie = 'token=' + result.data.token + '; path=/';
+          $(location).attr('href', '/');
+        } else if (result.success === -99) {
+          clearLoginCookie();
+        } else {
+          $('#id_error_login_form').text(result.message);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('#id_error_login_form').text('Error: ' + errorThrown);
+      },
+    });
+    return false;
+  });
 });
 
 (function($) {
@@ -138,3 +170,24 @@ $(document).ready(function() {
     });
   };
 })(jQuery);
+
+function getCookie(cname) {
+  var name = cname + '=';
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return '';
+}
+
+function clearLoginCookie() {
+  document.cookie = 'token=; path=/';
+  $(location).attr('href', '/');
+}

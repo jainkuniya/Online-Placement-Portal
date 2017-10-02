@@ -80,21 +80,23 @@
             <div id="login">
               <h1>Welcome Back!</h1>
 
-              <form action="/api/v1/login/" method="post">
+              <form id="id_login_form" action="/api/v1/login" method="post">
 
                 <div class="field-wrap">
                 <label>
                   Roll No<span class="req">*</span>
                 </label>
-                <input type="email"required autocomplete="off"/>
+                <input id="id_login_form_roll_no" required autocomplete="off"/>
               </div>
 
               <div class="field-wrap">
                 <label>
                   Password<span class="req">*</span>
                 </label>
-                <input type="password"required autocomplete="off"/>
+                <input id="id_login_form_password" type="password"required autocomplete="off"/>
               </div>
+
+              <h1 id="id_error_login_form"></h1>
 
               <button class="button button-block"/>Log In</button>
 

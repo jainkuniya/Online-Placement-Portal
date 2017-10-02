@@ -8,6 +8,7 @@ import os
 import json
 import string
 import random
+import time
 
 # Emit Bluemix deployment event
 cf_deployment_tracker.track()
@@ -18,6 +19,9 @@ db_name = 'mydb'
 client = None
 db = None
 DB_DOC_LOGIN = 'login'
+DB_DOC_LOGIN_FIELD_TOKEN = 'token'
+DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN = 'last_logged_in'
+DB_DOC_LOGIN_FIELD_PASSWORD = 'password'
 
 mis_db_name = 'mis'
 mis_client = None
@@ -27,6 +31,7 @@ MIS_DB_DOC_STUDENTS_STUDENT_LIST = 'student_list'
 
 SUCCESS_CODE_VALID = 1
 SUCCESS_CODE_IN_VALID = 0
+SUCCESS_CODE_IN_VALID_LOG_OUT = -99
 
 DB_CONNECT_ERROR = 101
 NO_RECORD_FOUND_ERROR = 102
@@ -81,7 +86,8 @@ def home():
     return render_template('index.html')
 
 @app.route('/login')
-def login():
+def login_page():
+    
     return render_template('login.html')
 
 # /* Endpoint to greet and add a new visitor to database.
@@ -184,7 +190,11 @@ def create_account():
         """insert in out DB"""
         try:
             newEntry = db[DB_DOC_LOGIN]
-            newEntry[rollNo] = { 'password': password }
+            newEntry[rollNo] = {
+                DB_DOC_LOGIN_FIELD_PASSWORD: password,
+                DB_DOC_LOGIN_FIELD_TOKEN: '',
+                DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN: 0,
+            }
             newEntry.save()
             return jsonify({
                 'success': SUCCESS_CODE_VALID,
@@ -202,7 +212,40 @@ def create_account():
             'message': "Please try again",
             })
 
-def getRandomString(length):
+@app.route(api_path + 'login', methods=['POST'])
+def login():
+    rollNo = request.json['rollNo']
+    password = request.json['password']
+    """search in our DB"""
+    try:
+        student = db[DB_DOC_LOGIN]
+        if student[rollNo][DB_DOC_LOGIN_FIELD_PASSWORD] == password:
+            token = get_random_string(TOEKN_LENGTH)
+            """Save token"""
+            student[rollNo][DB_DOC_LOGIN_FIELD_PASSWORD] = password
+            student[rollNo][DB_DOC_LOGIN_FIELD_TOKEN] = token
+            student[rollNo][DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN] = time.time()
+            student.save()
+            return jsonify({
+                'success': SUCCESS_CODE_VALID,
+                'message': "Successfully logged in",
+                'data': {
+                    'token': token
+                }
+            })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Invalid rollNo password",
+            })
+    except Exception as e:
+        print str(e)
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "We didn't recognize you",
+        })
+
+def get_random_string(length):
     char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
     return ''.join(random.sample(char_set*length, length))
 
