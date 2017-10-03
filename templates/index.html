@@ -6,52 +6,45 @@
 <h1 class="well">Basic Details</h1>
 <div class="col-lg-12 well">
    <div class="row">
-      <form>
+      <form id="id_basic_details_form" action="/api/v1/update_basic_details" method="post">
          <div class="col-sm-12">
             <div class="form-group">
                <label>Roll Number</label>
-               <input type="text" disabled value={{ basic_details.roll_no }} placeholder="Enter Roll Number Here.." class="form-control">
+               <input name="roll_no" id="id_roll_no" type="text" disabled value={{ basic_details.roll_no }} placeholder="Enter Roll Number Here.." class="form-control">
             </div>
             <div class="row">
                <div class="col-sm-6 form-group">
                   <label>First Name</label>
-                  <input type="text" disabled value={{ basic_details.first_name }} placeholder="Enter First Name Here.." class="form-control">
+                  <input id="id_first_name" type="text" disabled value={{ basic_details.first_name }} placeholder="Enter First Name Here.." class="form-control">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Last Name</label>
-                  <input type="text" disabled value={{ basic_details.last_name }} placeholder="Enter Last Name Here.." class="form-control">
+                  <input id="id_last_name" type="text" disabled value={{ basic_details.last_name }} placeholder="Enter Last Name Here.." class="form-control">
                </div>
             </div>
             <div class="row">
                <div class="col-sm-4 form-group">
                   <label>Gender</label>
-                  <select class="form-control" id="sel3">
+                  <select id="id_gender" class="form-control" id="sel3">
                     {% if basic_details.gender == "Male" %}
-                  <option selected="selected">
+                  <option value="Male" selected="selected">
                     {% else %}
-                    <option>
+                    <option value="Male">
                     {% endif %}
                      Male</option>
 
 
                      {% if basic_details.gender == "Female" %}
-                   <option selected="selected">
+                   <option value="Female" selected="selected">
                      {% else %}
-                     <option>
+                     <option value="Female">
                      {% endif %}
                       Female</option>
                   </select>
                </div>
                <div class="col-sm-4 form-group">
                   <label>Date Of Birth</label>
-                  <input type="text" placeholder="Enter Date of birth Here in DD/MM/YYYY format" class="form-control">
-               </div>
-               <div class="col-sm-4 form-group">
-                  <label>Marital Status</label>
-                  <select class="form-control" id="sel2">
-                     <option>Single</option>
-                     <option>Married</option>
-                  </select>
+                  <input id="id_date_of_birth" type="text" placeholder="Enter Date of birth Here in DD/MM/YYYY format" class="form-control">
                </div>
             </div>
             <div class="form-group">
@@ -62,22 +55,24 @@
             </div>
             <div class="form-group">
                <label>Official Email</label>
-               <input type="text" value={{ basic_details.roll_no + "@lnmiit.ac.in" }} placeholder="Enter Email address Here.." class="form-control">
+               <input id="id_email" type="text" value={{ basic_details.roll_no + "@lnmiit.ac.in" }} placeholder="Enter Email address Here.." class="form-control">
             </div>
             <div class="form-group">
                <label>Phone Number</label>
-               <input type="text" value={{ basic_details.phone_number }} placeholder="Enter Phone Number Here.." class="form-control">
+               <input id="id_phone_number" type="text" value={{ basic_details.phone_number }} placeholder="Enter Phone Number Here.." class="form-control">
             </div>
             <div class="form-group">
                <label>Address</label>
-               <textarea placeholder="Enter Address Here.." rows="3" class="form-control"></textarea>
+               <textarea id="id_address" placeholder="Enter Address Here.." rows="3" class="form-control"></textarea>
             </div>
             <div class="form-group">
                <label>Medical History</label>
-               <textarea placeholder="Enter Medical History Here.." rows="3" class="form-control"></textarea>
+               <textarea id="id_medical_history" placeholder="Enter Medical History Here.." rows="3" class="form-control"></textarea>
             </div>
-            <a href="form2.html" button class="btn btn-lg btn-info">Next</button> </a>
+            <h1 id="id_error"></h1>
+             <a> <button class="btn btn-lg btn-info">Next</button> </a>
          </div>
+
       </form>
    </div>
 </div>

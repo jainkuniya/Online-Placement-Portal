@@ -357,7 +357,7 @@ def get_templete(page_name):
         if token != '':
             basic_details = fetch_student_basic_details(token)
             academic_details = fetch_student_academic_details(token)
-            if free_from_error(basic_details):
+            if (free_from_error(basic_details) and free_from_error(academic_details)):
                 if (page_name == "family"):
                     return render_template('family.html', basic_details= basic_details, page=page_name)
                 elif (page_name == "academic"):
@@ -393,6 +393,52 @@ def projects_page():
 @app.route('/exprience')
 def exprience_page():
     return get_templete("projects")
+
+@app.route(api_path + 'update_basic_details', methods=['POST'])
+def update_basic_details():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_basic_details"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_BASIC,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                print request.form
+                #doc['first_name'] = request.json['first_name']
+                #doc['last_name'] = request.json['last_name']
+                #doc['gender'] = request.json['gender']
+                #doc['date_of_birth'] = request.json['date_of_birth']
+                #doc['email'] = request.json['email']
+                #doc['phone_number'] = request.json['phone_number']
+                #doc['address'] = request.json['address']
+                #doc['medical_history'] = request.json['medical_history']
+
+                #doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
 
 @atexit.register
 def shutdown():
