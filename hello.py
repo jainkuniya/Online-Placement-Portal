@@ -44,6 +44,8 @@ SUCCESS_CODE_VALID = 1
 SUCCESS_CODE_IN_VALID = 0
 SUCCESS_CODE_IN_VALID_LOG_OUT = -99
 
+INVALID_TOKEN = -99
+
 DB_CONNECT_ERROR = 101
 NO_RECORD_FOUND_ERROR = 102
 ACCOUNT_ALREADY_EXIXT = 103
@@ -51,7 +53,7 @@ ACCOUNT_ALREADY_EXIXT = 103
 TOEKN_LENGTH = 10
 
 def free_from_error(object):
-    if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR or object == ACCOUNT_ALREADY_EXIXT:
+    if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR or object == ACCOUNT_ALREADY_EXIXT or object == INVALID_TOKEN:
         return False
     else:
         return True
@@ -92,24 +94,37 @@ with open('vcap-local-mis.json') as f:
 # When running this app on the local machine, default the port to 8000
 port = int(os.getenv('PORT', 8000))
 
-@app.route('/')
-def home():
-    if 'token' in request.cookies:
-        token = request.cookies['token']
-        basic_details = fetch_student_basic_details(token)
-        if token != '':
-            return render_template('index.html')
-        return redirect("./login")
-    return redirect("./login")
-
 def fetch_student_basic_details(token):
-    query = cloudant.query.Query(db,selector={'test': 123})
-    print "Vishwesh"
-    print query
-    for doc in query(limit=100)['docs']:
-        print "jainkuniya"
-        print doc
-    return 1
+    """check if token is valid or not"""
+    status = verify_token(token)
+    if free_from_error(status):
+        """get basic details"""
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_STUDENT_BASIC,
+                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                            }
+            )
+        result = query(limit=100)['docs']
+        if (len(result) == 1):
+            return result[0]
+        else:
+            return NO_RECORD_FOUND_ERROR
+    else:
+        return INVALID_TOKEN
+
+def verify_token(token):
+    query = cloudant.query.Query(
+        db, selector = {
+                             DB_DOC_TYPE: DB_DOC_LOGIN,
+                             DB_DOC_LOGIN_FIELD_TOKEN: token,
+                        }
+        )
+    result = query(limit=100)['docs']
+    if (len(result) == 1):
+        return result[0]
+    else:
+        return INVALID_TOKEN
 
 @app.route('/logout')
 def logout():
@@ -305,21 +320,47 @@ def get_random_string(length):
     char_set = string.ascii_uppercase + string.digits + string.ascii_lowercase
     return ''.join(random.sample(char_set*length, length))
 
+def get_templete(page_name):
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            basic_details = fetch_student_basic_details(token)
+            if free_from_error(basic_details):
+                if (page_name == "family"):
+                    return render_template('family.html', basic_details= basic_details)
+                elif (page_name == "academic"):
+                    return render_template('academic.html', basic_details= basic_details)
+                elif (page_name == "projects"):
+                    return render_template('projects.html', basic_details= basic_details)
+                elif (page_name == "exprience"):
+                    return render_template('exprience.html', basic_details= basic_details)
+                else:
+                    return render_template('index.html', basic_details= basic_details)
+            else:
+                """invalid token, redirect to logout"""
+                return redirect("./logout")
+        return redirect("./login")
+    return redirect("./login")
+
+@app.route('/')
+def home():
+    return get_templete("home")
+
 @app.route('/family')
 def family_page():
-    return render_template('family.html')
+    return get_templete("family")
 
 @app.route('/academic')
 def academic_page():
-    return render_template('academic.html')
+    return get_templete("academic")
 
 @app.route('/projects')
 def projects_page():
-    return render_template('projects.html')
+    return get_templete("projects")
 
 @app.route('/exprience')
 def exprience_page():
-    return render_template('projects.html')
+    return get_templete("projects")
 
 @atexit.register
 def shutdown():

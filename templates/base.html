@@ -27,7 +27,7 @@
                   <img alt="image" class="img-circle" src="../static/img/profile_small.jpg" />
                   </span>
                   <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                     <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">User</strong>
+                     <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ basic_details.first_name }} {{ basic_details.last_name }}</strong>
                </div>
                <div class="logo-element">
                IN+
@@ -118,7 +118,7 @@
          </div>
          <div style =" height:auto;" class="row  border-bottom white-bg dashboard-header">
             <div class="col-md-3">
-               <h2>Welcome User</h2>
+               <h2>Welcome {{ basic_details.first_name }} {{ basic_details.last_name }}</h2>
                <small style="color:red;">You have to complete your profile before final verification</small>
                <div class="container" id="form1">
                   {% block body %}
