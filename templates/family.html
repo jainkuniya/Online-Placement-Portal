@@ -6,42 +6,42 @@
 <h1 class="well">Family Details</h1>
 <div class="col-lg-12 well">
    <div class="row">
-      <form>
+
          <div class="col-sm-12">
             <label>Father's Details</label>
             <div class="row">
                <div class="col-sm-6 form-group">
                   <label>Name</label>
-                  <input type="text" class="form-control"
+                  <input id="id_father_name" value="{{ family_details.father_name }}" type="text" class="form-control"
                   placeholder="Enter name here..">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Occupation</label>
-                  <input type="text" class="form-control"
+                  <input id="id_father_occupation" value="{{ family_details.father_occupation }}" type="text" class="form-control"
                   placeholder="Enter occupation here..">
                </div>
             </div>
             <div class="row">
                <div class="col-sm-6 form-group">
                   <label>Company</label>
-                  <input type="text" class="form-control"
+                  <input id="id_father_company" value="{{ family_details.father_company}}"  type="text" class="form-control"
                   placeholder="Enter company's name here..">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Designation</label>
-                  <input type="text" class="form-control"
+                  <input id="id_father_designation" value="{{ family_details.father_designation }}" type="text" class="form-control"
                   placeholder="Enter designation here..">
                </div>
             </div>
             <div class="row">
                <div class="col-sm-6 form-group">
                   <label>Email</label>
-                  <input type="text" class="form-control"
+                  <input id="id_father_email" value="{{ family_details.father_email }}"  type="text" class="form-control"
                   placeholder="Enter email">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Phone Number</label>
-                  <input type="text" class="form-control"
+                  <input id="id_father_phone_number" value="{{ family_details.father_phone_number }}" type="text" class="form-control"
                   placeholder="Enter phone number here">
                </div>
             </div>
@@ -50,43 +50,102 @@
                <div class="row">
                <div class="col-sm-6 form-group">
                   <label>Name</label>
-                  <input type="text" class="form-control"
+                  <input id="id_mother_name" value="{{ family_details.mother_name }}" type="text" class="form-control"
                   placeholder="Enter name here..">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Occupation</label>
-                  <input type="text" class="form-control"
+                  <input id="id_mother_occpation" value="{{ family_details.mother_occupation }}" type="text" class="form-control"
                   placeholder="Enter occupation here..">
                </div>
             </div>
             <div class="row">
                <div class="col-sm-6 form-group">
                   <label>Company</label>
-                  <input type="text" class="form-control"
+                  <input id="id_mother_company" value="{{ family_details.mother_company }}" type="text" class="form-control"
                   placeholder="Enter company's name here..">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Designation</label>
-                  <input type="text" class="form-control"
+                  <input id="id_mother_designation" value="{{ family_details.mother_designation }}" type="text" class="form-control"
                   placeholder="Enter designation here..">
                </div>
             </div>
             <div class="row">
                <div class="col-sm-6 form-group">
                   <label>Email</label>
-                  <input type="text" class="form-control"
+                  <input id="id_mother_email" value="{{ family_details.mother_email }}" type="text" class="form-control"
                   placeholder="Enter email">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Phone Number</label>
-                  <input type="text" class="form-control"
+                  <input id="id_mother_phone_number" value="{{ family_details.mother_phone_number }}" type="text" class="form-control"
                   placeholder="Enter phone number here">
                </div>
             </div>
-            <a href="index.html" button class="btn btn-lg btn-info">Previous</button> </a>
-            <a href="form3.html" button class="btn btn-lg btn-info">Next</button> </a>
-      </form>
+            <h1 id="id_error"></h1>
+          <button onclick="submit_form()" class="btn btn-lg btn-info">Next</button>
+
+
       </div>
    </div>
 </div>
+
+<script>
+function submit_form() {
+  $('#id_error').text('');
+
+  var frm = $('#id_family_details_form');
+  var fatherName = $('#id_father_name').val();
+  var fatherOccupation = $('#id_father_occupation').val();
+  var fatherCompany = $('#id_father_company').val();
+  var fatherDesignation = $('#id_father_designation').val();
+  var fatherEmail = $('#id_father_email').val();
+  var fatherPhoneNumber = $('#id_father_phone_number').val();
+  var motherName = $('#id_mother_name').val();
+  var motherOccupation = $('#id_mother_occpation').val();
+  var motherCompany = $('#id_mother_company').val();
+  var motherDesignation = $('#id_mother_designation').val();
+  var motherEmail = $('#id_mother_email').val();
+  var motherPhoneNumber = $('#id_mother_phone_number').val();
+
+  var data = JSON.stringify({
+    father_name: fatherName,
+    father_occupation: fatherOccupation,
+    father_company: fatherCompany,
+    father_designation: fatherDesignation,
+    father_email: fatherEmail,
+    father_phone_number: fatherPhoneNumber,
+    mother_name: motherName,
+    mother_occupation: motherOccupation,
+    mother_company: motherCompany,
+    mother_designation: motherDesignation,
+    mother_email: motherEmail,
+    mother_phone_number: motherPhoneNumber,
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/update_family_details',
+    contentType: 'application/json',
+    data: data,
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error').text(result.message);
+        $(location).attr('href', './academic');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+</script>
+
+
 {% endblock %}

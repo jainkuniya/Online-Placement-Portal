@@ -65,45 +65,45 @@
 
    </div>
    <hr>
-   <form>
+     <form id="id_academic_details_form" action="/api/v1/update_academic_details" method="post">
       <div class="col-sm-12">
          <label>12th Standard</label>
          <div class="form-group">
             <label>Institute Name</label>
-            <input type="text" class="form-control" placeholder="Enter Institute's name">
+            <input id="id_12_institute" value="{{ academic_details["12_institute"] }}" type="text" class="form-control" placeholder="Enter Institute's name">
          </div>
          <div class="row">
             <div class="col-sm-6 form-group">
                <label>City</label>
-               <input type="text" class="form-control" placeholder="Enter the Institute's city">
+               <input id="id_12_city" value="{{ academic_details["12_city"] }}" type="text" class="form-control" placeholder="Enter the Institute's city">
             </div>
             <div class="col-sm-6 form-group">
                <label>Country</label>
-               <input type="text" class="form-control"
+               <input id="id_12_country" value="{{ academic_details["12_country"] }}" type="text" class="form-control"
                placeholder="Enter Institute's country">
             </div>
          </div>
          <div class = "row">
             <div class="col-sm-6 form-group">
                <label>Board</label>
-               <input type="text" class="form-control"
+               <input id="id_12_board" value="{{ academic_details["12_board"] }}" type="text" class="form-control"
                placeholder="Enter your board, i.e CBSE, ICSE, etc">
             </div>
             <div class="col-sm-6 form-group">
                <label>Year</label>
-               <input type="text" class="form-control"
+               <input id="id_12_year" value="{{ academic_details["12_year"] }}" type="text" class="form-control"
                placeholder="Enter year of completion">
             </div>
          </div>
          <div class="row">
             <div class="col-sm-6 form-group">
                <label>Aggregate</label>
-               <input type="text" class="form-control"
+               <input id="id_12_aggregate" value="{{ academic_details["12_aggregate"] }}" type="text" class="form-control"
                placeholder="Enter aggregate">
             </div>
             <div class="col-sm-6 form-group">
                <label>Subjects</label>
-               <input type="text" class="form-control"
+               <input id="id_12_subjects" value="{{ academic_details["12_subjects"] }}" type="text" class="form-control"
                placeholder="Enter subjects pursued">
             </div>
          </div>
@@ -111,45 +111,95 @@
          <label>10th Standard</label>
          <div class="form-group">
             <label>Institute Name</label>
-            <input type="text" class="form-control" placeholder="Enter Institute's name">
+            <input id="id_10_institute" type="text" value="{{ academic_details["10_institute"] }}" class="form-control" placeholder="Enter Institute's name">
          </div>
          <div class="row">
             <div class="col-sm-6 form-group">
                <label>City</label>
-               <input type="text" class="form-control" placeholder="Enter the Institute's city">
+               <input id="id_10_city" type="text" value="{{ academic_details["10_city"] }}" class="form-control" placeholder="Enter the Institute's city">
             </div>
             <div class="col-sm-6 form-group">
                <label>Country</label>
-               <input type="text" class="form-control"
+               <input id="id_10_country" value="{{ academic_details["10_country"] }}" type="text" class="form-control"
                placeholder="Enter Institute's country">
             </div>
          </div>
          <div class = "row">
             <div class="col-sm-6 form-group">
                <label>Board</label>
-               <input type="text" class="form-control"
+               <input id="id_10_board" value="{{ academic_details["10_board"] }}" type="text" class="form-control"
                placeholder="Enter your board, i.e CBSE, ICSE, etc">
             </div>
             <div class="col-sm-6 form-group">
                <label>Year</label>
-               <input type="text" class="form-control"
+               <input id="id_10_year" value="{{ academic_details["10_year"] }}" type="text" class="form-control"
                placeholder="Enter year of completion">
             </div>
          </div>
          <div class="row">
             <div class="col-sm-6 form-group">
                <label>Aggregate</label>
-               <input type="text" class="form-control"
+               <input id="id_10_aggregate" value="{{ academic_details["10_aggregate"] }}" type="text" class="form-control"
                placeholder="Enter aggregate">
             </div>
             <div class="col-sm-6 form-group">
                <label>Subjects</label>
-               <input type="text" class="form-control"
+               <input id="id_10_subjects" value="{{ academic_details["10_subjects"] }}" type="text" class="form-control"
                placeholder="Enter subjects pursued">
             </div>
          </div>
-         <a href="index.html" button class="btn btn-lg btn-info">Previous</button> </a>
-         <a href="form3.html" button class="btn btn-lg btn-info">Next</button> </a>
+         <h1 id="id_error"></h1>
+         <a href="./family" button class="btn btn-lg btn-info">Previous</button> </a>
+         <button class="btn btn-lg btn-info">Next</button>
    </form>
 </div>
+
+<script>
+$(window).load(function() {
+  $('#id_academic_details_form').submit(function() {
+    $('#id_error').text('');
+
+    var frm = $('#id_academic_details_form');
+
+    var data = JSON.stringify({
+      '12_institute': $('#id_12_institute').val(),
+      '12_city': $('#id_12_city').val(),
+      '12_country': $('#id_12_country').val(),
+      '12_board': $('#id_12_board').val(),
+      '12_year': $('#id_12_year').val(),
+      '12_aggregate': $('#id_12_aggregate').val(),
+      '12_subjects': $('#id_12_subjects').val(),
+      '10_institute': $('#id_10_institute').val(),
+      '10_city': $('#id_10_city').val(),
+      '10_country': $('#id_10_country').val(),
+      '10_board': $('#id_10_board').val(),
+      '10_year': $('#id_10_year').val(),
+      '10_aggregate': $('#id_10_aggregate').val(),
+      '10_subjects': $('#id_10_subjects').val(),
+    });
+
+    $.ajax({
+      type: frm.attr('method'),
+      url: frm.attr('action'),
+      contentType: 'application/json',
+      data: data,
+      success: function(result) {
+        if (result.success === 1) {
+          $('#id_error').text(result.message);
+          $(location).attr('href', './');
+        } else if (result.success === -99) {
+          $(location).attr('href', './logout');
+        } else {
+          $('#id_error').text(result.message);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('#id_error').text('Error: ' + errorThrown);
+      },
+    });
+    return false;
+  });
+});
+</script>
+
 {% endblock %}

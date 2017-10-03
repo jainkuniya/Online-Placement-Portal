@@ -30,6 +30,7 @@ DB_DOC_LOGIN_FIELD_PASSWORD = 'password'
 
 DB_DOC_STUDENT_BASIC = 'student_basic'
 DB_DOC_STUDENT_ACADEMIC = 'student_academic'
+DB_DOC_STUDENT_FAMILY_DETAILS = 'student_family'
 
 DB_DOC_STUDENT_BASIC_FIELD_PROGRAM = "program"
 DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
@@ -129,6 +130,25 @@ def fetch_student_academic_details(token):
         query = cloudant.query.Query(
             db, selector = {
                                  DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
+                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                            }
+            )
+        result = query(limit=100)['docs']
+        if (len(result) == 1):
+            return result[0]
+        else:
+            return NO_RECORD_FOUND_ERROR
+    else:
+        return INVALID_TOKEN
+
+def fetch_student_family_details(token):
+    """check if token is valid or not"""
+    status = verify_token(token)
+    if free_from_error(status):
+        """get basic details"""
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_STUDENT_FAMILY_DETAILS,
                                  DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
                             }
             )
@@ -357,9 +377,10 @@ def get_templete(page_name):
         if token != '':
             basic_details = fetch_student_basic_details(token)
             academic_details = fetch_student_academic_details(token)
-            if (free_from_error(basic_details) and free_from_error(academic_details)):
+            family_details = fetch_student_family_details(token)
+            if (free_from_error(basic_details)):
                 if (page_name == "family"):
-                    return render_template('family.html', basic_details= basic_details, page=page_name)
+                    return render_template('family.html', basic_details= basic_details, family_details= family_details, page=page_name)
                 elif (page_name == "academic"):
                     return render_template('academic.html', basic_details= basic_details, academic_details= academic_details, page=page_name)
                 elif (page_name == "projects"):
@@ -420,6 +441,134 @@ def update_basic_details():
                 doc['address'] = request.json['address']
 
                 doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+@app.route(api_path + 'update_academic_details', methods=['POST'])
+def update_academic_details():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_academic_details"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                doc['12_institute'] = request.json['12_institute']
+                doc['12_city'] = request.json['12_city']
+                doc['12_country'] = request.json['12_country']
+                doc['12_board'] = request.json['12_board']
+                doc['12_year'] = request.json['12_year']
+                doc['12_aggregate'] = request.json['12_aggregate']
+                doc['12_subjects'] = request.json['12_subjects']
+                doc['10_institute'] = request.json['10_institute']
+                doc['10_city'] = request.json['10_city']
+                doc['10_country'] = request.json['10_country']
+                doc['10_board'] = request.json['10_board']
+                doc['10_year'] = request.json['10_year']
+                doc['10_aggregate'] = request.json['10_aggregate']
+                doc['10_subjects'] = request.json['10_subjects']
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+@app.route(api_path + 'update_family_details', methods=['POST'])
+def update_family_details():
+    print request.json
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_family_details"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_FAMILY_DETAILS,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                """doc exists"""
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                doc['father_name'] = request.json['father_name']
+                doc['father_occupation'] = request.json['father_occupation']
+                doc['father_company'] = request.json['father_company']
+                doc['father_designation'] = request.json['father_designation']
+                doc['father_email'] = request.json['father_email']
+                doc['father_phone_number'] = request.json['father_phone_number']
+                doc['mother_name'] = request.json['mother_name']
+                doc['mother_occupation'] = request.json['mother_occupation']
+                doc['mother_company'] = request.json['mother_company']
+                doc['mother_designation'] = request.json['mother_designation']
+                doc['mother_email'] = request.json['mother_email']
+                doc['mother_phone_number'] = request.json['mother_phone_number']
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            elif (len(result) == 0):
+                """create doc"""
+                data = {
+                    DB_DOC_TYPE: DB_DOC_STUDENT_FAMILY_DETAILS,
+                    DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                    'father_name' :  request.json['father_name'],
+                    'father_occupation' :  request.json['father_occupation'],
+                    'father_company' :  request.json['father_company'],
+                    'father_designation' :  request.json['father_designation'],
+                    'father_email' :  request.json['father_email'],
+                    'father_phone_number' :  request.json['father_phone_number'],
+                    'mother_name' :  request.json['mother_name'],
+                    'mother_occupation' :  request.json['mother_occupation'],
+                    'mother_company' :  request.json['mother_company'],
+                    'mother_designation' :  request.json['mother_designation'],
+                    'mother_email' :  request.json['mother_email'],
+                    'mother_phone_number' :  request.json['mother_phone_number']
+                }
+
+                db.create_document(data)
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully updated",
