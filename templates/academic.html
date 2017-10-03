@@ -11,64 +11,24 @@
          <label>Current Academics</label>
          <thead>
             <tr>
-               <th scope="col">Year</th>
                <th scope="col">Semester</th>
                <th scope="col">SGPA</th>
-               <th scope="col">Backlogs</th>
             </tr>
          </thead>
          <tbody>
-            <tr>
-               <th scope="row">1</th>
-               <td data-title="Semester">I</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
-            <tr>
-               <th scope="row">1</th>
-               <td data-title="Semester">II</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
-            <tr>
-               <th scope="row">2</th>
-               <td data-title="Semester">III</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
-            <tr>
-               <th scope="row">2</th>
-               <td data-title="Semester">IV</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
-            <tr>
-               <th scope="row">3</th>
-               <td data-title="Semester">V</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
-            <tr>
-               <th scope="row">3</th>
-               <td data-title="Semester">VI</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
-            <tr>
-               <th scope="row">4</th>
-               <td data-title="Semester">VII</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
-            <tr>
-               <th scope="row">4</th>
-               <td data-title="Semester">VIII</td>
-               <td data-title="SGPA">---</td>
-               <td data-title="Backlogs">---</td>
-            </tr>
+           {% for sem in academic_details.spi %}
+
+               <tr>
+                  <td data-title="Semester">{{ sem }}</td>
+                  <td data-title="SGPA">{{ academic_details.spi[sem] }}</td>
+               </tr>
+
+          {% endfor %}
          </tbody>
       </table>
       <hr>
+      <label>Backlogs : ---</label>
+      <br>
       <label>Aggregate CGPA : ---</label>
    </div>
    <hr>
