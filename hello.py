@@ -113,6 +113,25 @@ def fetch_student_basic_details(token):
     else:
         return INVALID_TOKEN
 
+def fetch_student_academic_details(token):
+    """check if token is valid or not"""
+    status = verify_token(token)
+    if free_from_error(status):
+        """get basic details"""
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
+                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                            }
+            )
+        result = query(limit=100)['docs']
+        if (len(result) == 1):
+            return result[0]
+        else:
+            return NO_RECORD_FOUND_ERROR
+    else:
+        return INVALID_TOKEN
+
 def verify_token(token):
     query = cloudant.query.Query(
         db, selector = {
@@ -325,11 +344,12 @@ def get_templete(page_name):
         token = request.cookies['token']
         if token != '':
             basic_details = fetch_student_basic_details(token)
+            academic_details = fetch_student_academic_details(token)
             if free_from_error(basic_details):
                 if (page_name == "family"):
                     return render_template('family.html', basic_details= basic_details, page=page_name)
                 elif (page_name == "academic"):
-                    return render_template('academic.html', basic_details= basic_details, page=page_name)
+                    return render_template('academic.html', basic_details= basic_details, academic_details= academic_details, page=page_name)
                 elif (page_name == "projects"):
                     return render_template('projects.html', basic_details= basic_details, page=page_name)
                 elif (page_name == "exprience"):
