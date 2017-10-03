@@ -44,7 +44,7 @@
                </div>
                <div class="col-sm-4 form-group">
                   <label>Date Of Birth</label>
-                  <input id="id_date_of_birth" type="text" placeholder="DD/MM/YYYY format" class="form-control">
+                  <input id="id_date_of_birth" type="text" value="{{ basic_details.date_of_birth }}" placeholder="Enter Date of birth Here in DD/MM/YYYY format" class="form-control">
                </div>
             </div>
             <div class="form-group">
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
                <label>Official Email</label>
-               <input id="id_email" type="text" value={{ basic_details.roll_no + "@lnmiit.ac.in" }} placeholder="Enter Email address Here.." class="form-control">
+               <input id="id_email" type="text" value={{ basic_details.email }} placeholder="Enter Email address Here.." class="form-control">
             </div>
             <div class="form-group">
                <label>Phone Number</label>
@@ -63,7 +63,7 @@
             </div>
             <div class="form-group">
                <label>Address</label>
-               <textarea id="id_address" placeholder="Enter Address Here.." rows="3" class="form-control"></textarea>
+               <textarea id="id_address" placeholder="Enter Address Here.." rows="3" class="form-control">{{ basic_details.address }}</textarea>
             </div>
             <h1 id="id_error"></h1>
              <a> <button class="btn btn-lg btn-info">Next</button> </a>
@@ -72,4 +72,50 @@
       </form>
    </div>
 </div>
+<script>
+$(window).load(function() {
+  $('#id_basic_details_form').submit(function() {
+    $('#id_error').text('');
+
+    var frm = $('#id_basic_details_form');
+    var rollNo = $('#id_roll_no').val();
+    var firstName = $('#id_first_name').val();
+    var lastName = $('#id_last_name').val();
+    var gender = $('#id_gender').val();
+    var dateOfBirth = $('#id_date_of_birth').val();
+    var email = $('#id_email').val();
+    var phoneNumber = $('#id_phone_number').val();
+    var address = $('#id_address').val();
+
+    $.ajax({
+      type: frm.attr('method'),
+      url: frm.attr('action'),
+      contentType: 'application/json',
+      data: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        gender: gender,
+        date_of_birth: dateOfBirth,
+        email: email,
+        phone_number: phoneNumber,
+        address: address,
+      }),
+      success: function(result) {
+        if (result.success === 1) {
+          $('#id_error').text(result.message);
+          $(location).attr('href', './family');
+        } else if (result.success === -99) {
+          $(location).attr('href', './logout');
+        } else {
+          $('#id_error').text(result.message);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('#id_error').text('Error: ' + errorThrown);
+      },
+    });
+    return false;
+  });
+});
+</script>
 {% endblock %}

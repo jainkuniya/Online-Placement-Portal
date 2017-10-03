@@ -410,17 +410,16 @@ def update_basic_details():
             result = query(limit=100)['docs']
             if (len(result) == 1):
                 doc = db[result[0]['_id']]
-                print request.form
-                #doc['first_name'] = request.json['first_name']
-                #doc['last_name'] = request.json['last_name']
-                #doc['gender'] = request.json['gender']
-                #doc['date_of_birth'] = request.json['date_of_birth']
-                #doc['email'] = request.json['email']
-                #doc['phone_number'] = request.json['phone_number']
-                #doc['address'] = request.json['address']
-                #doc['medical_history'] = request.json['medical_history']
+                doc.fetch()
+                doc['first_name'] = request.json['first_name']
+                doc['last_name'] = request.json['last_name']
+                doc['gender'] = request.json['gender']
+                doc['date_of_birth'] = request.json['date_of_birth']
+                doc['email'] = request.json['email']
+                doc['phone_number'] = request.json['phone_number']
+                doc['address'] = request.json['address']
 
-                #doc.save()
+                doc.save()
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully updated",
