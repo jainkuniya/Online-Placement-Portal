@@ -10,29 +10,41 @@
          <div class="col-sm-12">
             <div class="form-group">
                <label>Roll Number</label>
-               <input type="text" placeholder="Enter Roll Number Here.." class="form-control">
+               <input type="text" disabled value={{ basic_details.roll_no }} placeholder="Enter Roll Number Here.." class="form-control">
             </div>
             <div class="row">
                <div class="col-sm-6 form-group">
                   <label>First Name</label>
-                  <input type="text" placeholder="Enter First Name Here.." class="form-control">
+                  <input type="text" disabled value={{ basic_details.first_name }} placeholder="Enter First Name Here.." class="form-control">
                </div>
                <div class="col-sm-6 form-group">
                   <label>Last Name</label>
-                  <input type="text" placeholder="Enter Last Name Here.." class="form-control">
+                  <input type="text" disabled value={{ basic_details.last_name }} placeholder="Enter Last Name Here.." class="form-control">
                </div>
             </div>
             <div class="row">
                <div class="col-sm-4 form-group">
                   <label>Gender</label>
                   <select class="form-control" id="sel3">
-                     <option>Male</option>
-                     <option>Female</option>
+                    {% if basic_details.gender == "Male" %}
+                  <option selected="selected">
+                    {% else %}
+                    <option>
+                    {% endif %}
+                     Male</option>
+
+
+                     {% if basic_details.gender == "Female" %}
+                   <option selected="selected">
+                     {% else %}
+                     <option>
+                     {% endif %}
+                      Female</option>
                   </select>
                </div>
                <div class="col-sm-4 form-group">
                   <label>Date Of Birth</label>
-                  <input type="text" placeholder="Enter State Name Here.." class="form-control">
+                  <input type="text" placeholder="Enter Date of birth Here in DD/MM/YYYY format" class="form-control">
                </div>
                <div class="col-sm-4 form-group">
                   <label>Marital Status</label>
@@ -44,21 +56,17 @@
             </div>
             <div class="form-group">
                <label>Course</label>
-               <select class="form-control" id="sel1">
-                  <option>B.TECH -ECE</option>
-                  <option>B.TECH -CSE</option>
-                  <option>B.TECH -MME</option>
-                  <option>B.TECH -CCE</option>
-                  <option>B.TECH -ME</option>
+               <select disabled class="form-control" id="sel1">
+                  <option>{{ basic_details._program }} - {{ basic_details._branch}} </option>
                </select>
             </div>
             <div class="form-group">
                <label>Official Email</label>
-               <input type="text" placeholder="Enter Phone Number Here.." class="form-control">
+               <input type="text" value={{ basic_details.roll_no + "@lnmiit.ac.in" }} placeholder="Enter Email address Here.." class="form-control">
             </div>
             <div class="form-group">
                <label>Phone Number</label>
-               <input type="text" placeholder="Enter Roll Number Here.." class="form-control">
+               <input type="text" value={{ basic_details.phone_number }} placeholder="Enter Phone Number Here.." class="form-control">
             </div>
             <div class="form-group">
                <label>Address</label>
