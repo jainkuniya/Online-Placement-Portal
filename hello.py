@@ -327,15 +327,15 @@ def get_templete(page_name):
             basic_details = fetch_student_basic_details(token)
             if free_from_error(basic_details):
                 if (page_name == "family"):
-                    return render_template('family.html', basic_details= basic_details)
+                    return render_template('family.html', basic_details= basic_details, page=page_name)
                 elif (page_name == "academic"):
-                    return render_template('academic.html', basic_details= basic_details)
+                    return render_template('academic.html', basic_details= basic_details, page=page_name)
                 elif (page_name == "projects"):
-                    return render_template('projects.html', basic_details= basic_details)
+                    return render_template('projects.html', basic_details= basic_details, page=page_name)
                 elif (page_name == "exprience"):
-                    return render_template('exprience.html', basic_details= basic_details)
+                    return render_template('exprience.html', basic_details= basic_details, page=page_name)
                 else:
-                    return render_template('index.html', basic_details= basic_details)
+                    return render_template('index.html', basic_details= basic_details, page=page_name)
             else:
                 """invalid token, redirect to logout"""
                 return redirect("./logout")

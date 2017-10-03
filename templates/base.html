@@ -36,9 +36,27 @@
             <li class="active">
             <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Edit Profile</span> <span class="fa arrow"></span></a>
             <ul class="nav nav-second-level">
-            <li class="active"><a href="./">Basic Details</a></li>
-            <li><a href="./family">Family Details</a></li>
-            <li><a href="./academic">Academic Details</a></li>
+            {% if page == "home" %}
+            <li class="active">
+            {% else %}
+            <li>
+            {% endif %}
+            <a href="./">Basic Details</a>
+            </li>
+            {% if page == "family" %}
+            <li class="active">
+            {% else %}
+            <li>
+            {% endif %}
+            <a href="./family">Family Details</a>
+            </li>
+            {% if page == "academic" %}
+            <li class="active">
+            {% else %}
+            <li>
+            {% endif %}
+            <a href="./academic">Academic Details</a>
+            </li>
             <!--  <li><a href="./projects">Projects</a></li> -->
             <!--  <li><a href="./exprience">Work Expriences</a></li> -->
             </ul>
