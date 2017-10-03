@@ -67,8 +67,8 @@ $(document).ready(function() {
 
           var student = result.data.student;
 
-          $('#id_first_name').val(student.first_name);
-          $('#id_last_name').val(student.last_name);
+          $('#id_first_name').val(student.basic.first_name);
+          $('#id_last_name').val(student.basic.last_name);
 
           $('#id_label_first_name').addClass('active highlight');
           $('#id_label_last_name').addClass('active highlight');

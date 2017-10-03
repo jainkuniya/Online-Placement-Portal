@@ -1,3 +1,4 @@
+import cloudant
 from cloudant import Cloudant
 from cloudant.error import CloudantException
 from cloudant.result import Result, ResultByKey
@@ -18,16 +19,26 @@ app = Flask(__name__)
 db_name = 'mydb'
 client = None
 db = None
+
+DB_DOC_TYPE = 'doc_type'
+DB_DOC_FIELD_ROLL_NO = 'roll_no'
+
 DB_DOC_LOGIN = 'login'
 DB_DOC_LOGIN_FIELD_TOKEN = 'token'
 DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN = 'last_logged_in'
 DB_DOC_LOGIN_FIELD_PASSWORD = 'password'
 
+DB_DOC_STUDENT_BASIC = 'student_basic'
+DB_DOC_STUDENT_ACADEMIC = 'student_academic'
+
 mis_db_name = 'mis'
 mis_client = None
 mis_db = None
+
 MIS_DB_DOC_STUDENTS = 'students'
 MIS_DB_DOC_STUDENTS_STUDENT_LIST = 'student_list'
+MIS_DB_DOC_STUDENTS_STUDENT_LIST_BASIC = 'basic'
+MIS_DB_DOC_STUDENTS_STUDENT_LIST_ACADEMIC = 'academic'
 
 SUCCESS_CODE_VALID = 1
 SUCCESS_CODE_IN_VALID = 0
@@ -85,10 +96,20 @@ port = int(os.getenv('PORT', 8000))
 def home():
     if 'token' in request.cookies:
         token = request.cookies['token']
+        basic_details = fetch_student_basic_details(token)
         if token != '':
             return render_template('index.html')
         return redirect("./login")
     return redirect("./login")
+
+def fetch_student_basic_details(token):
+    query = cloudant.query.Query(db,selector={'test': 123})
+    print "Vishwesh"
+    print query
+    for doc in query(limit=100)['docs']:
+        print "jainkuniya"
+        print doc
+    return 1
 
 @app.route('/logout')
 def logout():
@@ -160,24 +181,40 @@ def fetch_from_mis():
             })
 
 
+def get_student_from_our_db(rollNo):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_LOGIN,
+                                 DB_DOC_FIELD_ROLL_NO: rollNo,
+                            }
+            )
+        result = query(limit=100)['docs']
+        if (len(result) == 1):
+            return result[0]
+        else:
+            return NO_RECORD_FOUND_ERROR
+
+    else:
+        return DB_CONNECT_ERROR
+
 
 def get_student_details_from_mis(rollNo):
     """Check if account already exists or not"""
-    if client:
-        try:
-            student = db[DB_DOC_LOGIN][rollNo]
-            return ACCOUNT_ALREADY_EXIXT
-        except Exception, e:
-            if mis_client:
-                try:
-                    student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
-                    return student
-                except Exception, e:
-                    return NO_RECORD_FOUND_ERROR
-            else:
-                return DB_CONNECT_ERROR
-    else:
+    student = get_student_from_our_db(rollNo)
+    if (student == NO_RECORD_FOUND_ERROR):
+        if mis_client:
+            try:
+                student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
+                return student
+            except Exception, e:
+                return NO_RECORD_FOUND_ERROR
+        else:
+            return DB_CONNECT_ERROR
+    elif (student == DB_CONNECT_ERROR):
         return DB_CONNECT_ERROR
+    else:
+        return ACCOUNT_ALREADY_EXIXT
 
 @app.route(api_path + 'create_account', methods=['POST'])
 def create_account():
@@ -185,15 +222,34 @@ def create_account():
     password = request.json['password']
     student = get_student_details_from_mis(rollNo)
     if free_from_error(student):
-        """insert in out DB"""
+        """insert in our DB"""
         try:
-            newEntry = db[DB_DOC_LOGIN]
-            newEntry[rollNo] = {
+            """create a new doc of type login"""
+            data = {
+                DB_DOC_TYPE: DB_DOC_LOGIN,
+                DB_DOC_FIELD_ROLL_NO: rollNo,
                 DB_DOC_LOGIN_FIELD_PASSWORD: password,
                 DB_DOC_LOGIN_FIELD_TOKEN: '',
                 DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN: 0,
             }
-            newEntry.save()
+            db.create_document(data)
+
+            """create a doc of type student_basic"""
+            data = {
+                DB_DOC_TYPE: DB_DOC_STUDENT_BASIC,
+                DB_DOC_FIELD_ROLL_NO: rollNo,
+            }
+            data.update(student[MIS_DB_DOC_STUDENTS_STUDENT_LIST_BASIC])
+            db.create_document(data)
+
+            """create a doc of type student_academic"""
+            data = {
+                DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
+                DB_DOC_FIELD_ROLL_NO: rollNo,
+            }
+            data.update(student[MIS_DB_DOC_STUDENTS_STUDENT_LIST_ACADEMIC])
+            db.create_document(data)
+
             return jsonify({
                 'success': SUCCESS_CODE_VALID,
                 'message': "Successfully registered! Please login to continue",
@@ -215,15 +271,16 @@ def login():
     rollNo = request.json['rollNo']
     password = request.json['password']
     """search in our DB"""
-    try:
-        student = db[DB_DOC_LOGIN]
-        if student[rollNo][DB_DOC_LOGIN_FIELD_PASSWORD] == password:
+    student = get_student_from_our_db(rollNo)
+    if free_from_error(student):
+        """Save token"""
+        try:
             token = get_random_string(TOEKN_LENGTH)
-            """Save token"""
-            student[rollNo][DB_DOC_LOGIN_FIELD_PASSWORD] = password
-            student[rollNo][DB_DOC_LOGIN_FIELD_TOKEN] = token
-            student[rollNo][DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN] = time.time()
-            student.save()
+            db[student["_id"]].fetch()
+            doc = db[student["_id"]]
+            doc[DB_DOC_LOGIN_FIELD_TOKEN] = token
+            doc[DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN] = time.time()
+            doc.save()
             return jsonify({
                 'success': SUCCESS_CODE_VALID,
                 'message': "Successfully logged in",
@@ -231,16 +288,17 @@ def login():
                     'token': token
                 }
             })
-        else:
+        except Exception as e:
+            print e
             return jsonify({
-                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
-                'message': "Invalid rollNo password",
+                'success': SUCCESS_CODE_IN_VALID,
+                'message': "Please try again",
             })
-    except Exception as e:
-        print str(e)
+
+    else:
         return jsonify({
-            'success': SUCCESS_CODE_IN_VALID,
-            'message': "We didn't recognize you",
+            'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+            'message': "Invalid rollNo password",
         })
 
 def get_random_string(length):
