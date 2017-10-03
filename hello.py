@@ -31,6 +31,10 @@ DB_DOC_LOGIN_FIELD_PASSWORD = 'password'
 DB_DOC_STUDENT_BASIC = 'student_basic'
 DB_DOC_STUDENT_ACADEMIC = 'student_academic'
 
+DB_DOC_STUDENT_BASIC_FIELD_PROGRAM = "program"
+DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
+DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR = "addmission_year"
+
 mis_db_name = 'mis'
 mis_client = None
 mis_db = None
@@ -39,6 +43,10 @@ MIS_DB_DOC_STUDENTS = 'students'
 MIS_DB_DOC_STUDENTS_STUDENT_LIST = 'student_list'
 MIS_DB_DOC_STUDENTS_STUDENT_LIST_BASIC = 'basic'
 MIS_DB_DOC_STUDENTS_STUDENT_LIST_ACADEMIC = 'academic'
+
+MIS_DB_DOC_FIELD_PROGRAM = "program"
+MIS_DB_DOC_FIELD_BRANCH = "branch"
+MIS_DB_DOC_FIELD_ADMISSION_YEAR = "addmission_year"
 
 SUCCESS_CODE_VALID = 1
 SUCCESS_CODE_IN_VALID = 0
@@ -239,6 +247,7 @@ def get_student_details_from_mis(rollNo):
     if (student == NO_RECORD_FOUND_ERROR):
         if mis_client:
             try:
+                mis_db[MIS_DB_DOC_STUDENTS].fetch()
                 student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
                 return student
             except Exception, e:
@@ -272,6 +281,9 @@ def create_account():
             data = {
                 DB_DOC_TYPE: DB_DOC_STUDENT_BASIC,
                 DB_DOC_FIELD_ROLL_NO: rollNo,
+                DB_DOC_STUDENT_BASIC_FIELD_PROGRAM: student[MIS_DB_DOC_FIELD_PROGRAM],
+                DB_DOC_STUDENT_BASIC_FIELD_BRANCH: student[MIS_DB_DOC_FIELD_BRANCH],
+                DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR: student[MIS_DB_DOC_FIELD_ADMISSION_YEAR]
             }
             data.update(student[MIS_DB_DOC_STUDENTS_STUDENT_LIST_BASIC])
             db.create_document(data)
