@@ -5,8 +5,9 @@
    <title>{% block title %}{% endblock %} - Online Placement Portal</title>
    <meta name="title" content="Online Placement Portal">
    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link href="../static/materialIcon.css" rel="stylesheet">
+   <!--<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">-->
    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-   <link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet">
    <!-- Toastr style -->
    <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
    <!-- Gritter -->
@@ -35,7 +36,7 @@
                </div>
             </li>
             <li class="active">
-            <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Edit Profile</span> <span class="fa arrow"></span></a>
+            <a href="index.html"><i class="material-icons">person</i> <span class="nav-label">Edit Profile</span></a>
             <ul class="nav nav-second-level">
             {% if page == "home" %}
             <li class="active">
@@ -63,13 +64,13 @@
             </ul>
             </li>
             <li>
-               <a href="#"><i class="fa fa-diamond"></i> <span class="nav-label">View Resume</span></a>
+               <a href="#"><i class="material-icons">description</i> <span class="nav-label">View Resume</span></a>
             </li>
             <li>
-               <a href="index.html#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Companies</span><span class="fa arrow"></span></a>
+               <a href="index.html#"><i class="material-icons">widgets</i><span class="nav-label">Companies</span></a>
             </li>
             <li>
-               <a href="#"><i class="fa fa-pie-chart"></i> <span class="nav-label">Calendar</span>  </a>
+               <a href="#"><i class="material-icons">event</i> <span class="nav-label">Calendar</span>  </a>
             </li>
          </div>
       </nav>
@@ -77,7 +78,7 @@
          <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                <div class="navbar-header">
-                  <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " ><i class="fa fa-bars"></i> </a>
+                  <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " ><i class="material-icons">menu</i> </a>
                </div>
                <ul class="nav navbar-top-links navbar-right">
                   <li>
@@ -87,49 +88,33 @@
                   </li>
                   <li class="dropdown">
                      <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
-                     <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                     <i class="material-icons">add_alert</i>  <span class="label label-primary">8</span>
                      </a>
                      <ul class="dropdown-menu dropdown-alerts">
                         <li>
                            <a href="#">
                               <div>
-                                 <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                 <i class="material-icons">email</i> You have 16 messages
+                                 <span class="pull-right text-muted small">4 minutes ago</span>
+                              </div>
+                           </a>
+                        </li>
+                        
+                        <li class="divider"></li>
+                        <li>
+                           <a href="#">
+                              <div>
+                                 <i class="material-icons">file_upload</i> Server Rebooted
                                  <span class="pull-right text-muted small">4 minutes ago</span>
                               </div>
                            </a>
                         </li>
                         <li class="divider"></li>
-                        <li>
-                           <a href="#">
-                              <div>
-                                 <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                 <span class="pull-right text-muted small">12 minutes ago</span>
-                              </div>
-                           </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                           <a href="#">
-                              <div>
-                                 <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                 <span class="pull-right text-muted small">4 minutes ago</span>
-                              </div>
-                           </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                           <div class="text-center link-block">
-                              <a href="#">
-                              <strong>See All Alerts</strong>
-                              <i class="fa fa-angle-right"></i>
-                              </a>
-                           </div>
-                        </li>
                      </ul>
                   </li>
                   <li>
                      <a href="./logout">
-                     <i id="id_log_out" class="fa fa-sign-out"></i> Log out
+                     <i id="id_log_out" <i class="material-icons md-18">input</i> Log out
                      </a>
                   </li>
                </ul>
