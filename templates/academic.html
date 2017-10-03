@@ -16,20 +16,53 @@
             </tr>
          </thead>
          <tbody>
+           {% set count = 0 %}
+           {% set total = 0 %}
            {% for sem in academic_details.spi %}
 
                <tr>
                   <td data-title="Semester">{{ sem }}</td>
                   <td data-title="SGPA">{{ academic_details.spi[sem] }}</td>
+                  {% set count = count + 1 %}
+                  {% set total = total + academic_details.spi[sem] %}
                </tr>
 
           {% endfor %}
          </tbody>
       </table>
       <hr>
-      <label>Backlogs : ---</label>
+      <label>Backlogs</label>
+
+
+      <table class="responsive-table" style="width:80%;">
+         <thead>
+            <tr>
+               <th scope="col">S.No</th>
+               <th scope="col">Semester</th>
+               <th scope="col">Course</th>
+            </tr>
+         </thead>
+         <tbody>
+           {% for backlog in academic_details.active_backlog %}
+
+               <tr>
+                 <td data-title="S.no">{{ backlog }}</td>
+                  <td data-title="Semester">{{ academic_details.active_backlog[backlog].sem }}</td>
+                  <td data-title="Course">{{ academic_details.active_backlog[backlog].course }}</td>
+               </tr>
+
+          {% endfor %}
+         </tbody>
+      </table>
+
+
       <br>
-      <label>Aggregate CGPA : ---</label>
+      {% if count != 0 %}
+    <label>Aggregate CGPA : {{ total/count }}</label>
+      {% else %}
+      
+      {% endif %}
+
    </div>
    <hr>
    <form>
