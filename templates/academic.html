@@ -186,7 +186,7 @@ $(window).load(function() {
       success: function(result) {
         if (result.success === 1) {
           $('#id_error').text(result.message);
-          $(location).attr('href', './');
+          $(location).attr('href', './projects');
         } else if (result.success === -99) {
           $(location).attr('href', './logout');
         } else {
