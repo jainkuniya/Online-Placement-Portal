@@ -35,3 +35,16 @@ $(document).ready(function() {
     return false;
   });
 });
+
+function toggleState(id) {
+  var element = document.getElementById(id),
+    style = window.getComputedStyle(element),
+    visibility = style.getPropertyValue('visibility');
+  if (visibility === 'hidden') {
+    element.style.visibility = 'visible';
+    element.style.height = 'auto';
+  } else {
+    element.style.visibility = 'hidden';
+    element.style.height = 0;
+  }
+}
