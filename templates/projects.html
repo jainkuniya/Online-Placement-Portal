@@ -19,7 +19,7 @@
                                       <label>Project Title</label>
                                       <input id="id_{{ project }}_title"  value="{{ projects.projects[project].title }}" placeholder="Enter Project Title Here.." type="text" class="form-control">
                                    </div>
-                                   <div class="form-group" id="p1" class="collapse">
+                                   <div class="form-group" id="p{{ loop.index }}" class="collapse">
                                       <label>Description</label>
                                       <textarea id="id_{{ project }}_description"  placeholder="Enter Project Description Here.." rows="3" class="form-control">{{ projects.projects[project].project_description }}</textarea>
                                    </div>
@@ -31,7 +31,7 @@
 
 
 
-                          <input type='button'  data-toggle="collapse" data-target="#p1" value='><' />
+                          <input type='button'  data-toggle="collapse" data-target="#p{{ loop.index }}" value='><' />
 
                           {% else %}
 
