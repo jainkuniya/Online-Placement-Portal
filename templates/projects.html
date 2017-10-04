@@ -9,6 +9,9 @@
                         <h2>Projects</h2>
                         <div class="row">
                           {% for project in projects.projects %}
+                          
+                          {% if projects.projects[project] != -1 %}
+
 
 
                              <div class="col-sm-12">
@@ -24,13 +27,16 @@
                                  </div>
                                </div>
                                <h1 id="id_error_update"></h1>
-                               <a> <button onclick="updateProject({{ project }})" class="btn btn-lg btn-info">Update</button> </a>
+                               <a> <button onclick="updateProject('{{ project }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
+                               <a> <button onclick="updateProject('{{ project }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
 
 
 
                           <input type='button'  data-toggle="collapse" data-target="#p1" value='><' />
 
+                          {% else %}
 
+                          {% endif %}
 
                          {% endfor %}
 
@@ -66,33 +72,33 @@
       <script src="{{ url_for('static', filename='js/project.js') }}" ></script>
 
       <script>
-      function updateProject(project) {
-
-        alert(project);
-        $('#id_error_update').text('');
-        $.ajax({
-          type: 'POST',
-          url: '/api/v1/update_project',
-          contentType: 'application/json',
-          data: JSON.stringify({
-            project_titile: $('#id_' + project + '_title').val(),
-            project_description: $('#id_' + project + '_description').val(),
-          }),
-          success: function(result) {
-            if (result.success === 1) {
-              $('#id_error_update').text(result.message);
-              $(location).attr('href', './projects');
-            } else if (result.success === -99) {
-              $(location).attr('href', './logout');
-            } else {
-              $('#id_error_update').text(result.message);
-            }
-          },
-          error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $('#id_error_update').text('Error: ' + errorThrown);
-          },
-        });
-        return false;
-      });
-      </script>
+      function updateProject(project, query) {
+  $('#id_error_update').text('');
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/update_project',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      project: project,
+      project_title: $('#id_' + project + '_title').val(),
+      project_description: $('#id_' + project + '_description').val(),
+      query: query,
+    }),
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error_update').text(result.message);
+        $(location).attr('href', './projects');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error_update').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error_update').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+</script>
 {% endblock %}

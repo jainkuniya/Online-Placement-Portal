@@ -690,6 +690,55 @@ def update_family_details():
         'message': "Please try again",
     })
 
+@app.route(api_path + 'update_project', methods=['POST'])
+def update_project():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_basic_details"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                if (request.json['query'] == 0):
+                    """update"""
+                    doc['projects'][request.json['project']] = {
+                        'title': request.json['project_title'],
+                        'project_description': request.json['project_description']
+                    }
+
+                elif (request.json['query'] == 1):
+                    """delete"""
+                    doc['projects'][request.json['project']] = -1
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+
 @app.route(api_path + 'add_new_project', methods=['POST'])
 def add_new_project():
     print request.json
