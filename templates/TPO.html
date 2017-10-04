@@ -122,7 +122,7 @@
 
                          {% endfor %}
                         </a></div>
-                        <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="dlete(this);">Approve</button></a></div>
+                        <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button></a></div>
                         <hr>
                      </div>
 
@@ -171,20 +171,55 @@
       <script src="../static/js/plugins/chartJs/Chart.min.js"></script>
       <!-- Toastr -->
       <script src="../static/js/plugins/toastr/toastr.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
       <script type="text/javascript">
-      function dlete(e) {
-  var e = window.event;
-  var target = e.target;
-  var iden = target.id;
-  document.getElementById(iden).style.display = 'none';
+      function verifyStudent(rollNo) {
+  $('#id_error').text();
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/tpo/verify_student',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      rollNo: rollNo,
+    }),
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error').text(result.message);
+        $(location).attr('href', './tpo');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
 }
 function selectAll() {
-  var elements = document.getElementsByClassName('col-xs-12');
-  for (i = 0; i < elements.length; i++) {
-    elements[i].style.display = 'none';
-  }
-  document.getElementById('approve').innerHTML = 'All approved !';
-  document.getElementById('msg').innerHTML = 'All the listed students have been verified';
+  $('#id_error').text();
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/tpo/verify_all_student',
+    contentType: 'application/json',
+    data: JSON.stringify({}),
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error').text(result.message);
+        $(location).attr('href', './tpo');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
 }
 </script>
    </body>

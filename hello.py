@@ -444,6 +444,48 @@ def tro_dashboard():
     pending_students = get_pending_students()
     return render_template('tpo.html', pending_students=pending_students)
 
+@app.route(api_path + 'tpo/verify_student', methods=['POST'])
+def verify_student():
+    status = verify_individual_student(request.json['rollNo'])
+    if free_from_error(status):
+        return jsonify({
+            'success': SUCCESS_CODE_VALID,
+            'message': "Successfully verified",
+        })
+    else:
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Please try again",
+        })
+
+@app.route(api_path + 'tpo/verify_all_student', methods=['POST'])
+def verify_all_student():
+    pending_students = get_pending_students()
+    for student in pending_students:
+        verify_individual_student(student['rollNo'])
+    return jsonify({
+        'success': SUCCESS_CODE_VALID,
+        'message': "Successfully verified",
+    })
+
+def verify_individual_student(rollNo):
+    query = cloudant.query.Query(
+        db, selector = {
+                             DB_DOC_TYPE: DB_DOC_STUDENT_BASIC,
+                             DB_DOC_FIELD_ROLL_NO: rollNo,
+                        }
+        )
+    result = query(limit=100)['docs']
+    if (len(result) == 1):
+        doc = db[result[0]['_id']]
+        doc.fetch()
+        doc['verified'] = 1
+
+        doc.save()
+        return doc
+    else:
+        return NO_RECORD_FOUND_ERROR
+
 def get_pending_students():
     if client:
         query = cloudant.query.Query(
