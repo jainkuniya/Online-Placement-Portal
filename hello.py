@@ -314,6 +314,7 @@ def create_account():
                 DB_DOC_LOGIN_FIELD_PASSWORD: password,
                 DB_DOC_LOGIN_FIELD_TOKEN: '',
                 DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN: 0,
+                'person_type': 1,
             }
             db.create_document(data)
 
@@ -371,6 +372,7 @@ def login():
                 'success': SUCCESS_CODE_VALID,
                 'message': "Successfully logged in",
                 'data': {
+                    'person_type': doc['person_type'],
                     'token': token
                 }
             })
@@ -435,6 +437,10 @@ def projects_page():
 @app.route('/exprience')
 def exprience_page():
     return get_templete("projects")
+
+@app.route('/tpo')
+def tro_dashboard():
+    return render_template('tpo.html')
 
 @app.route(api_path + 'update_basic_details', methods=['POST'])
 def update_basic_details():

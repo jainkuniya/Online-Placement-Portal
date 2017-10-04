@@ -141,7 +141,11 @@ $(document).ready(function() {
         if (result.success === 1) {
           $('#id_error_login_form').text(result.message);
           document.cookie = 'token=' + result.data.token + '; path=/';
-          $(location).attr('href', '/');
+          if (result.data.person_type == 1) {
+            $(location).attr('href', '/');
+          } else {
+            $(location).attr('href', '/tpo');
+          }
         } else if (result.success === -99) {
           clearLoginCookie();
         } else {
