@@ -3,35 +3,96 @@
 {% block extrastyles %}
 {% endblock %}
 {% block body %}
-{{ projects }}
+{{ projects.project }}
                   <div class="container" id="c1">
                      <div class="col-lg-12 well" >
                         <h2>Projects</h2>
                         <div class="row">
-                           <form id="id_new_project_form" action="/api/v1/add_new_project" method="post">
-                              <div class="col-sm-12">
-                                 <div class="row">
-                                    <div class="form-group">
-                                       <label>Project Title</label>
-                                       <input id="id_new_project_title" placeholder="Enter Project Title Here.." type="text" class="form-control">
-                                    </div>
-                                    <div class="form-group" id="p1" class="collapse">
-                                       <label>Description</label>
-                                       <textarea id="id_new_project_description" placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea>
-                                    </div>
-                                  </div>
-                                </div>
-                                <a> <button class="btn btn-lg btn-info">Add New Project</button> </a>
-                            </form>
+                          {% for project in projects.projects %}
 
 
-                           <input type='button'  data-toggle="collapse" data-target="#p1" value='><' />
-                           <h1 id="id_error"></h1>
+                             <div class="col-sm-12">
+                                <div class="row">
+                                   <div class="form-group">
+                                      <label>Project Title</label>
+                                      <input id="id_{{ project }}_title"  value="{{ projects.projects[project].title }}" placeholder="Enter Project Title Here.." type="text" class="form-control">
+                                   </div>
+                                   <div class="form-group" id="p1" class="collapse">
+                                      <label>Description</label>
+                                      <textarea id="id_{{ project }}_description"  placeholder="Enter Project Description Here.." rows="3" class="form-control">{{ projects.projects[project].project_description }}</textarea>
+                                   </div>
+                                 </div>
+                               </div>
+                               <h1 id="id_error_update"></h1>
+                               <a> <button onclick="updateProject({{ project }})" class="btn btn-lg btn-info">Update</button> </a>
+
+
+
+                          <input type='button'  data-toggle="collapse" data-target="#p1" value='><' />
+
+
+
+                         {% endfor %}
+
+
+
+                        </div>
+
+                        <div class="row">
+                          <form id="id_new_project_form" action="/api/v1/add_new_project" method="post">
+                             <div class="col-sm-12">
+                                <div class="row">
+                                   <div class="form-group">
+                                      <label>Project Title</label>
+                                      <input id="id_new_project_title" placeholder="Enter Project Title Here.." type="text" class="form-control">
+                                   </div>
+                                   <div class="form-group" id="p1" class="collapse">
+                                      <label>Description</label>
+                                      <textarea id="id_new_project_description" placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea>
+                                   </div>
+                                 </div>
+                               </div>
+                               <h1 id="id_error"></h1>
+                               <a> <button class="btn btn-lg btn-info">Add New Project</button> </a>
+                           </form>
+
+
 
                         </div>
                      </div>
                   </div>
 
       <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-      <script src="{{ url_for('static', filename='js/project.js') }}" >
+      <script src="{{ url_for('static', filename='js/project.js') }}" ></script>
+
+      <script>
+      function updateProject(project) {
+
+        alert(project);
+        $('#id_error_update').text('');
+        $.ajax({
+          type: 'POST',
+          url: '/api/v1/update_project',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            project_titile: $('#id_' + project + '_title').val(),
+            project_description: $('#id_' + project + '_description').val(),
+          }),
+          success: function(result) {
+            if (result.success === 1) {
+              $('#id_error_update').text(result.message);
+              $(location).attr('href', './projects');
+            } else if (result.success === -99) {
+              $(location).attr('href', './logout');
+            } else {
+              $('#id_error_update').text(result.message);
+            }
+          },
+          error: function(XMLHttpRequest, textStatus, errorThrown) {
+            $('#id_error_update').text('Error: ' + errorThrown);
+          },
+        });
+        return false;
+      });
+      </script>
 {% endblock %}

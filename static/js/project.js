@@ -27,14 +27,16 @@ $(document).ready(function() {
     var projectTitle = $('#id_new_project_title').val();
     var projectDescription = $('#id_new_project_description').val();
 
+    var data = JSON.stringify({
+      project_title: projectTitle,
+      project_description: projectDescription,
+    });
+
     $.ajax({
       type: frm.attr('method'),
       url: frm.attr('action'),
       contentType: 'application/json',
-      data: JSON.stringify({
-        project_titile: projectTitle,
-        project_description: projectDescription,
-      }),
+      data: data,
       success: function(result) {
         if (result.success === 1) {
           $('#id_error').text(result.message);

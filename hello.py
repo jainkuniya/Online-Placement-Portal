@@ -629,8 +629,11 @@ def add_new_project():
                 """doc exists"""
                 doc = db[result[0]['_id']]
                 doc.fetch()
-                doc[projectCode]['title'] = request.json['project_titile']
-                doc[projectCode]['project_description'] = request.json['project_description']
+                project = {
+                    'title': request.json['project_title'],
+                    'project_description': request.json['project_description']
+                }
+                doc['projects'][projectCode] = project
 
                 doc.save()
                 return jsonify({
@@ -642,16 +645,18 @@ def add_new_project():
                 data = {
                     DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
-                    projectCode: {
-                        'title' : request.json['project_titile'],
-                        'project_description' : request.json['project_description']
+                    'projects': {
+                        projectCode: {
+                            'title' : request.json['project_title'],
+                            'project_description' : request.json['project_description']
+                        }
                     }
                 }
 
                 db.create_document(data)
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
-                    'message': "Successfully updated",
+                    'message': "Successfully added project",
                 })
             else:
                 return jsonify({
