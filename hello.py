@@ -263,12 +263,13 @@ def fetch_from_mis():
             })
 
 
-def get_student_from_our_db(rollNo):
+def get_student_from_our_db(rollNo, password):
     if client:
         query = cloudant.query.Query(
             db, selector = {
                                  DB_DOC_TYPE: DB_DOC_LOGIN,
                                  DB_DOC_FIELD_ROLL_NO: rollNo,
+                                 'password': password
                             }
             )
         result = query(limit=100)['docs']
@@ -283,7 +284,7 @@ def get_student_from_our_db(rollNo):
 
 def get_student_details_from_mis(rollNo):
     """Check if account already exists or not"""
-    student = get_student_from_our_db(rollNo)
+    student = get_student_from_our_db(rollNo, -1)
     if (student == NO_RECORD_FOUND_ERROR):
         if mis_client:
             try:
@@ -359,7 +360,7 @@ def login():
     rollNo = request.json['rollNo']
     password = request.json['password']
     """search in our DB"""
-    student = get_student_from_our_db(rollNo)
+    student = get_student_from_our_db(rollNo, password)
     if free_from_error(student):
         """Save token"""
         try:
@@ -386,7 +387,7 @@ def login():
 
     else:
         return jsonify({
-            'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+            'success': SUCCESS_CODE_IN_VALID,
             'message': "Invalid rollNo password",
         })
 
