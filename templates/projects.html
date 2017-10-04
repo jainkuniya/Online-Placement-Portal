@@ -17,11 +17,11 @@
                                 <div class="row">
                                    <div class="form-group">
                                       <label>Project Title</label>
-                                      <input id="id_{{ project }}_title"  value="{{ projects.projects[project].title }}" placeholder="Enter Project Title Here.." type="text" class="form-control">
+                                      <input required id="id_{{ project }}_title"  value="{{ projects.projects[project].title }}" placeholder="Enter Project Title Here.." type="text" class="form-control">
                                    </div>
                                    <div class="form-group" id="p{{ loop.index }}" style="visibility: hidden; height:0">
                                       <label>Description</label>
-                                      <textarea id="id_{{ project }}_description"  placeholder="Enter Project Description Here.." rows="3" class="form-control">{{ projects.projects[project].project_description }}</textarea>
+                                      <textarea required id="id_{{ project }}_description"  placeholder="Enter Project Description Here.." rows="3" class="form-control">{{ projects.projects[project].project_description }}</textarea>
                                    </div>
                                  </div>
                                </div>
@@ -49,11 +49,11 @@
                                 <div class="row">
                                    <div class="form-group">
                                       <label>Project Title</label>
-                                      <input id="id_new_project_title" placeholder="Enter Project Title Here.." type="text" class="form-control">
+                                      <input required id="id_new_project_title" placeholder="Enter Project Title Here.." type="text" class="form-control">
                                    </div>
                                    <div class="form-group" id="p1" class="collapse">
                                       <label>Description</label>
-                                      <textarea id="id_new_project_description" placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea>
+                                      <textarea required id="id_new_project_description" placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea>
                                    </div>
                                  </div>
                                </div>

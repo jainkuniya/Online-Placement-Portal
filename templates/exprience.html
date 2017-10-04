@@ -15,15 +15,15 @@
                  {% if expriences.expriences[exprience] != -1 %}
                   <div class="form-group">
                      <label>Position of responsibility</label>
-                     <input id="id_{{ exprience }}_responsibility"  value="{{ expriences.expriences[exprience].responsibility }}" type="text" class="form-control" placeholder="Enter the position you held..">
+                     <input required id="id_{{ exprience }}_responsibility"  value="{{ expriences.expriences[exprience].responsibility }}" type="text" class="form-control" placeholder="Enter the position you held..">
                   </div>
                   <div class="form-group">
                      <label>Work Tenure</label>
-                     <input id="id_{{ exprience }}_work"  value="{{ expriences.expriences[exprience].work }}" type="text" class="form-control" placeholder="Enter your work tenure here..">
+                     <input required id="id_{{ exprience }}_work"  value="{{ expriences.expriences[exprience].work }}" type="text" class="form-control" placeholder="Enter your work tenure here..">
                   </div>
                   <div class="form-group" id="p{{ loop.index }}" style="visibility: hidden; height:0">
                      <label>Company</label>
-                     <textarea id="id_{{ exprience }}_company"  placeholder="Enter Company name here.." rows="3" class="form-control">{{ expriences.expriences[exprience].company }}</textarea>
+                     <textarea required id="id_{{ exprience }}_company"  placeholder="Enter Company name here.." rows="3" class="form-control">{{ expriences.expriences[exprience].company }}</textarea>
                   </div>
 
                   <h1 id="id_error_update"></h1>
@@ -49,15 +49,15 @@
                  <div class="row">
                    <div class="form-group">
                       <label>Position of responsibility</label>
-                      <input id="id_new_exprience_responsibility"   type="text" class="form-control" placeholder="Enter the position you held..">
+                      <input required id="id_new_exprience_responsibility"   type="text" class="form-control" placeholder="Enter the position you held..">
                    </div>
                    <div class="form-group">
                       <label>Work Tenure</label>
-                      <input id="id_new_exprience_work"  type="text" class="form-control" placeholder="Enter your work tenure here..">
+                      <input required id="id_new_exprience_work"  type="text" class="form-control" placeholder="Enter your work tenure here..">
                    </div>
                    <div class="form-group" id="p1" class="collapse">
                       <label>Company</label>
-                      <textarea id="id_new_exprience_company"   placeholder="Enter Company name here.." rows="3" class="form-control"></textarea>
+                      <textarea required id="id_new_exprience_company"   placeholder="Enter Company name here.." rows="3" class="form-control"></textarea>
                    </div>
                   </div>
                 </div>
