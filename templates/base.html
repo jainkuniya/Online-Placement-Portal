@@ -123,14 +123,20 @@
             </nav>
          </div>
          <div style =" height:auto;" class="row  border-bottom white-bg dashboard-header">
-            <div class="col-md-3">
+
                <h2>Welcome {{ basic_details.first_name }} {{ basic_details.last_name }}</h2>
-               <small style="color:red;">You have to complete your profile before final verification</small>
+               {% if basic_details.verified == 0 %}
+              <small style="color:red;">You have to complete your profile before final verification</small>
+               {% else %}
+              <small style="color:red;">Your account is verified! You can apply for jobs.</small>
+               {% endif %}
+
+               <hr>
                <div class="container" id="form1">
                   {% block body %}
                   {% endblock %}
                </div>
-            </div>
+
          </div>
       </div>
    </div>
