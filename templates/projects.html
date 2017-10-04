@@ -19,7 +19,7 @@
                                       <label>Project Title</label>
                                       <input id="id_{{ project }}_title"  value="{{ projects.projects[project].title }}" placeholder="Enter Project Title Here.." type="text" class="form-control">
                                    </div>
-                                   <div class="form-group" id="p{{ loop.index }}" class="collapse">
+                                   <div class="form-group" id="p{{ loop.index }}" style="visibility: hidden; height:0">
                                       <label>Description</label>
                                       <textarea id="id_{{ project }}_description"  placeholder="Enter Project Description Here.." rows="3" class="form-control">{{ projects.projects[project].project_description }}</textarea>
                                    </div>
@@ -29,9 +29,9 @@
                                <a> <button onclick="updateProject('{{ project }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
                                <a> <button onclick="updateProject('{{ project }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
 
+                               <input hidden id="p{{ loop.index }}_state" value="0" type="text">
+                               <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-lg btn-info">Expand/Collapse</button>
 
-
-                          <input type='button'  data-toggle="collapse" data-target="#p{{ loop.index }}" value='><' />
 
                           {% else %}
 

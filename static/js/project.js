@@ -54,3 +54,31 @@ $(document).ready(function() {
     return false;
   });
 });
+
+function toggleState(id) {
+  var element = document.getElementById(id),
+    style = window.getComputedStyle(element),
+    visibility = style.getPropertyValue('visibility');
+  if (visibility === 'hidden') {
+    element.style.visibility = 'visible';
+    element.style.height = 'auto';
+  } else {
+    element.style.visibility = 'hidden';
+    element.style.height = 0;
+  }
+}
+
+(function($) {
+  $.fn.invisible = function() {
+    return this.each(function() {
+      $(this).css('visibility', 'hidden');
+      $(this).css('height', 0);
+    });
+  };
+  $.fn.visible = function() {
+    return this.each(function() {
+      $(this).css('visibility', 'visible');
+      $(this).css('height', 'auto');
+    });
+  };
+})(jQuery);
