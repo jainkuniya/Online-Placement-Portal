@@ -61,8 +61,23 @@
             {% endif %}
             <a href="./academic">Academic Details</a>
             </li>
-            <li><a href="./projects">Projects</a></li>
-            <li><a href="#">Work Experience</a></li> 
+
+            {% if page == "projects" %}
+            <li class="active">
+            {% else %}
+            <li>
+            {% endif %}
+            <a href="./projects">Projects</a>
+            </li>
+
+            {% if page == "exprience" %}
+            <li class="active">
+            {% else %}
+            <li>
+            {% endif %}
+            <a href="./exprience">Work Expriences</a>
+            </li>
+
             </ul>
             </li>
             <li>

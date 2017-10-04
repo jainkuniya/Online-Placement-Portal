@@ -32,6 +32,7 @@ DB_DOC_STUDENT_BASIC = 'student_basic'
 DB_DOC_STUDENT_ACADEMIC = 'student_academic'
 DB_DOC_STUDENT_FAMILY_DETAILS = 'student_family'
 DB_DOC_STUDENT_PROJECTS = 'projects'
+DB_DOC_STUDENT_EXPRIENCES = 'expriences'
 
 DB_DOC_STUDENT_BASIC_FIELD_PROGRAM = "program"
 DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
@@ -165,10 +166,29 @@ def fetch_student_project(token):
     """check if token is valid or not"""
     status = verify_token(token)
     if free_from_error(status):
-        """get basic details"""
+        """fetch_student_project"""
         query = cloudant.query.Query(
             db, selector = {
                                  DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
+                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                            }
+            )
+        result = query(limit=100)['docs']
+        if (len(result) == 1):
+            return result[0]
+        else:
+            return NO_RECORD_FOUND_ERROR
+    else:
+        return INVALID_TOKEN
+
+def fetch_student_expriences(token):
+    """check if token is valid or not"""
+    status = verify_token(token)
+    if free_from_error(status):
+        """fetch_student_expriences"""
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_STUDENT_EXPRIENCES,
                                  DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
                             }
             )
@@ -411,7 +431,8 @@ def get_templete(page_name):
                     projects = fetch_student_project(token)
                     return render_template('projects.html', basic_details= basic_details, projects=projects, page=page_name)
                 elif (page_name == "exprience"):
-                    return render_template('exprience.html', basic_details= basic_details, page=page_name)
+                    expriences = fetch_student_expriences(token)
+                    return render_template('exprience.html', basic_details= basic_details, expriences=expriences, page=page_name)
                 else:
                     return render_template('index.html', basic_details= basic_details, page=page_name)
             else:
@@ -438,7 +459,7 @@ def projects_page():
 
 @app.route('/exprience')
 def exprience_page():
-    return get_templete("projects")
+    return get_templete("exprience")
 
 @app.route('/tpo')
 def tro_dashboard():
@@ -696,7 +717,7 @@ def update_project():
         token = request.cookies['token']
         status = verify_token(token)
         if free_from_error(status):
-            """update_basic_details"""
+            """update_project"""
             query = cloudant.query.Query(
                 db, selector = {
                                      DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
@@ -741,12 +762,11 @@ def update_project():
 
 @app.route(api_path + 'add_new_project', methods=['POST'])
 def add_new_project():
-    print request.json
     if 'token' in request.cookies:
         token = request.cookies['token']
         status = verify_token(token)
         if free_from_error(status):
-            """update_family_details"""
+            """add_new_project"""
             query = cloudant.query.Query(
                 db, selector = {
                                      DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
@@ -786,6 +806,124 @@ def add_new_project():
                 db.create_document(data)
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully added exprience",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+
+
+
+@app.route(api_path + 'update_exprience', methods=['POST'])
+def update_exprience():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_exprience"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_EXPRIENCES,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                if (request.json['query'] == 0):
+                    """update"""
+                    doc['expriences'][request.json['exprience']] = {
+                        'responsibility': request.json['exprience_responsibility'],
+                        'work': request.json['exprience_work'],
+                        'company': request.json['exprience_company'],
+                    }
+
+                elif (request.json['query'] == 1):
+                    """delete"""
+                    doc['expriences'][request.json['exprience']] = -1
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+
+@app.route(api_path + 'add_new_exprience', methods=['POST'])
+def add_new_exprience():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """add_new_exprience"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_EXPRIENCES,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            projectCode = get_random_string(5)
+            if (len(result) == 1):
+                """doc exists"""
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                project = {
+                    'responsibility': request.json['exprience_responsibility'],
+                    'work': request.json['exprience_work'],
+                    'company': request.json['exprience_company'],
+                }
+                doc['expriences'][projectCode] = project
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            elif (len(result) == 0):
+                """create doc"""
+                data = {
+                    DB_DOC_TYPE: DB_DOC_STUDENT_EXPRIENCES,
+                    DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                    'expriences': {
+                        projectCode: {
+                            'responsibility': request.json['exprience_responsibility'],
+                            'work': request.json['exprience_work'],
+                            'company': request.json['exprience_company'],
+                        }
+                    }
+                }
+
+                db.create_document(data)
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
                     'message': "Successfully added project",
                 })
             else:
@@ -802,6 +940,8 @@ def add_new_project():
         'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
         'message': "Please try again",
     })
+
+
 
 @atexit.register
 def shutdown():

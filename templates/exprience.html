@@ -1,0 +1,110 @@
+{% extends './base.html' %}
+{% block title %}Work Expriences - Online Placement Portal{% endblock %}
+{% block extrastyles %}
+{% endblock %}
+{% block body %}
+<div class="container" id="c1">
+   <div class="col-lg-12 well" >
+      <h2>Work Experience</h2>
+      <div class="row">
+
+            <div class="col-sm-12">
+               <div class="row">
+                 {% for exprience in expriences.expriences %}
+
+                 {% if expriences.expriences[exprience] != -1 %}
+                  <div class="form-group">
+                     <label>Position of responsibility</label>
+                     <input id="id_{{ exprience }}_responsibility"  value="{{ expriences.expriences[exprience].responsibility }}" type="text" class="form-control" placeholder="Enter the position you held..">
+                  </div>
+                  <div class="form-group">
+                     <label>Work Tenure</label>
+                     <input id="id_{{ exprience }}_work"  value="{{ expriences.expriences[exprience].work }}" type="text" class="form-control" placeholder="Enter your work tenure here..">
+                  </div>
+                  <div class="form-group" id="p1" class="collapse">
+                     <label>Company</label>
+                     <textarea id="id_{{ exprience }}_company"  placeholder="Enter Company name here.." rows="3" class="form-control">{{ expriences.expriences[exprience].company }}</textarea>
+                  </div>
+
+                  <h1 id="id_error_update"></h1>
+                  <a> <button onclick="updateExprience('{{ exprience }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
+                  <a> <button onclick="updateExprience('{{ exprience }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
+
+
+             <input type='button'  data-toggle="collapse" data-target="#p1" value='><' />
+
+             {% else %}
+
+             {% endif %}
+
+            {% endfor %}
+
+         </div>
+
+         <div class="row">
+           <form id="id_new_exprience_form" action="/api/v1/add_new_exprience" method="post">
+              <div class="col-sm-12">
+                 <div class="row">
+                   <div class="form-group">
+                      <label>Position of responsibility</label>
+                      <input id="id_new_exprience_responsibility"   type="text" class="form-control" placeholder="Enter the position you held..">
+                   </div>
+                   <div class="form-group">
+                      <label>Work Tenure</label>
+                      <input id="id_new_exprience_work"  type="text" class="form-control" placeholder="Enter your work tenure here..">
+                   </div>
+                   <div class="form-group" id="p1" class="collapse">
+                      <label>Company</label>
+                      <textarea id="id_new_exprience_company"   placeholder="Enter Company name here.." rows="3" class="form-control"></textarea>
+                   </div>
+                  </div>
+                </div>
+                <h1 id="id_error"></h1>
+                <a> <button class="btn btn-lg btn-info">Add New Exprience</button> </a>
+            </form>
+
+
+
+         </div>
+
+
+         </div>
+
+      </div>
+   </div>
+</div>
+      <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+        <script src="{{ url_for('static', filename='js/exprience.js') }}" ></script>
+
+      <script>
+      function updateExprience(exprience, query) {
+  $('#id_error_update').text('');
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/update_exprience',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      exprience: exprience,
+      exprience_responsibility: $('#id_' + exprience + '_responsibility').val(),
+      exprience_work: $('#id_' + exprience + '_work').val(),
+      exprience_company: $('#id_' + exprience + '_company').val(),
+      query: query,
+    }),
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error_update').text(result.message);
+        $(location).attr('href', './exprience');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error_update').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error_update').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+</script>
+{% endblock %}

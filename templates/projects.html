@@ -3,13 +3,12 @@
 {% block extrastyles %}
 {% endblock %}
 {% block body %}
-{{ projects.project }}
                   <div class="container" id="c1">
                      <div class="col-lg-12 well" >
                         <h2>Projects</h2>
                         <div class="row">
                           {% for project in projects.projects %}
-                          
+
                           {% if projects.projects[project] != -1 %}
 
 
