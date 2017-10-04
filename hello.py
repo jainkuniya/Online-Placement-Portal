@@ -63,8 +63,11 @@ ACCOUNT_ALREADY_EXIXT = 103
 
 TOEKN_LENGTH = 10
 
+REQUIRED_ADMISSION_YEAR = 14
+NOT_FINAL_YEAR = 3
+
 def free_from_error(object):
-    if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR or object == ACCOUNT_ALREADY_EXIXT or object == INVALID_TOKEN:
+    if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR or object == ACCOUNT_ALREADY_EXIXT or object == INVALID_TOKEN or object == NOT_FINAL_YEAR:
         return False
     else:
         return True
@@ -273,6 +276,11 @@ def fetch_from_mis():
             'message': "Invalid Roll No",
             'data': {}
             })
+    elif (student == NOT_FINAL_YEAR):
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "You are not in final year.",
+            })
     else:
         return jsonify({
             'success': SUCCESS_CODE_VALID,
@@ -310,7 +318,10 @@ def get_student_details_from_mis(rollNo):
             try:
                 mis_db[MIS_DB_DOC_STUDENTS].fetch()
                 student = mis_db[MIS_DB_DOC_STUDENTS][MIS_DB_DOC_STUDENTS_STUDENT_LIST][rollNo]
-                return student
+                if (student["addmission_year"] == REQUIRED_ADMISSION_YEAR):
+                    return student
+                else:
+                    return NOT_FINAL_YEAR
             except Exception, e:
                 return NO_RECORD_FOUND_ERROR
         else:
@@ -369,6 +380,11 @@ def create_account():
                 'success': SUCCESS_CODE_IN_VALID,
                 'message': "Please try again",
                 })
+    elif (student == NOT_FINAL_YEAR):
+        jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "You are not in final year!",
+            })
     else:
         return jsonify({
             'success': SUCCESS_CODE_IN_VALID,
