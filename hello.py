@@ -324,7 +324,8 @@ def create_account():
                 DB_DOC_FIELD_ROLL_NO: rollNo,
                 DB_DOC_STUDENT_BASIC_FIELD_PROGRAM: student[MIS_DB_DOC_FIELD_PROGRAM],
                 DB_DOC_STUDENT_BASIC_FIELD_BRANCH: student[MIS_DB_DOC_FIELD_BRANCH],
-                DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR: student[MIS_DB_DOC_FIELD_ADMISSION_YEAR]
+                DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR: student[MIS_DB_DOC_FIELD_ADMISSION_YEAR],
+                'verified': 0
             }
             data.update(student[MIS_DB_DOC_STUDENTS_STUDENT_LIST_BASIC])
             db.create_document(data)
@@ -440,7 +441,38 @@ def exprience_page():
 
 @app.route('/tpo')
 def tro_dashboard():
-    return render_template('tpo.html')
+    pending_students = get_pending_students()
+    return render_template('tpo.html', pending_students=pending_students)
+
+def get_pending_students():
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_STUDENT_BASIC,
+                                 'verified': 0,
+                            }
+            )
+        result = query(limit=100)['docs']
+        data = []
+        for student in result:
+            """get backlog"""
+            acad_query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
+                                     DB_DOC_FIELD_ROLL_NO: student[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            acad_result = acad_query(limit=100)['docs']
+            data.append({
+                'rollNo': student[DB_DOC_FIELD_ROLL_NO],
+                'name': student['first_name'] + " " + student['last_name'],
+                'backlog': acad_result[0]['active_backlog']
+            })
+
+        return data
+
+    else:
+        return DB_CONNECT_ERROR
 
 @app.route(api_path + 'update_basic_details', methods=['POST'])
 def update_basic_details():
