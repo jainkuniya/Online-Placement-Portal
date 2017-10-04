@@ -197,15 +197,15 @@
                                  <div class="row">
                                     <div class="form-group">
                                        <label>Position of responsibility</label>
-                                       <input type="text" class="form-control">
+                                       <input type="text" class="form-control" placeholder="Enter the position you held..">
                                     </div>
                                     <div class="form-group">
                                        <label>Work Tenure</label>
-                                       <input type="text" class="form-control">
+                                       <input type="text" class="form-control" placeholder="Enter your work tenure here..">
                                     </div>
                                     <div class="form-group" id="p1" class="collapse">
                                        <label>Company</label>
-                                       <textarea placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea>
+                                       <textarea placeholder="Enter Company name here.." rows="3" class="form-control"></textarea>
                                     </div>
                            </form>
                            </div>
@@ -686,7 +686,7 @@
          var val = Number(k) + 1;
          
          document.getElementById("b"+k).style.display="none";     
-         var p2 = '<hr><div class="container" id="c'+val+'"><div class="col-lg-12 well"><div class="row"><form><div class="col-sm-12"><div class="row"><div class="form-group"><label>Position of responsibility</label><input type="text" class="form-control"></div><div class="form-group"><label>Work Tenure</label><input type="text" class="form-control"></div><div class="form-group" id="p'+val+'" class="collapse"><label>Company</label><textarea placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea></div></form></div></div><input type="button"  data-toggle="collapse" data-target="#p'+val+'" value="><"/><input id="b'+val+'" type="button" onclick="addParagraphs()" value="Add Work Experience" />';
+         var p2 = '<hr><div class="container" id="c'+val+'"><div class="col-lg-12 well"><div class="row"><form><div class="col-sm-12"><div class="row"><div class="form-group"><label>Position of responsibility</label><input type="text" class="form-control" placeholder="Enter the position you held.."></div><div class="form-group"><label>Work Tenure</label><input type="text" class="form-control"  placeholder="Enter your work tenure here.."></div><div class="form-group" id="p'+val+'" class="collapse"><label>Company</label><textarea placeholder="Enter Company name here.." rows="3" class="form-control"></textarea></div></form></div></div><input type="button"  data-toggle="collapse" data-target="#p'+val+'" value="><"/><input id="b'+val+'" type="button" onclick="addParagraphs()" value="Add Work Experience" />';
          
          document.getElementById("c"+(k)).insertAdjacentHTML('afterend', p2);
          }
