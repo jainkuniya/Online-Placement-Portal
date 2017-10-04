@@ -1,7 +1,6 @@
 jQuery.noConflict()(function($) {
   // this was missing for me
   $(document).ready(function() {
-    alert('fdsa');
     $('#id_basic_details_form').submit(function() {
       $('#id_error').text('');
 
@@ -15,9 +14,6 @@ jQuery.noConflict()(function($) {
       var phoneNumber = $('#id_phone_number').val();
       var address = $('#id_address').val();
       var medicalHistory = $('#id_medical_history').val();
-
-      console.log('fdsafsda');
-      console.log(firstName);
 
       $.ajax({
         type: frm.attr('method'),

@@ -31,6 +31,7 @@ DB_DOC_LOGIN_FIELD_PASSWORD = 'password'
 DB_DOC_STUDENT_BASIC = 'student_basic'
 DB_DOC_STUDENT_ACADEMIC = 'student_academic'
 DB_DOC_STUDENT_FAMILY_DETAILS = 'student_family'
+DB_DOC_STUDENT_PROJECTS = 'projects'
 
 DB_DOC_STUDENT_BASIC_FIELD_PROGRAM = "program"
 DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
@@ -149,6 +150,25 @@ def fetch_student_family_details(token):
         query = cloudant.query.Query(
             db, selector = {
                                  DB_DOC_TYPE: DB_DOC_STUDENT_FAMILY_DETAILS,
+                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                            }
+            )
+        result = query(limit=100)['docs']
+        if (len(result) == 1):
+            return result[0]
+        else:
+            return NO_RECORD_FOUND_ERROR
+    else:
+        return INVALID_TOKEN
+
+def fetch_student_project(token):
+    """check if token is valid or not"""
+    status = verify_token(token)
+    if free_from_error(status):
+        """get basic details"""
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
                                  DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
                             }
             )
@@ -376,15 +396,16 @@ def get_templete(page_name):
         token = request.cookies['token']
         if token != '':
             basic_details = fetch_student_basic_details(token)
-            academic_details = fetch_student_academic_details(token)
-            family_details = fetch_student_family_details(token)
             if (free_from_error(basic_details)):
                 if (page_name == "family"):
+                    family_details = fetch_student_family_details(token)
                     return render_template('family.html', basic_details= basic_details, family_details= family_details, page=page_name)
                 elif (page_name == "academic"):
+                    academic_details = fetch_student_academic_details(token)
                     return render_template('academic.html', basic_details= basic_details, academic_details= academic_details, page=page_name)
                 elif (page_name == "projects"):
-                    return render_template('projects.html', basic_details= basic_details, page=page_name)
+                    projects = fetch_student_project(token)
+                    return render_template('projects.html', basic_details= basic_details, projects=projects, page=page_name)
                 elif (page_name == "exprience"):
                     return render_template('exprience.html', basic_details= basic_details, page=page_name)
                 else:
@@ -566,6 +587,65 @@ def update_family_details():
                     'mother_designation' :  request.json['mother_designation'],
                     'mother_email' :  request.json['mother_email'],
                     'mother_phone_number' :  request.json['mother_phone_number']
+                }
+
+                db.create_document(data)
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+@app.route(api_path + 'add_new_project', methods=['POST'])
+def add_new_project():
+    print request.json
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_family_details"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            projectCode = get_random_string(5)
+            if (len(result) == 1):
+                """doc exists"""
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                doc[projectCode]['title'] = request.json['project_titile']
+                doc[projectCode]['project_description'] = request.json['project_description']
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            elif (len(result) == 0):
+                """create doc"""
+                data = {
+                    DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
+                    DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                    projectCode: {
+                        'title' : request.json['project_titile'],
+                        'project_description' : request.json['project_description']
+                    }
                 }
 
                 db.create_document(data)
