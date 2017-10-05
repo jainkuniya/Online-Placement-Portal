@@ -128,80 +128,80 @@ def fetch_student_basic_details(token):
         return INVALID_TOKEN
 
 def fetch_student_academic_details(token):
-    """check if token is valid or not"""
-    status = verify_token(token)
-    if free_from_error(status):
-        """get basic details"""
-        query = cloudant.query.Query(
-            db, selector = {
-                                 DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
-                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
-                            }
-            )
-        result = query(limit=100)['docs']
-        if (len(result) == 1):
-            return result[0]
-        else:
-            return NO_RECORD_FOUND_ERROR
+    #"""check if token is valid or not"""
+    #status = verify_token(token)
+    #if free_from_error(status):
+    """get basic details"""
+    query = cloudant.query.Query(
+        db, selector = {
+                             DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
+                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                        }
+        )
+    result = query(limit=100)['docs']
+    if (len(result) == 1):
+        return result[0]
     else:
-        return INVALID_TOKEN
+        return NO_RECORD_FOUND_ERROR
+    #else:
+    #    return INVALID_TOKEN
 
 def fetch_student_family_details(token):
-    """check if token is valid or not"""
-    status = verify_token(token)
-    if free_from_error(status):
-        """get basic details"""
-        query = cloudant.query.Query(
-            db, selector = {
-                                 DB_DOC_TYPE: DB_DOC_STUDENT_FAMILY_DETAILS,
-                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
-                            }
-            )
-        result = query(limit=100)['docs']
-        if (len(result) == 1):
-            return result[0]
-        else:
-            return NO_RECORD_FOUND_ERROR
+    #"""check if token is valid or not"""
+    #status = verify_token(token)
+    #if free_from_error(status):
+    """get basic details"""
+    query = cloudant.query.Query(
+        db, selector = {
+                             DB_DOC_TYPE: DB_DOC_STUDENT_FAMILY_DETAILS,
+                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                        }
+        )
+    result = query(limit=100)['docs']
+    if (len(result) == 1):
+        return result[0]
     else:
-        return INVALID_TOKEN
+        return NO_RECORD_FOUND_ERROR
+    #else:
+    #    return INVALID_TOKEN
 
 def fetch_student_project(token):
-    """check if token is valid or not"""
-    status = verify_token(token)
-    if free_from_error(status):
-        """fetch_student_project"""
-        query = cloudant.query.Query(
-            db, selector = {
-                                 DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
-                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
-                            }
-            )
-        result = query(limit=100)['docs']
-        if (len(result) == 1):
-            return result[0]
-        else:
-            return NO_RECORD_FOUND_ERROR
+    #"""check if token is valid or not"""
+    #status = verify_token(token)
+    #if free_from_error(status):
+    """fetch_student_project"""
+    query = cloudant.query.Query(
+        db, selector = {
+                             DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
+                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                        }
+        )
+    result = query(limit=100)['docs']
+    if (len(result) == 1):
+        return result[0]
     else:
-        return INVALID_TOKEN
+        return NO_RECORD_FOUND_ERROR
+    #else:
+    #    return INVALID_TOKEN
 
 def fetch_student_expriences(token):
-    """check if token is valid or not"""
-    status = verify_token(token)
-    if free_from_error(status):
-        """fetch_student_expriences"""
-        query = cloudant.query.Query(
-            db, selector = {
-                                 DB_DOC_TYPE: DB_DOC_STUDENT_EXPRIENCES,
-                                 DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
-                            }
-            )
-        result = query(limit=100)['docs']
-        if (len(result) == 1):
-            return result[0]
-        else:
-            return NO_RECORD_FOUND_ERROR
+    #"""check if token is valid or not"""
+    #status = verify_token(token)
+    #if free_from_error(status):
+    """fetch_student_expriences"""
+    query = cloudant.query.Query(
+        db, selector = {
+                             DB_DOC_TYPE: DB_DOC_STUDENT_EXPRIENCES,
+                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                        }
+        )
+    result = query(limit=100)['docs']
+    if (len(result) == 1):
+        return result[0]
     else:
-        return INVALID_TOKEN
+        return NO_RECORD_FOUND_ERROR
+    #else:
+    #    return INVALID_TOKEN
 
 def verify_token(token):
     query = cloudant.query.Query(
