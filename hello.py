@@ -543,11 +543,12 @@ def get_pending_students():
                                 }
                 )
             acad_result = acad_query(limit=100)['docs']
-            data.append({
-                'rollNo': student[DB_DOC_FIELD_ROLL_NO],
-                'name': student['first_name'] + " " + student['last_name'],
-                'backlog': acad_result[0]['active_backlog']
-            })
+            if (len(acad_result) == 1):
+                data.append({
+                    'rollNo': student[DB_DOC_FIELD_ROLL_NO],
+                    'name': student['first_name'] + " " + student['last_name'],
+                    'backlog': acad_result[0]['active_backlog']
+                })
 
         return data
 
