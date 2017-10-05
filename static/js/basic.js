@@ -32,7 +32,7 @@ jQuery.noConflict()(function($) {
         success: function(result) {
           if (result.success === 1) {
             $('#id_error').text(result.message);
-            // $(location).attr('href', './family');
+            $(location).attr('href', './family');
           } else if (result.success === -99) {
             clearLoginCookie();
           } else {
