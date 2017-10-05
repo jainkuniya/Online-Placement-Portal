@@ -127,7 +127,7 @@ def fetch_student_basic_details(token):
     else:
         return INVALID_TOKEN
 
-def fetch_student_academic_details(token):
+def fetch_student_academic_details(rollNo):
     #"""check if token is valid or not"""
     #status = verify_token(token)
     #if free_from_error(status):
@@ -135,7 +135,7 @@ def fetch_student_academic_details(token):
     query = cloudant.query.Query(
         db, selector = {
                              DB_DOC_TYPE: DB_DOC_STUDENT_ACADEMIC,
-                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                             DB_DOC_FIELD_ROLL_NO: rollNo,
                         }
         )
     result = query(limit=100)['docs']
@@ -146,7 +146,7 @@ def fetch_student_academic_details(token):
     #else:
     #    return INVALID_TOKEN
 
-def fetch_student_family_details(token):
+def fetch_student_family_details(rollNo):
     #"""check if token is valid or not"""
     #status = verify_token(token)
     #if free_from_error(status):
@@ -154,7 +154,7 @@ def fetch_student_family_details(token):
     query = cloudant.query.Query(
         db, selector = {
                              DB_DOC_TYPE: DB_DOC_STUDENT_FAMILY_DETAILS,
-                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                             DB_DOC_FIELD_ROLL_NO: rollNo,
                         }
         )
     result = query(limit=100)['docs']
@@ -165,7 +165,7 @@ def fetch_student_family_details(token):
     #else:
     #    return INVALID_TOKEN
 
-def fetch_student_project(token):
+def fetch_student_project(rollNo):
     #"""check if token is valid or not"""
     #status = verify_token(token)
     #if free_from_error(status):
@@ -173,7 +173,7 @@ def fetch_student_project(token):
     query = cloudant.query.Query(
         db, selector = {
                              DB_DOC_TYPE: DB_DOC_STUDENT_PROJECTS,
-                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                             DB_DOC_FIELD_ROLL_NO: rollNo,
                         }
         )
     result = query(limit=100)['docs']
@@ -184,7 +184,7 @@ def fetch_student_project(token):
     #else:
     #    return INVALID_TOKEN
 
-def fetch_student_expriences(token):
+def fetch_student_expriences(rollNo):
     #"""check if token is valid or not"""
     #status = verify_token(token)
     #if free_from_error(status):
@@ -192,7 +192,7 @@ def fetch_student_expriences(token):
     query = cloudant.query.Query(
         db, selector = {
                              DB_DOC_TYPE: DB_DOC_STUDENT_EXPRIENCES,
-                             DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                             DB_DOC_FIELD_ROLL_NO: rollNo,
                         }
         )
     result = query(limit=100)['docs']
@@ -438,16 +438,16 @@ def get_templete(page_name):
             basic_details = fetch_student_basic_details(token)
             if (free_from_error(basic_details)):
                 if (page_name == "family"):
-                    family_details = fetch_student_family_details(token)
+                    family_details = fetch_student_family_details(basic_details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('family.html', basic_details= basic_details, family_details= family_details, page=page_name)
                 elif (page_name == "academic"):
-                    academic_details = fetch_student_academic_details(token)
+                    academic_details = fetch_student_academic_details(basic_details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('academic.html', basic_details= basic_details, academic_details= academic_details, page=page_name)
                 elif (page_name == "projects"):
-                    projects = fetch_student_project(token)
+                    projects = fetch_student_project(basic_details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('projects.html', basic_details= basic_details, projects=projects, page=page_name)
                 elif (page_name == "exprience"):
-                    expriences = fetch_student_expriences(token)
+                    expriences = fetch_student_expriences(basic_details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('exprience.html', basic_details= basic_details, expriences=expriences, page=page_name)
                 else:
                     return render_template('index.html', basic_details= basic_details, page=page_name)
