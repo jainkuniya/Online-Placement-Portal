@@ -66,10 +66,11 @@
                <textarea required id="id_address" placeholder="Enter Address Here.." rows="3" class="form-control">{{ basic_details.address }}</textarea>
             </div>
             <h1 id="id_error"></h1>
-             <a> <button class="btn btn-lg btn-info">Next</button> </a>
+             <a> <button class="btn btn-lg btn-info">Save</button> </a>
          </div>
 
       </form>
+      <a href="./family"> <button class="btn btn-lg btn-info">Next</button> </a>
    </div>
 </div>
 <script>
@@ -103,7 +104,8 @@ $(window).load(function() {
       success: function(result) {
         if (result.success === 1) {
           $('#id_error').text(result.message);
-          $(location).attr('href', './family');
+          //$(location).attr('href', './family');
+
         } else if (result.success === -99) {
           $(location).attr('href', './logout');
         } else {
