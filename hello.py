@@ -479,8 +479,14 @@ def exprience_page():
 
 @app.route('/tpo')
 def tro_dashboard():
-    pending_students = get_pending_students()
-    return render_template('tpo.html', pending_students=pending_students)
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            pending_students = get_pending_students()
+            return render_template('tpo.html', pending_students=pending_students)
+        return redirect("./login")
+    return redirect("./login")
+
 
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
