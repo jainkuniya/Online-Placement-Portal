@@ -1,130 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-      <meta charset="utf-8">
-      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Login</title>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login</title>
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Users/sumitmadhwani/Documents/recruiter/static/css/login.css" rel="stylesheet">
+    <style>
+    body {
+        background-image: url("/Users/sumitmadhwani/Documents/recruiter/static/img/lnmiit.jpeg");
+    }
+    </style>
+</head>
 
-      <!-- Bootstrap -->
-      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-      <link href="static/css/login.css" rel="stylesheet">
-      <style>
-      body{
-        background-image: url("../static/img/lnmiit.jpeg");
-      }
-      </style>
-  </head>
-
-  <body>
-
-<nav class="navbar navbar-default" style="height:100px;background-color:rgba(160, 179, 176, 0.25);">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-left" href="#"><img style="height:70px;width:auto;" src="../static/img/logo.png"></a>
-    </div>
-    
-  </div>
-</nav>
-    <div class="form" style="margin-top:300px;">
-
-          <ul class="tab-group">
-            <li id="id_signup_tab" class="tab active"><a href="#signup">Sign Up</a></li>
-            <li id="id_login_tab" class="tab"><a href="#login">Log In</a></li>
-          </ul>
-
-          <div class="tab-content">
-            <div id="signup">
-              <h1>Sign Up</h1>
-
-              <form id="roll_no_form" action="/api/v1/fetch_from_mis" method="post">
-
-
-                <div class="field-wrap">
-                  <label>
-                    Roll No<span class="req">*</span>
-                  </label>
-                  <input id="id_roll_no" type="text" required autocomplete="off" />
+<body>
+    <nav class="navbar navbar-default" style="height:100px;background-color:rgba(160, 179, 176, 0.25);">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-left" href="#"><img style="height:70px;width:auto;" src="/Users/sumitmadhwani/Documents/recruiter/static/img/logo.png"></a>
+            </div>
+        </div>
+    </nav>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form" style="margin-top:200px;">
+                <h1 class="text-danger">STUDENTS</h1>
+                <ul class="tab-group">
+                    <li id="id_signup_tab" class="tab active"><a href="#signup">Sign Up</a></li>
+                    <li id="id_login_tab" class="tab"><a href="#login">Log In</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="signup">
+                        <!-- <h1>Sign Up</h1> -->
+                        <form id="roll_no_form" action="/api/v1/fetch_from_mis" method="post">
+                            <div class="field-wrap">
+                                <label>
+                                    Roll No<span class="req">*</span>
+                                </label>
+                                <input id="id_roll_no" type="text" required autocomplete="off" />
+                            </div>
+                            <h1 id="id_error_roll_no_form"></h1>
+                            <button id="id_roll_no_form_submit_button" type="submit" class="button button-block" />Continue</button>
+                        </form>
+                        <form id="password_form" action="/api/v1/create_account" method="post" class="initial-hide">
+                            <div class="top-row">
+                                <div class="field-wrap">
+                                    <label id="id_label_first_name">
+                                        First Name<span class="req">*</span>
+                                    </label>
+                                    <input id="id_first_name" type="text" required autocomplete="off" />
+                                </div>
+                                <div class="field-wrap">
+                                    <label id="id_label_last_name">
+                                        Last Name<span class="req">*</span>
+                                    </label>
+                                    <input id="id_last_name" type="text" required autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="field-wrap">
+                                <label id="id_label_password">
+                                    Set A Password<span class="req">*</span>
+                                </label>
+                                <input id="id_password" type="password" required autocomplete="off" />
+                            </div>
+                            <h1 id="id_error_password_form"></h1>
+                            <button id="id_password_form_submit_button" type="submit" class="button button-block" />Continue</button>
+                        </form>
+                    </div>
+                    <div id="login">
+                        <h1>Welcome Back!</h1>
+                        <form id="id_login_form" action="/api/v1/login" method="post">
+                            <div class="field-wrap">
+                                <label>
+                                    Roll No<span class="req">*</span>
+                                </label>
+                                <input id="id_login_form_roll_no" required autocomplete="off" />
+                            </div>
+                            <div class="field-wrap">
+                                <label>
+                                    Password<span class="req">*</span>
+                                </label>
+                                <input id="id_login_form_password" type="password" required autocomplete="off" />
+                            </div>
+                            <h1 id="id_error_login_form"></h1>
+                            <button class="button button-block" />Log In</button>
+                        </form>
+                    </div>
                 </div>
-
-                <h1 id="id_error_roll_no_form"></h1>
-
-              <button id="id_roll_no_form_submit_button" type="submit" class="button button-block"/>Continue</button>
-
-              </form>
-
-
-              <form id="password_form" action="/api/v1/create_account" method="post" class="initial-hide">
-
-
-                <div class="top-row">
-                   <div class="field-wrap">
-                     <label id="id_label_first_name">
-                       First Name<span class="req">*</span>
-                     </label>
-                     <input id="id_first_name" type="text" required autocomplete="off" />
-                   </div>
-
-                   <div class="field-wrap">
-                     <label id="id_label_last_name">
-                       Last Name<span class="req">*</span>
-                     </label>
-                     <input id="id_last_name" type="text"required autocomplete="off"/>
-                   </div>
-                 </div>
-
-                 <div class="field-wrap">
-                  <label id="id_label_password">
-                    Set A Password<span class="req">*</span>
-                  </label>
-                  <input id="id_password" type="password"required autocomplete="off"/>
-                </div>
-
-                <h1 id="id_error_password_form"></h1>
-
-              <button id="id_password_form_submit_button" type="submit" class="button button-block"/>Continue</button>
-
-              </form>
-
-
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form" style="margin-top:200px;">
+                <h1 class="text-danger">RECRUITERS</h1>
+                        <form id="rec_id_login_form">
+                            <div class="field-wrap">
+                                <label>
+                                    Unique ID<span class="req">*</span>
+                                </label>
+                                <input id="rec_id_login_form_unique_id" required autocomplete="off" />
+                            </div>
+                            <div class="field-wrap">
+                                <label>
+                                    Password<span class="req">*</span>
+                                </label>
+                                <input id="rec_id_login_form_password" type="password" required autocomplete="off" />
+                            </div>
+                            <h3 class="text-danger" font="20xp">Please enter the Unique ID and password provided at the time of registration.</h3>
+                            <h1 id="rec_id_error_login_form"></h1>
+                            <button class="button button-block" />Log In</button>
+                        </form>
+                        <br>
+                        <a href="#"><button class="button button-block button-primary" />Want to recruit us? Register Here</button></a>
 
             </div>
-
-            <div id="login">
-              <h1>Welcome Back!</h1>
-
-              <form id="id_login_form" action="/api/v1/login" method="post">
-
-                <div class="field-wrap">
-                <label>
-                  Roll No<span class="req">*</span>
-                </label>
-                <input id="id_login_form_roll_no" required autocomplete="off"/>
-              </div>
-
-              <div class="field-wrap">
-                <label>
-                  Password<span class="req">*</span>
-                </label>
-                <input id="id_login_form_password" type="password"required autocomplete="off"/>
-              </div>
-
-              <h1 id="id_error_login_form"></h1>
-
-              <button class="button button-block"/>Log In</button>
-
-              </form>
-
-            </div>
-
-          </div>
-
+        </div>
     </div>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="{{ url_for('static', filename='js/login.js') }}" >
+    <script src="/Users/sumitmadhwani/Documents/recruiter/static/js/login.js">
     </script>
-
-  </body>
+</body>
 
 </html>
