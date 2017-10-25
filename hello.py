@@ -505,8 +505,12 @@ def verify_student():
 @app.route(api_path + 'tpo/verify_all_student', methods=['POST'])
 def verify_all_student():
     pending_students = get_pending_students()
-    for student in pending_students:
-        verify_individual_student(student['rollNo'])
+    if (request.json["whichGroup"] == 0):
+        for student in pending_students["noBacklog"]:
+            verify_individual_student(student['rollNo'])
+    else:
+        for student in pending_students["backlog"]:
+            verify_individual_student(student['rollNo'])
     return jsonify({
         'success': SUCCESS_CODE_VALID,
         'message': "Successfully verified",
@@ -539,7 +543,8 @@ def get_pending_students():
                             }
             )
         result = query(limit=100)['docs']
-        data = []
+        noBacklog = []
+        backlog = []
         for student in result:
             """get backlog"""
             acad_query = cloudant.query.Query(
@@ -550,13 +555,23 @@ def get_pending_students():
                 )
             acad_result = acad_query(limit=100)['docs']
             if (len(acad_result) == 1):
-                data.append({
-                    'rollNo': student[DB_DOC_FIELD_ROLL_NO],
-                    'name': student['first_name'] + " " + student['last_name'],
-                    'backlog': acad_result[0]['active_backlog']
-                })
+                if (len(acad_result[0]['active_backlog'].keys()) == 0):
+                    noBacklog.append({
+                        'rollNo': student[DB_DOC_FIELD_ROLL_NO],
+                        'name': student['first_name'] + " " + student['last_name'],
+                        'backlog': acad_result[0]['active_backlog']
+                    })
+                else:
+                    backlog.append({
+                        'rollNo': student[DB_DOC_FIELD_ROLL_NO],
+                        'name': student['first_name'] + " " + student['last_name'],
+                        'backlog': acad_result[0]['active_backlog']
+                    })
 
-        return data
+        return {
+            'backlog': backlog,
+            'noBacklog': noBacklog
+        }
 
     else:
         return DB_CONNECT_ERROR
