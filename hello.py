@@ -479,8 +479,14 @@ def exprience_page():
 
 @app.route('/tpo')
 def tro_dashboard():
-    pending_students = get_pending_students()
-    return render_template('tpo.html', pending_students=pending_students)
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            pending_students = get_pending_students()
+            return render_template('tpo.html', pending_students=pending_students)
+        return redirect("./login")
+    return redirect("./login")
+
 
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
@@ -548,19 +554,19 @@ def get_pending_students():
                                 }
                 )
             acad_result = acad_query(limit=100)['docs']
-            if (len(acad_result[0]['active_backlog'].keys()) == 0):
-                noBacklog.append({
-                    'rollNo': student[DB_DOC_FIELD_ROLL_NO],
-                    'name': student['first_name'] + " " + student['last_name'],
-                    'backlog': acad_result[0]['active_backlog']
-                })
-            else:
-                backlog.append({
-                    'rollNo': student[DB_DOC_FIELD_ROLL_NO],
-                    'name': student['first_name'] + " " + student['last_name'],
-                    'backlog': acad_result[0]['active_backlog']
-                })
-
+            if (len(acad_result) == 1):
+                if (len(acad_result[0]['active_backlog'].keys()) == 0):
+                    noBacklog.append({
+                        'rollNo': student[DB_DOC_FIELD_ROLL_NO],
+                        'name': student['first_name'] + " " + student['last_name'],
+                        'backlog': acad_result[0]['active_backlog']
+                    })
+                else:
+                    backlog.append({
+                        'rollNo': student[DB_DOC_FIELD_ROLL_NO],
+                        'name': student['first_name'] + " " + student['last_name'],
+                        'backlog': acad_result[0]['active_backlog']
+                    })
         return {
             'backlog': backlog,
             'noBacklog': noBacklog
