@@ -8,7 +8,7 @@
     <title>Login</title>
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/login.css" rel="stylesheet">
+    <link href="../static/css/login.css" rel="stylesheet">
     <style>
     body {
         background-image: url("../static/img/lnmiit.jpeg");
@@ -26,8 +26,8 @@
     </nav>
     <div class="row">
         <div class="col-sm-6">
-            <div class="form" style="margin-top:200px;">
-                <h1 class="text-danger">STUDENTS</h1>
+            <div class="form" style="margin-top:200px;height:550px">
+                <h1 class="text-primary" style="font-weight: bold">STUDENTS</h1>
                 <ul class="tab-group">
                     <li id="id_signup_tab" class="tab active"><a href="#signup">Sign Up</a></li>
                     <li id="id_login_tab" class="tab"><a href="#login">Log In</a></li>
@@ -36,14 +36,14 @@
                     <div id="signup">
                         <!-- <h1>Sign Up</h1> -->
                         <form id="roll_no_form" action="/api/v1/fetch_from_mis" method="post">
-                            <div class="field-wrap">
+                            <div class="field-wrap" style="padding-top: 50px;padding-bottom: 50px">
                                 <label>
                                     Roll No<span class="req">*</span>
                                 </label>
                                 <input id="id_roll_no" type="text" required autocomplete="off" />
                             </div>
                             <h1 id="id_error_roll_no_form"></h1>
-                            <button id="id_roll_no_form_submit_button" type="submit" class="button button-block" />Continue</button>
+                            <button id="id_roll_no_form_submit_button" type="submit" class="button button-block"/>Continue</button>
                         </form>
                         <form id="password_form" action="/api/v1/create_account" method="post" class="initial-hide">
                             <div class="top-row">
@@ -93,8 +93,8 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="form" style="margin-top:200px;">
-                <h1 class="text-danger">RECRUITERS</h1>
+            <div class="form" style="margin-top:200px;height:550px">
+                <h1 class="text-primary" style="font-weight: bold">RECRUITERS</h1>
                         <form id="rec_id_login_form">
                             <div class="field-wrap">
                                 <label>
@@ -113,7 +113,7 @@
                             <button class="button button-block" />Log In</button>
                         </form>
                         <br>
-                        <a href="#"><button class="button button-block button-primary" />Want to recruit us? Register Here</button></a>
+                        <a href="#"><button class="button button-block button-primary"/>Want to recruit us? Register Here</button></a>
 
             </div>
         </div>

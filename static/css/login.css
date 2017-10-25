@@ -178,8 +178,7 @@ textarea {
 }
 
 .button-primary {
-  background: #f44336;
-  text-transform: none;
+  background: #d9534f;
   font-size: 2rem;
 }
 .forgot {
