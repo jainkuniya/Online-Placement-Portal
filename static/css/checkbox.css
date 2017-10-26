@@ -1,0 +1,11 @@
+.searchable-container{margin:5px 0 0 0}
+.searchable-container label.btn-default.active{background-color:#007ba7;color:#FFF}
+.searchable-container label.btn-default{width:90%;border:1px solid #efefef;margin:1px;}
+.searchable-container label .bizcontent{width:100%;}
+.searchable-container .btn-group{width:50%;}
+.searchable-container .btn span.glyphicon{
+    opacity: 0;
+}
+.searchable-container .btn.active span.glyphicon {
+    opacity: 1;
+}
