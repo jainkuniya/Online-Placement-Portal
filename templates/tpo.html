@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
    <head>
@@ -7,6 +9,7 @@
       <title>LNMIIT PLACEMENT PORTAL</title>
       <link href="../static/css/bootstrap.min.css" rel="stylesheet">
       <link href="../static/materialIcon.css" rel="stylesheet">
+      <link href="../static/css/tpo.css" rel="stylesheet">
       <!-- Toastr style -->
       <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
       <!-- Gritter -->
@@ -41,7 +44,7 @@
                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                   <div class="navbar-header">
                      <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="index.html#"><i class="material-icons">menu</i> </a>
-                    </div>
+                  </div>
                   <ul class="nav navbar-top-links navbar-right">
                      <li>
                         <span class="m-r-sm text-muted welcome-message">Welcome to LNMIIT Placement Portal</span>
@@ -56,7 +59,7 @@
                            <li>
                               <a href="#">
                                  <div>
-                                   <i class="material-icons">email</i> You have 16 messages
+                                    <i class="material-icons">email</i> You have 16 messages
                                     <span class="pull-right text-muted small">4 minutes ago</span>
                                  </div>
                               </a>
@@ -70,7 +73,6 @@
                                  </div>
                               </a>
                            </li>
-
                         </ul>
                      </li>
                      <li>
@@ -85,60 +87,66 @@
                <div class="col-md-3">
                   <h2>Welcome Admin</h2>
                   <small id ="msg" style="color:red;">You have to approve the details of the listed students</small>
-                  <div class="container" id="form1">
-                     <hr>
-                     No Backlog
-                     {% for student in pending_students.noBacklog %}
-
-                     <div class="col-xs-12" id="1">
-                        <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
-                        <div class="col-xs-3"><a>{{ student.name }}</a></div>
-                        <div class="col-xs-3"><a>
-                          {% for backlog in student.backlog %}
-
-
-                                Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-
-                         {% endfor %}
-                        </a></div>
-                        <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button></a></div>
+                  <div class="tab container">
+                     <button class="tablinks" onclick="showStatus(event, 'All_Students')">All Students</button>
+                     <button class="tablinks" onclick="showStatus(event, 'Approvable')">Approvable</button>
+                     <button class="tablinks" onclick="showStatus(event, 'Rejectable')">Rejectable</button>
+                  </div>
+                  <div id="All_Students" class="tabcontent">
+                     <h3>Students</h3>
+                     <p>List of all students verification.</p>
+                  </div>
+                  <div id="Approvable" class="tabcontent">
+                     <div class="container" id="form1">
                         <hr>
+                        No Backlog
+                        {% for student in pending_students.noBacklog %}
+                        <div class="col-xs-12" id="1">
+                           <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
+                           <div class="col-xs-3"><a>{{ student.name }}</a></div>
+                           <div class="col-xs-3"><a>
+                              {% for backlog in student.backlog %}
+                              Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
+                              {% endfor %}
+                              </a>
+                           </div>
+                           <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button></a></div>
+                           <hr>
+                        </div>
+                        {% endfor %}
+                        <hr>
+                        <button id="approve" class="btn btn-success" onclick="selectAll(0)">Approve all</button>
                      </div>
-
-                    {% endfor %}
-                     <hr>
-                     <button id="approve" class="btn btn-success" onclick="selectAll(0)">Approve all</button>
-                    </div>
-                    <div class="container" id="form1">
-                       <hr>
-                       Backlog
-                       {% for student in pending_students.backlog %}
-
-                       <div class="col-xs-12" id="1">
-                          <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
-                          <div class="col-xs-3"><a>{{ student.name }}</a></div>
-                          <div class="col-xs-3"><a>
-                            {% for backlog in student.backlog %}
-
-
-                                  Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-
-                           {% endfor %}
-                          </a></div>
-                          <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button></a></div>
-                          <hr>
-                       </div>
-
-                      {% endfor %}
-                       <hr>
-                       <button id="approve" class="btn btn-success" onclick="selectAll(1)">Approve all</button>
-                      </div>
+                  </div>
+                  <div id="Rejectable" class="tabcontent">
+                     <div class="container" id="form1">
+                        <hr>
+                        Backlog
+                        {% for student in pending_students.backlog %}
+                        <div class="col-xs-12" id="1">
+                           <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
+                           <div class="col-xs-3"><a>{{ student.name }}</a></div>
+                           <div class="col-xs-3"><a>
+                              {% for backlog in student.backlog %}
+                              Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
+                              {% endfor %}
+                              </a>
+                           </div>
+                           <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button></a></div>
+                           <hr>
+                        </div>
+                        {% endfor %}
+                        <hr>
+                        <button id="approve" class="btn btn-success" onclick="selectAll(1)">Approve all</button>
+                     </div>
+                  </div>
                </div>
             </div>
-            <div style="position:fixed;bottom:0;">
-               <strong>Copyright</strong> B12 &copy; 2014-2017
-            </div>
          </div>
+         <div style="position:fixed;bottom:0;">
+            <strong>Copyright</strong> B12 &copy; 2014-2017
+         </div>
+      </div>
       </div>
       </div>
       </div>
@@ -174,58 +182,77 @@
       <script src="../static/js/plugins/chartJs/Chart.min.js"></script>
       <!-- Toastr -->
       <script src="../static/js/plugins/toastr/toastr.min.js"></script>
-        <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+      <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
       <script type="text/javascript">
-      function verifyStudent(rollNo) {
-  $('#id_error').text();
-  $.ajax({
-    type: 'POST',
-    url: '/api/v1/tpo/verify_student',
-    contentType: 'application/json',
-    data: JSON.stringify({
-      rollNo: rollNo,
-    }),
-    success: function(result) {
-      if (result.success === 1) {
-        $('#id_error').text(result.message);
-        $(location).attr('href', './tpo');
-      } else if (result.success === -99) {
-        $(location).attr('href', './logout');
-      } else {
-        $('#id_error').text(result.message);
-      }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      $('#id_error').text('Error: ' + errorThrown);
-    },
-  });
-  return false;
-}
-function selectAll(whichGroup) {
-  $('#id_error').text();
-  $.ajax({
-    type: 'POST',
-    url: '/api/v1/tpo/verify_all_student',
-    contentType: 'application/json',
-    data: JSON.stringify({
-      whichGroup: whichGroup,
-    }),
-    success: function(result) {
-      if (result.success === 1) {
-        $('#id_error').text(result.message);
-        $(location).attr('href', './tpo');
-      } else if (result.success === -99) {
-        $(location).attr('href', './logout');
-      } else {
-        $('#id_error').text(result.message);
-      }
-    },
-    error: function(XMLHttpRequest, textStatus, errorThrown) {
-      $('#id_error').text('Error: ' + errorThrown);
-    },
-  });
-  return false;
-}
-</script>
+         function verifyStudent(rollNo) {
+         $('#id_error').text();
+         $.ajax({
+         type: 'POST',
+         url: '/api/v1/tpo/verify_student',
+         contentType: 'application/json',
+         data: JSON.stringify({
+         rollNo: rollNo,
+         }),
+         success: function(result) {
+         if (result.success === 1) {
+           $('#id_error').text(result.message);
+           $(location).attr('href', './tpo');
+         } else if (result.success === -99) {
+           $(location).attr('href', './logout');
+         } else {
+           $('#id_error').text(result.message);
+         }
+         },
+         error: function(XMLHttpRequest, textStatus, errorThrown) {
+         $('#id_error').text('Error: ' + errorThrown);
+         },
+         });
+         return false;
+         }
+         function selectAll(whichGroup) {
+         $('#id_error').text();
+         $.ajax({
+         type: 'POST',
+         url: '/api/v1/tpo/verify_all_student',
+         contentType: 'application/json',
+         data: JSON.stringify({
+         whichGroup: whichGroup,
+         }),
+         success: function(result) {
+         if (result.success === 1) {
+           $('#id_error').text(result.message);
+           $(location).attr('href', './tpo');
+         } else if (result.success === -99) {
+           $(location).attr('href', './logout');
+         } else {
+           $('#id_error').text(result.message);
+         }
+         },
+         error: function(XMLHttpRequest, textStatus, errorThrown) {
+         $('#id_error').text('Error: ' + errorThrown);
+         },
+         });
+         return false;
+         }
+         function showStatus(evt, status) {
+         
+         var i, tabcontent, tablinks;
+         
+         tabcontent = document.getElementsByClassName("tabcontent");
+         for (i = 0; i < tabcontent.length; i++) {
+           tabcontent[i].style.display = "none";
+         }
+         
+         tablinks = document.getElementsByClassName("tablinks");
+         for (i = 0; i < tablinks.length; i++) {
+           tablinks[i].className = tablinks[i].className.replace(" active", "");
+         }
+         
+         // Show the current tab, and add an "active" class to the button that opened the tab
+         document.getElementById(status).style.display = "initial";
+         evt.currentTarget.className += " active";
+         } 
+      </script>
    </body>
 </html>
+
