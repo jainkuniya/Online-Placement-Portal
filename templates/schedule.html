@@ -1,0 +1,44 @@
+{% extends './recuiter_base.html' %}
+{% block title %}Position Details{% endblock %}
+{% block extrastyles %}
+{% endblock %}
+{% block body %}
+<div class="container" id="c1">
+    <div class="col-md-12 well">
+        <h2 style="font-weight: bold">Drive Schedule</h2>
+        <div class="row">
+            <form>
+                <div class="form-group">
+                    <label>Agenda</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Date (dd/mm/yyyy)</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Time (hh:mm)</label>
+                            <input type="text" class="form-control"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Venue</label>
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Details</label>
+                    <textarea rows="3" class="form-control"></textarea>
+                </div>
+            </form>
+        </div>
+        <input id="b1" type='button' class="btn btn-info" value='Add New Agenda' />
+    </div>
+    <a href="#" button class="btn btn-lg btn-info">Next</button> </a>
+    <a href="#" button class="btn btn-lg btn-info">Previous</button> </a>
+</div>
+{% endblock %}
