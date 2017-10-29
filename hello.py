@@ -497,7 +497,7 @@ def position_details():
     return render_template('position_details.html')
 
 @app.route('/schedule')
-def schedule():
+def schedule_details():
     return render_template('schedule.html')
 
 @app.route('/reg_details')
