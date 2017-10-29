@@ -483,7 +483,8 @@ def tro_dashboard():
         token = request.cookies['token']
         if token != '':
             pending_students = get_pending_students()
-            return render_template('tpo.html', pending_students=pending_students)
+            all_verified_students = get_all_verified_students()
+            return render_template('tpo.html', pending_students=pending_students, all_verified_students=all_verified_students)
         return redirect("./login")
     return redirect("./login")
 
@@ -537,6 +538,21 @@ def verify_individual_student(rollNo):
         return doc
     else:
         return NO_RECORD_FOUND_ERROR
+
+def get_all_verified_students():
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_STUDENT_BASIC,
+                                 'verified': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+        students = []
+        return result
+
+    else:
+        return DB_CONNECT_ERROR
 
 def get_pending_students():
     if client:
