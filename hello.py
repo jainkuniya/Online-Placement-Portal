@@ -487,6 +487,10 @@ def tro_dashboard():
         return redirect("./login")
     return redirect("./login")
 
+@app.route('/event')
+def event_details():
+    return render_template('event_details.html')
+
 
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
