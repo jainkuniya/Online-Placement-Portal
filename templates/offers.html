@@ -1,0 +1,39 @@
+{% extends './recuiter_base.html' %}
+{% block title %}Offers{% endblock %}
+{% block extrastyles %}
+{% endblock %}
+{% block body %}
+<div class="container" id="c1">
+    <div class="col-md-12 well">
+        <h2 style="font-weight: bold">Job Offers</h2>
+        <table style="width: 100%" id="data_table">
+            <tr>
+                <th>Roll No.</th>
+                <th>Name</th>
+                <th>Position</th>
+                <th>Package</th>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="text" id="new_roll">
+                </td>
+                <td>
+                    <input type="text" id="new_name">
+                </td>
+                <td>
+                    <input type="text" id="new_position">
+                </td>
+                <td>
+                    <input type="text" id="new_package">
+                </td>
+                <td>
+                    <input type="button" class="add btn btn-info" onclick="add_row();" value="Add Row">
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <a href="#" button class="btn btn-lg btn-info">Previous</button> </a>
+</div>
+{% endblock %}
