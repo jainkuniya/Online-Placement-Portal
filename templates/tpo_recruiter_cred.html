@@ -1,0 +1,18 @@
+{% extends "tpo.html" %}
+{% block body %}
+<medium id ="msg" style="color:red;">Please generate credentials for the recruiting company</medium>
+<div class="container" id="form1">
+  <div>
+    <form id="credForm">
+      <div class="field-wrap" style="padding-top: 50px;padding-bottom: 50px">
+        <label>
+        Company Name<span class="req">*</span>
+        </label>
+        <input id="id_cred" type="text" required autocomplete="off" />
+      </div>
+      <h1 id="id_error_cred"></h1>
+      <button id="id_cred_submit_button" type="submit" class="btn btn-primary"/>Generate</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
