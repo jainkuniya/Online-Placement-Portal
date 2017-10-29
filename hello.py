@@ -500,6 +500,10 @@ def position_details():
 def schedule_details():
     return render_template('schedule.html')
 
+@app.route('/offers')
+def offers_details():
+    return render_template('offers.html')
+
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
     status = verify_individual_student(request.json['rollNo'])
