@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>LNMIIT PLACEMENT PORTAL</title>
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/materialIcon.css" rel="stylesheet">
+    <!-- Toastr style -->
+    <link href="../static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <!-- Gritter -->
+    <link href="../static/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+    <link href="../static/css/animate.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <span>
+                     <img alt="image" class="img-circle" src="../static/img/profile_small.jpg" />
+                     </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Company</strong>
+                  </div>
+                  <div class="logo-element">
+                  IN+
+                  </div>
+               </li>
+               
+                    <li>
+                        <a href="#"><i class="fa"></i> <span class="nav-label">Event Details</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa"></i> <span class="nav-label">Position Details</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa"></i> <span class="nav-label">Schedule</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa"></i> <span class="nav-label">Registration Details</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa"></i> <span class="nav-label">Job Offers</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><i class="fa"></i> <span class="nav-label">Notes</span></a>
+                    </li>
+                    </div>
+        </nav>
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">Welcome to LNMIIT Placement Portal</span>
+                        </li>
+                        <li class="dropdown">
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                        <i class="material-icons">add_alert</i>  <span class="label label-primary">8</span>
+                    </a>
+                            <ul class="dropdown-menu dropdown-alerts">
+                                <li>
+                                    <a href="#">
+                                        <div>
+                                            <i class="material-icons">email</i> You have 16 messages
+                                            <span class="pull-right text-muted small">4 minutes ago</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">
+                                        <div>
+                                            <i class="material-icons">cloud_upload</i> Server Rebooted
+                                            <span class="pull-right text-muted small">4 minutes ago</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="login.html">
+                        <i class="material-icons">input</i> Log out
+                    </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="row  border-bottom white-bg dashboard-header">
+                <div class="col-md-6">
+                    <h2>Welcome Company</h2>
+                    <medium style="color:red;">You have to complete your profile before final verification by Training & Placement Officer.</medium>
+                    <div class="container" id="c1">
+                        <div class="col-md-12 well">
+                            <h2 style="font-weight: bold">Job Positions</h2>
+                            <div class="row">
+                                <form>
+                                    <div class="row" style="padding-left: .4cm;">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Job Title</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Type</label>
+                                                <input type="text" class="form-control"></input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12" id="p10">
+                                       <div class="row">
+                                           <div class="col-sm-6">
+                                               <div class="form-group">
+                                                   <label>Description</label>
+                                                   <textarea class="form-control" rows="3"></textarea>
+                                               </div>
+                                           </div>
+                                           <div class="col-sm-6">
+                                               <div class="form-group">
+                                                   <label>Other Details</label>
+                                                   <textarea class="form-control" rows="3"></textarea>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="form-group">
+                                           <label>Location</label>
+                                           <input type="text" class="form-control">
+                                       </div>
+                                       <div class="form-group">
+                                           <label>Joining Date</label>
+                                           <input type="text" class="form-control">
+                                       </div>
+                                       <div class="row">
+                                           <div class="col-sm-6">
+                                               <div class="form-group">
+                                                   <label>Cost To Company (CTC)</label>
+                                                   <input type="text" class="form-control">
+                                               </div>
+                                           </div>
+                                           <div class="col-sm-6">
+                                               <div class="form-group" id="p1">
+                                                   <label>Fixed (Gross)</label>
+                                                   <input type="text" class="form-control"></input>
+                                               </div>
+                                           </div>
+                                       </div>
+                                       <div class="col-md-12 well" class="collapse">
+                                           <h3>Bonuses</h3>
+                                           <form>
+                                               <div class="row">
+                                                   <div class="col-sm-6">
+                                                       <div class="form-group">
+                                                           <label>Name</label>
+                                                           <input type="text" class="form-control">
+                                                       </div>
+                                                   </div>
+                                                   <div class="col-sm-6">
+                                                       <div class="form-group">
+                                                           <label>Amount (INR)</label>
+                                                           <input type="text" class="form-control">
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </form>
+                                       </div>
+                                       <div class="form-group" class="collapse" >
+                                           <label>Bond Details</label>
+                                           <textarea rows="3" class="form-control"></textarea>
+                                       </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <input type='button' id="exp_col_btn" class="btn btn-info" data-toggle="collapse" data-target="#p10" value='Expand/Collapse' />
+                            <input id="b1" type='button' class="btn btn-info" onclick='addParagraphs(this)' value='Add New Position' />
+                        </div>
+                        <a href="#" button class="btn btn-lg btn-info">Next</button> </a>
+                        <a href="#" button class="btn btn-lg btn-info">Previous</button> </a>
+                    </div>
+                </div>
+            </div>
+            <div style="position:fixed;bottom:0;left:0;">
+                <strong>Copyright</strong> B12 &copy; 2014-2017
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="../static/js/jquery-3.1.1.min.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Flot -->
+    <script src="../static/js/plugins/flot/jquery.flot.js"></script>
+    <script src="../static/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="../static/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="../static/js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="../static/js/plugins/flot/jquery.flot.pie.js"></script>
+    <!-- Peity -->
+    <script src="../static/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="../static/js/demo/peity-demo.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="../static/js/inspinia.js"></script>
+    <script src="../static/js/plugins/pace/pace.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="../static/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- GITTER -->
+    <script src="../static/js/plugins/gritter/jquery.gritter.min.js"></script>
+    <!-- Sparkline -->
+    <script src="../static/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+    <!-- Sparkline demo data  -->
+    <script src="../static/js/demo/sparkline-demo.js"></script>
+    <!-- ChartJS-->
+    <script src="../static/js/plugins/chartJs/Chart.min.js"></script>
+    <!-- Toastr -->
+    <script src="../static/js/plugins/toastr/toastr.min.js"></script>
+    <script type="text/javascript">
+    function addParagraphs(e) {
+        var e = window.event;
+        var target = e.target;
+        var iden = target.id;
+        var k = iden.slice(-1);
+
+        var val = Number(k) + 1;
+
+        document.getElementById("b" + k).style.display = "none";
+        var p2 = '<hr><div class="container" id="c' + val + '"><div class="col-lg-12 well"><div class="row"><form><div class="col-sm-12"><div class="row"><div class="form-group"><label>Project Title</label><input type="text" class="form-control"></div><div class="form-group" id="p' + val + '" class="collapse"><label>Description</label><textarea placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea></div></form></div></div><input type="button"  data-toggle="collapse" data-target="#p' + val + '" value="><"/><input id="b' + val + '" type="button" onclick="addParagraphs()" value="Add New Project" />';
+
+        document.getElementById("c" + (k)).insertAdjacentHTML('afterend', p2);
+    }
+    
+    </script>
+</body>
+
+</html>
