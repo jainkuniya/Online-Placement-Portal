@@ -496,6 +496,9 @@ def event_details():
 def position_details():
     return render_template('position_details.html')
 
+@app.route('/schedule')
+def position_details():
+    return render_template('schedule.html')
 
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
