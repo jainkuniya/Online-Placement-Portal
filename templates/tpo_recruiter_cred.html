@@ -9,10 +9,13 @@
         </label>
         <input id="company_name" type="text" required autocomplete="off" />
       </div>
-      <h1 id="id_error"></h1>
-      <h1 id="user_id"></h1>
-      <h1 id="password"></h1>
-      <button id="id_cred_submit_button" onClick="submit_form()" type="submit" class="btn btn-primary"/>Generate</button>
+      <h2 id="id_error"></h2>
+      <div style="border:black;">
+      <h2 id="user_id"></h2>
+      <h2 id="password"></h2>
+      </div>
+      <div id="show"></div>
+      <button id="id_cred_submit_button" onClick="submit_form()" type="submit" class="btn btn-info"/>Generate</button>
   </div>
 </div>
 
@@ -38,8 +41,14 @@ function submit_form() {
     data: data,
     success: function(result) {
       if (result.success === 1) {
-        $('#user_id').text(result.userId);
-        $('#password').text(result.password);
+        document.getElementById("msg").innerHTML = "The credentials have been generated";
+        var div = document.createElement('div');
+        div.style.height = "100px";
+        div.id = "show1";        
+        document.getElementById("show").appendChild(div);
+        document.getElementById("show1").innerHTML = '<div class="container"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">View Credentials</button><div class="modal fade" id="myModal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">Credentials</h4></div><div class="modal-body"><p>User ID: '+result.userId+'</p><hr><p>Password: '+result.password+'</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal"><a href="mailto:taybawasim@gmail.com">Share Via Mail</a></button></div></div></div></div></div>';
+      
+        document.getElementById('id_cred_submit_button').style.visibility ="hidden";
       } else if (result.success === -99) {
         $(location).attr('href', './logout');
       } else {
