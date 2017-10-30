@@ -780,6 +780,11 @@ def update_event_details():
                 doc['eligibility_criteria'] = request.json['eligibility_criteria']
                 doc['selection_process_details'] = request.json['selection_process_details']
                 doc['other_details'] = request.json['other_details']
+                doc['cce'] = request.json['cce']
+                doc['cse'] = request.json['cse']
+                doc['ece'] = request.json['ece']
+                doc['mme'] = request.json['mme']
+                doc['me'] = request.json['me']
 
                 doc.save()
                 print "vishwesh"
