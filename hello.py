@@ -507,6 +507,23 @@ def get_templete(page_name):
         return redirect("./login")
     return redirect("./login")
 
+def get_tpo_templete(page_name):
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            if (page_name == "tpo_students"):
+                pending_students = get_pending_students()
+                all_verified_students = get_all_verified_students()
+                return render_template('tpo_students.html', pending_students=pending_students, all_verified_students=all_verified_students, page_name=page_name)
+            elif (page_name == "tpo_recruiter_cred"):
+                return render_template('tpo_recruiter_cred.html', page_name=page_name)
+            elif (page_name == "tpo_recruiter_verify"):
+                return render_template('tpo_recruiter_verify.html', page_name=page_name)
+            else:
+                return redirect("./logout")
+        return redirect("./logout")
+    return redirect("./logout")
+
 @app.route('/')
 def home():
     return get_templete("home")
@@ -528,27 +545,16 @@ def exprience_page():
     return get_templete("exprience")
 
 @app.route('/tpo')
-def tro_dashboard():
-    if 'token' in request.cookies:
-        token = request.cookies['token']
-        if token != '':
-            pending_students = get_pending_students()
-            all_verified_students = get_all_verified_students()
-            return render_template('tpo.html', pending_students=pending_students, all_verified_students=all_verified_students)
-        return redirect("./login")
-    return redirect("./login")
-
-@app.route('/tpo_students')
 def tpo_students_page():
-    return get_templete("tpo_students")
+    return get_tpo_templete("tpo_students")
 
 @app.route('/tpo_recruiter_cred')
 def tpo_reccred_page():
-    return get_templete("tpo_recruiter_cred")
+    return get_tpo_templete("tpo_recruiter_cred")
 
 @app.route('/tpo_recruiter_verify')
 def tpo_recverify_page():
-    return get_templete("tpo_recruiter_verify")               
+    return get_tpo_templete("tpo_recruiter_verify")
 
 @app.route('/event')
 def get_recuiter_templete(page_name):

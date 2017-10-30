@@ -32,21 +32,21 @@
                   IN+
                   </div>
                </li>
-               {% if page == "tpo_students" %}
+               {% if page_name == "tpo_students" %}
                <li class="active">
                {% else %}
                <li>
                {% endif %}
                <a href="tpo_students"><i class="material-icons">people</i> <span class="nav-label">Students' Verification</span></a>
                </li>
-               {% if page == "tpo_recruiter_verify" %}
+               {% if page_name == "tpo_recruiter_verify" %}
                <li class="active">
                {% else %}
                <li>
                {% endif %}
                <a href="tpo_recruiter_verify"><i class="material-icons">domain</i> <span class="nav-label">Recruiters'Verification</span></a>
                </li>
-               {% if page == "tpo_recruiter_cred" %}
+               {% if page_name == "tpo_recruiter_cred" %}
                <li class="active">
                {% else %}
                <li>
@@ -104,7 +104,7 @@
                   <h2>Welcome Admin</h2>
                   {% block body %}
                   {% endblock %}
-                  
+
             </div>
          </div>
          <div style="position:fixed;bottom:0;">
