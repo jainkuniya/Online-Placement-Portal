@@ -359,6 +359,7 @@ def create_recuiter():
                     DB_DOC_FIELD_ROLL_NO: userId,
                     'verified': 0,
                     'positions': {},
+                    'schedule': {},
                 }
                 db.create_document(data)
 
@@ -859,6 +860,51 @@ def create_position():
         'message': "Please try again",
     })
 
+@app.route(api_path + 'recuiter/create_schedule', methods=['POST'])
+def create_schedule():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """create_schedule"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                schedule_id = get_random_string(5)
+                doc['schedule'][schedule_id] = {}
+                doc['schedule'][schedule_id]['agenda'] = request.json['agenda']
+                doc['schedule'][schedule_id]['date'] = request.json['date']
+                doc['schedule'][schedule_id]['time'] = request.json['time']
+                doc['schedule'][schedule_id]['venue'] = request.json['venue']
+                doc['schedule'][schedule_id]['details'] = request.json['details']
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
 
 @app.route(api_path + 'recuiter/event_details', methods=['POST'])
 def update_event_details():
@@ -1121,6 +1167,56 @@ def update_position():
                 elif (request.json['query'] == 1):
                     """delete"""
                     doc['positions'][request.json['position']] = -1
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+@app.route(api_path + 'recuiter/update_schedule', methods=['POST'])
+def update_schedule():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_schedule"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                if (request.json['query'] == 0):
+                    """update"""
+                    doc['schedule'][request.json['schedule']] = {
+                        'agenda': request.json['agenda'],
+                        'date': request.json['date'],
+                        'time': request.json['time'],
+                        'details': request.json['details'],
+                    }
+
+                elif (request.json['query'] == 1):
+                    """delete"""
+                    doc['schedule'][request.json['schedule']] = -1
 
                 doc.save()
                 return jsonify({

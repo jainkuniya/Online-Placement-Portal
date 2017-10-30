@@ -4,41 +4,165 @@
 {% endblock %}
 {% block body %}
 <div class="container" id="c1">
+  {% for schedule in details.schedule %}
+  {% if details.schedule[schedule] != -1 %}
+  <div class="row well">
+          <div class="form-group">
+              <label>Agenda</label>
+              <input id="{{ schedule }}_agenda" value="{{ details.schedule[schedule].agenda }}" type="text" class="form-control">
+          </div>
+           <div class="form-group" id="p{{ loop.index }}" style="display:none; height:0">
+          <div class="row">
+              <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>Date (dd/mm/yyyy)</label>
+                      <input value="{{ details.schedule[schedule].date }}" id="{{ schedule }}_date" type="text" class="form-control">
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="form-group">
+                      <label>Time (hh:mm)</label>
+                      <input value="{{ details.schedule[schedule].time }}" id="{{ schedule }}_time" type="text" class="form-control"></input>
+                  </div>
+              </div>
+          </div>
+          <div class="form-group">
+              <label>Venue</label>
+              <input value="{{ details.schedule[schedule].venue }}" id="{{ schedule }}_venue" type="text" class="form-control">
+          </div>
+          <div class="form-group">
+              <label>Details</label>
+              <textarea id="{{ schedule }}_details" rows="3" class="form-control">{{ details.schedule[schedule].details }}</textarea>
+          </div>
+        </div>
+          <h1 id="{{ schedule }}_id_error_update"></h1>
+          <a> <button onclick="updateSchedule('{{ schedule }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
+          <a> <button onclick="updateSchedule('{{ schedule }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
+          <input hidden id="p{{ loop.index }}_state" value="0" type="text">
+          <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-lg btn-info">Expand/Collapse</button>
+  </div>
+</div>
+  {% else %}
+  {% endif %}
+  {% endfor %}
     <div class="col-md-12 well">
         <h2 style="font-weight: bold">Drive Schedule</h2>
         <div class="row">
-            <form>
+            <form id="id_new_schedule_form">
                 <div class="form-group">
                     <label>Agenda</label>
-                    <input type="text" class="form-control">
+                    <input id="agenda" type="text" class="form-control">
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Date (dd/mm/yyyy)</label>
-                            <input type="text" class="form-control">
+                            <input id="date" type="text" class="form-control">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Time (hh:mm)</label>
-                            <input type="text" class="form-control"></input>
+                            <input id="time" type="text" class="form-control"></input>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Venue</label>
-                    <input type="text" class="form-control">
+                    <input id="venue" type="text" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Details</label>
-                    <textarea rows="3" class="form-control"></textarea>
+                    <textarea id="details" rows="3" class="form-control"></textarea>
                 </div>
+                <h1 id="id_error"></h1>
+                <button type="submit" class="btn btn-lg btn-info">Add New Agenda</button>
             </form>
         </div>
-        <input id="b1" type='button' class="btn btn-info" value='Add New Agenda' />
     </div>
     <a href="./reg_details.html" button class="btn btn-lg btn-info">Next</button> </a>
     <a href="./position_details.html" button class="btn btn-lg btn-info">Previous</button> </a>
 </div>
+
+<script>
+$(document).ready(function() {
+  $('#id_new_schedule_form').submit(function() {
+    $('#id_error').text('');
+    var data = JSON.stringify({
+      agenda: $('#agenda').val(),
+      date: $('#date').val(),
+      time: $('#time').val(),
+      venue: $('#venue').val(),
+      details: $('#details').val(),
+    });
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/v1/recuiter/create_schedule',
+      contentType: 'application/json',
+      data: data,
+      success: function(result) {
+        if (result.success === 1) {
+          $('#id_error').text(result.message);
+          $(location).attr('href', '../recuiter/schedule');
+        } else if (result.success === -99) {
+          $(location).attr('href', './logout');
+        } else {
+          $('#id_error').text(result.message);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('#id_error').text('Error: ' + errorThrown);
+      },
+    });
+    return false;
+  });
+});
+
+function toggleState(id) {
+  var element = document.getElementById(id),
+    style = window.getComputedStyle(element),
+    display = style.getPropertyValue('display');
+  if (display === 'none') {
+    element.style.display = 'block';
+    element.style.height = 'auto';
+  } else {
+    element.style.display = 'none';
+    element.style.height = 0;
+  }
+}
+
+function updateSchedule(schedule, query) {
+  $('#id_error_update').text('');
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/recuiter/update_schedule',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      schedule: schedule,
+      agenda: $('#' + schedule + '_agenda').val(),
+      date: $('#' + schedule + '_date').val(),
+      time: $('#' + schedule + '_time').val(),
+      venue: $('#' + schedule + '_venue').val(),
+      details: $('#' + schedule + '_details').val(),
+      query: query,
+    }),
+    success: function(result) {
+      if (result.success === 1) {
+        $('#' + schedule + '_id_error_update').text(result.message);
+        $(location).attr('href', '../recuiter/schedule');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#' + schedule + '_id_error_update').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#' + schedule + '_id_error_update').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+</script>
+
 {% endblock %}
