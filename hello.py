@@ -358,6 +358,7 @@ def create_recuiter():
                     'companyName': companyName,
                     DB_DOC_FIELD_ROLL_NO: userId,
                     'verified': 0,
+                    'positions': {},
                 }
                 db.create_document(data)
 
@@ -787,19 +788,16 @@ def update_reg_details():
                 doc['reg_details_other_details'] = request.json['reg_details_other_details']
 
                 doc.save()
-                print "vishwesh"
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully updated",
                 })
             else:
-                print "vishwesh 2"
                 return jsonify({
                     'success': SUCCESS_CODE_IN_VALID,
                     'message': "Please try again",
                 })
         else:
-            print "vishwesh 3"
             return jsonify({
                 'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
                 'message': "Please try again",
@@ -828,6 +826,7 @@ def create_position():
                 doc = db[result[0]['_id']]
                 doc.fetch()
                 position_id = get_random_string(5)
+                doc['positions'][position_id] = {}
                 doc['positions'][position_id]['title'] = request.json['title']
                 doc['positions'][position_id]['type'] = request.json['type']
                 doc['positions'][position_id]['position_type'] = request.json['position_type']
