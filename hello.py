@@ -1085,6 +1085,63 @@ def update_family_details():
         'message': "Please try again",
     })
 
+@app.route(api_path + 'recuiter/update_position', methods=['POST'])
+def update_position():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_position"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                if (request.json['query'] == 0):
+                    """update"""
+                    doc['positions'][request.json['position']] = {
+                        'title': request.json['title'],
+                        'type': request.json['type'],
+                        'position_type': request.json['position_type'],
+                        'description': request.json['description'],
+                        'job_other_details': request.json['job_other_details'],
+                        'location': request.json['location'],
+                        'joining_date': request.json['joining_date'],
+                        'ctc': request.json['ctc'],
+                        'fixed_gross': request.json['fixed_gross'],
+                        'bonus_name': request.json['bonus_name'],
+                        'bonus_amount': request.json['bonus_amount'],
+                    }
+
+                elif (request.json['query'] == 1):
+                    """delete"""
+                    doc['positions'][request.json['position']] = -1
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
 @app.route(api_path + 'update_project', methods=['POST'])
 def update_project():
     if 'token' in request.cookies:

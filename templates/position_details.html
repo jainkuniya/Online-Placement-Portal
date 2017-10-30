@@ -4,8 +4,115 @@
 {% endblock %}
 {% block body %}
 <div class="container" id="c1">
+   {% for position in details.positions %}
+   {% if details.positions[position] != -1 %}
+   <div class="col-sm-12">
+      <div class="row well">
+         <div class="row" style="padding-left: .4cm;">
+            <div class="col-sm-6">
+               <div class="form-group">
+                  <label>Job Title</label>
+                  <input id="{{ position }}_title" type="text" class="form-control" value="{{ details.positions[position].title }}">
+               </div>
+            </div>
+            <div class="col-sm-6">
+               <div class="form-group">
+                  <label>Type</label>
+                  <input id="{{ position }}_type" type="text" class="form-control" value="{{ details.positions[position].type }}"></input>
+               </div>
+            </div>
+         </div>
+         <div class="form-group" id="p{{ loop.index }}" style="display:none; height:0">
+           <div>
+            <div class="col-sm-12 form-group">
+               <label>Position</label>
+               <select class="form-control" id="{{ position }}_position_type">
+                 {% if details.positions[position].position_type == "Job" %}
+                 <option selected>Job</option>
+                 {% else %}
+                 <option>Job</option>
+                 {% endif %}
+
+                 {% if details.positions[position].position_type == "Intern" %}
+                 <option selected>Intern</option>
+                 {% else %}
+                 <option>Intern</option>
+                 {% endif %}
+
+               </select>
+            </div>
+            <div class="col-md-12" id="p10" class="collapse">
+               <div class="row">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="{{ position }}_description" class="form-control" rows="3"></textarea>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label>Other Details</label>
+                        <textarea id="{{ position }}_job_other_details" class="form-control" rows="3"></textarea>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label>Location</label>
+                  <input id="{{ position }}_location" type="text" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label>Joining Date</label>
+                  <input id="{{ position }}_joining_date" type="text" class="form-control">
+               </div>
+               <div class="row">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label>Cost To Company (CTC)</label>
+                        <input id="{{ position }}_ctc" type="text" class="form-control">
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group" id="p1">
+                        <label>Fixed (Gross)</label>
+                        <input id="{{ position }}_fixed_gross" type="text" class="form-control"></input>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 well">
+                  <h3>Bonus</h3>
+                  <div class="row">
+                     <div class="col-sm-6">
+                        <div class="form-group">
+                           <label>Name</label>
+                           <input id="{{ position }}_bonus_name" type="text" class="form-control">
+                        </div>
+                     </div>
+                     <div class="col-sm-6">
+                        <div class="form-group">
+                           <label>Amount (INR)</label>
+                           <input id="{{ position }}_bonus_amount" type="text" class="form-control">
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label>Bond Details</label>
+                  <textarea id="{{ position }}_bond_details" rows="3" class="form-control"></textarea>
+               </div>
+            </div>
+          </div>
+         </div>
+         <h1 id="{{ position }}_id_error_update"></h1>
+         <a> <button onclick="updatePosition('{{ position }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
+         <a> <button onclick="updatePosition('{{ position }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
+         <input hidden id="p{{ loop.index }}_state" value="0" type="text">
+         <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-lg btn-info">Expand/Collapse</button>
+      </div>
+   </div>
+   {% else %}
+   {% endif %}
+   {% endfor %}
    <div class="col-md-12 well">
-      <h2 style="font-weight: bold">Job Positions</h2>
       <div class="row">
          <form id="id_new_job_form">
             <div class="row" style="padding-left: .4cm;">
@@ -99,7 +206,6 @@
 <script>
    $(document).ready(function() {
      $('#id_new_job_form').submit(function() {
-       alert("fdsa");
        $('#id_error').text('');
 
        var frm = $('#id_new_job_form');
@@ -140,5 +246,59 @@
        return false;
      });
    });
+
+
+   function toggleState(id) {
+     var element = document.getElementById(id),
+       style = window.getComputedStyle(element),
+       display = style.getPropertyValue('display');
+     if (display === 'none') {
+       element.style.display = 'block';
+       element.style.height = 'auto';
+     } else {
+       element.style.display = 'none';
+       element.style.height = 0;
+     }
+   }
+
+
+   function updatePosition(position, query) {
+    $('#id_error_update').text('');
+    $.ajax({
+     type: 'POST',
+     url: '/api/v1/recuiter/update_position',
+     contentType: 'application/json',
+     data: JSON.stringify({
+       position: position,
+       title: $('#' + position + '_title').val(),
+       type: $('#' + position + '_type').val(),
+       description: $('#' + position + '_description').val(),
+       job_other_details: $('#' + position + '_job_other_details').val(),
+       location: $('#' + position + '_location').val(),
+       joining_date: $('#' + position + '_joining_date').val(),
+       ctc: $('#' + position + '_ctc').val(),
+       fixed_gross: $('#' + position + '_fixed_gross').val(),
+       bonus_name: $('#' + position + '_bonus_name').val(),
+       bonus_amount: $('#' + position + '_bonus_amount').val(),
+       position_type: $('#' + position + '_position_type').val(),
+       query: query,
+     }),
+     success: function(result) {
+       if (result.success === 1) {
+         $('#' + position + '_id_error_update').text(result.message);
+         $(location).attr('href', '../recuiter/position_details');
+       } else if (result.success === -99) {
+         $(location).attr('href', './logout');
+       } else {
+         $('#' + position + '_id_error_update').text(result.message);
+       }
+     },
+     error: function(XMLHttpRequest, textStatus, errorThrown) {
+       $('#id_error_update').text('Error: ' + errorThrown);
+     },
+    });
+    return false;
+  }
+
 </script>
 {% endblock %}
