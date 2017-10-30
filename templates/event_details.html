@@ -19,11 +19,35 @@
                     <div class="col-sm-4 form-group">
                         <label>Type</label>
                         <select class="form-control" id="sel2">
+                            {% if details.type == "Recruitment" %}
+                            <option selected>Recruitment</option>
+                            {% else %}
                             <option>Recruitment</option>
+                            {% endif %}
+
+                            {% if details.type == "Training" %}
+                            <option selected>Training</option>
+                            {% else %}
                             <option>Training</option>
+                            {% endif %}
+
+                            {% if details.type == "Seminar" %}
+                            <option selected>Seminar</option>
+                            {% else %}
                             <option>Seminar</option>
+                            {% endif %}
+
+                            {% if details.type == "Assessment" %}
+                            <option selected>Assessment</option>
+                            {% else %}
                             <option>Assessment</option>
+                            {% endif %}
+
+                            {% if details.type == "Others" %}
+                            <option selected>Others</option>
+                            {% else %}
                             <option>Others</option>
+                            {% endif %}
                         </select>
                     </div>
                     <div class="col-sm-4 form-group">
@@ -43,9 +67,16 @@
 
                                             </div>
                                             <div data-toggle="buttons" class="btn-group bizmoduleselect">
-                                                <label class="btn btn-default">
-                                                    <div class="bizcontent">
-                                                        <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                              {% if details.cce %}
+                                             <label class="btn btn-default active">
+                                               <div class="bizcontent">
+                                              <input id="cce" type="checkbox" name="var_id[]" autocomplete="off" checked value="">
+                                               {% else %}
+                                             <label class="btn btn-default">
+                                               <div class="bizcontent">
+                                                   <input id="cce" type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                                {% endif %}
+
                                                         <span class="glyphicon glyphicon-ok glyphicon-lg"></span>
                                                         <h5>CCE</h5>
                                                     </div>
@@ -59,9 +90,16 @@
 
                                             </div>
                                             <div data-toggle="buttons" class="btn-group bizmoduleselect">
-                                                <label class="btn btn-default">
-                                                    <div class="bizcontent">
-                                                        <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                              {% if details.cse %}
+                                             <label class="btn btn-default active">
+                                               <div class="bizcontent">
+                                                   <input id="cse" type="checkbox" name="var_id[]" checked autocomplete="off" value="">
+                                               {% else %}
+                                             <label class="btn btn-default">
+                                               <div class="bizcontent">
+                                                   <input id="cse" type="checkbox" name="var_id[]"  autocomplete="off" value="">
+                                                {% endif %}
+
                                                         <span class="glyphicon glyphicon-ok glyphicon-lg"></span>
                                                         <h5>CSE</h5>
                                                     </div>
@@ -75,9 +113,16 @@
 
                                             </div>
                                             <div data-toggle="buttons" class="btn-group bizmoduleselect">
-                                                <label class="btn btn-default">
-                                                    <div class="bizcontent">
-                                                        <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                              {% if details.ece %}
+                                             <label class="btn btn-default active">
+                                               <div class="bizcontent">
+                                                   <input id="ece" type="checkbox" name="var_id[]" checked autocomplete="off" value="">
+                                               {% else %}
+                                             <label class="btn btn-default">
+                                               <div class="bizcontent">
+                                                   <input id="ece" type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                                {% endif %}
+
                                                         <span class="glyphicon glyphicon-ok glyphicon-lg"></span>
                                                         <h5>ECE</h5>
                                                     </div>
@@ -91,9 +136,16 @@
 
                                             </div>
                                             <div data-toggle="buttons" class="btn-group bizmoduleselect">
-                                                <label class="btn btn-default">
-                                                    <div class="bizcontent">
-                                                        <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                              {% if details.mme %}
+                                             <label class="btn btn-default active">
+                                               <div class="bizcontent">
+                                                   <input id="mme" type="checkbox" name="var_id[]" autocomplete="off" checkbox value="">
+                                               {% else %}
+                                             <label class="btn btn-default">
+                                               <div class="bizcontent">
+                                                   <input id="mme" type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                                {% endif %}
+
                                                         <span class="glyphicon glyphicon-ok glyphicon-lg"></span>
                                                         <h5>MME</h5>
                                                     </div>
@@ -107,9 +159,16 @@
 
                                             </div>
                                             <div data-toggle="buttons" class="btn-group bizmoduleselect">
+                                                 {% if details.me %}
+                                                <label class="btn btn-default active">
+                                                  <div class="bizcontent">
+                                                      <input id="me" type="checkbox" checked name="var_id[]" autocomplete="off" value="true">
+                                                  {% else %}
                                                 <label class="btn btn-default">
-                                                    <div class="bizcontent">
-                                                        <input type="checkbox" name="var_id[]" autocomplete="off" value="">
+                                                  <div class="bizcontent">
+                                                      <input id="me" type="checkbox" name="var_id[]" autocomplete="off" value="true">
+                                                   {% endif %}
+
                                                         <span class="glyphicon glyphicon-ok glyphicon-lg"></span>
                                                         <h5>ME</h5>
                                                     </div>
@@ -153,6 +212,11 @@ function submit_form() {
     eligibility_criteria: $('#eligibility_criteria').val(),
     selection_process_details: $('#selection_process_details').val(),
     other_details: $('#other_details').val(),
+    cce: $('#cce').is(":checked"),
+    cse: $('#cse').is(":checked"),
+    ece: $('#ece').is(":checked"),
+    mme: $('#mme').is(":checked"),
+    me: $('#me').is(":checked"),
   });
 
   $.ajax({
@@ -163,7 +227,7 @@ function submit_form() {
     success: function(result) {
       if (result.success === 1) {
         $('#id_error').text(result.message);
-        $(location).attr('href', './position_details');
+        $(location).attr('href', '/recuiter/position_details');
       } else if (result.success === -99) {
         $(location).attr('href', './logout');
       } else {
