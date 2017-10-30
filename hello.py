@@ -357,6 +357,7 @@ def create_recuiter():
                     DB_DOC_TYPE: DB_DOC_RECUITER,
                     'companyName': companyName,
                     DB_DOC_FIELD_ROLL_NO: userId,
+                    'verified': 0,
                 }
                 db.create_document(data)
 
@@ -518,7 +519,9 @@ def get_tpo_templete(page_name):
             elif (page_name == "tpo_recruiter_cred"):
                 return render_template('tpo_recruiter_cred.html', page_name=page_name)
             elif (page_name == "tpo_recruiter_verify"):
-                return render_template('tpo_recruiter_verify.html', page_name=page_name)
+                pending_recuiter = get_pending_recuiters()
+                all_recuiter = get_all_verified_recuiters()
+                return render_template('tpo_recruiter_verify.html', pending_recuiter=pending_recuiter, all_recuiter=all_recuiter, page_name=page_name)
             else:
                 return redirect("./logout")
         return redirect("./logout")
@@ -655,12 +658,26 @@ def get_all_verified_students():
     else:
         return DB_CONNECT_ERROR
 
-def get_all_recuiters():
+def get_all_verified_recuiters():
     if client:
         query = cloudant.query.Query(
             db, selector = {
-                                 DB_DOC_TYPE: DB_DOC_LOGIN,
-                                 'person_type': 2,
+                                 DB_DOC_TYPE: DB_DOC_RECUITER,
+                                 'verified': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+        return result
+
+    else:
+        return DB_CONNECT_ERROR
+
+def get_pending_recuiters():
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_RECUITER,
+                                 'verified': 0,
                             }
             )
         result = query(limit=100)['docs']

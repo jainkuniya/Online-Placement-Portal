@@ -4,14 +4,13 @@
 <div class="tab container">
   <button class="tablinks" onclick="showStatus(event, 'Unverified')">Unverified</button>
   <button class="tablinks" onclick="showStatus(event, 'Verified')">Verified</button>
-  <button class="tablinks" onclick="showStatus(event, 'Rejected')">Rejected</button>
 </div>
 <div id="Unverified" class="tabcontent">
-  <h3>Unverified Recruiters</h3>
+  <!-- <h3>Unverified Recruiters</h3>
   <div class="container" id="form1">
     <div class="col-xs-12" id="1">
-      <div class="col-xs-2"><a>Roll No</a></div>
-      <div class="col-xs-2"><a>Name</a></div>
+      <div class="col-xs-2"><a>Id</a></div>
+      <div class="col-xs-2"><a>Password</a></div>
       <div class="col-xs-2"><a>Phone Number</a></div>
       <div class="col-xs-2"><a>Gender</a></div>
       <div class="col-xs-2"><a>Branch</a></div>
@@ -32,48 +31,23 @@
       <hr>
     </div>
     {% endfor %}
-  </div>
+  </div> //-->
 </div>
 <div id="Verified" class="tabcontent">
   <div class="container" id="form1">
-    <hr>
-    No Backlog
-    {% for student in pending_students.noBacklog %}
     <div class="col-xs-12" id="1">
-      <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
-      <div class="col-xs-3"><a>{{ student.name }}</a></div>
-      <div class="col-xs-3"><a>
-        {% for backlog in student.backlog %}
-        Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-        {% endfor %}
-        </a>
-      </div>
+      <div class="col-xs-6"><a>Id</a></div>
+      <div class="col-xs-6"><a>Company Name</a></div>
+    </div>
+    <hr>
+    {% for recuiter in all_recuiter %}
+    <div class="col-xs-12" id="1">
+      <div class="col-xs-6"><a>{{ recuiter.roll_no }}</a></div>
+      <div class="col-xs-6"><a>{{ recuiter.companyName }}</a></div>
       <hr>
     </div>
     {% endfor %}
     <hr>
-    <button id="approve" class="btn btn-success" >Approved</button>
-  </div>
-</div>
-<div id="Rejected" class="tabcontent">
-  <div class="container" id="form1">
-    <hr>
-    Backlog
-    {% for student in pending_students.backlog %}
-    <div class="col-xs-12" id="1">
-      <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
-      <div class="col-xs-3"><a>{{ student.name }}</a></div>
-      <div class="col-xs-3"><a>
-        {% for backlog in student.backlog %}
-        Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-        {% endfor %}
-        </a>
-      </div>
-      <hr>
-    </div>
-    {% endfor %}
-    <hr>
-    <button id="approve" class="btn btn-success">Rejected</button> 
   </div>
 </div>
 </div>
