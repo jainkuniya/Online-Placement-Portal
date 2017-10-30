@@ -38,20 +38,44 @@
                         </div>
                     </li>
 
+                    {% if page == "event_details" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="./event_details.html"><i class="fa"></i> <span class="nav-label">Event Details</span></a>
+                    {% endif %}
+                    <a href="./recuiter/event">Event Details</a>
                     </li>
+
+                    {% if page == "position_details" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="./position_details.html"><i class="fa"></i> <span class="nav-label">Position Details</span></a>
+                    {% endif %}
+                    <a href="./recuiter/position_details">Position Details</a>
                     </li>
+
+                    {% if page == "schedule" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="./schedule.html"><i class="fa"></i> <span class="nav-label">Schedule</span></a>
+                    {% endif %}
+                    <a href="./recuiter/schedule">Schedule</a>
                     </li>
+
+                    {% if page == "reg_details" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="./reg_details.html"><i class="fa"></i> <span class="nav-label">Registration Details</span></a>
+                    {% endif %}
+                    <a href="./recuiter/reg_details">Registration Details</a>
                     </li>
+
+                    {% if page == "offers" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="./offers.html"><i class="fa"></i> <span class="nav-label">Job Offers</span></a>
+                    {% endif %}
+                    <a href="./recuiter/offers">Job Offers</a>
                     </li>
                     </div>
         </nav>
