@@ -4,176 +4,141 @@
 {% endblock %}
 {% block body %}
 <div class="container" id="c1">
-    <div class="col-md-12 well">
-        <h2 style="font-weight: bold">Job Positions</h2>
-        <div class="row">
-            <form>
-                <div class="row" style="padding-left: .4cm;">
-                    <div class="col-sm-6">
+   <div class="col-md-12 well">
+      <h2 style="font-weight: bold">Job Positions</h2>
+      <div class="row">
+         <form id="id_new_job_form">
+            <div class="row" style="padding-left: .4cm;">
+               <div class="col-sm-6">
+                  <div class="form-group">
+                     <label>Job Title</label>
+                     <input id="title" type="text" class="form-control">
+                  </div>
+               </div>
+               <div class="col-sm-6">
+                  <div class="form-group">
+                     <label>Type</label>
+                     <input id="type" type="text" class="form-control"></input>
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm-12 form-group">
+               <label>Position</label>
+               <select class="form-control" id="position_type">
+                  <option selected>Job</option>
+                  <option>Intern</option>
+               </select>
+            </div>
+            <div class="col-md-12" id="p10" class="collapse">
+               <div class="row">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="description" class="form-control" rows="3"></textarea>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label>Other Details</label>
+                        <textarea id="job_other_details" class="form-control" rows="3"></textarea>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label>Location</label>
+                  <input id="location" type="text" class="form-control">
+               </div>
+               <div class="form-group">
+                  <label>Joining Date</label>
+                  <input id="joining_date" type="text" class="form-control">
+               </div>
+               <div class="row">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label>Cost To Company (CTC)</label>
+                        <input id="ctc" type="text" class="form-control">
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group" id="p1">
+                        <label>Fixed (Gross)</label>
+                        <input id="fixed_gross" type="text" class="form-control"></input>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-12 well">
+                  <h3>Bonus</h3>
+                  <div class="row">
+                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Job Title</label>
-                            <input type="text" class="form-control">
+                           <label>Name</label>
+                           <input id="bonus_name" type="text" class="form-control">
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                     </div>
+                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>Type</label>
-                            <input type="text" class="form-control"></input>
+                           <label>Amount (INR)</label>
+                           <input id="bonus_amount" type="text" class="form-control">
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-12" id="p10" class="collapse">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Other Details</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Joining Date</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Cost To Company (CTC)</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group" id="p1">
-                                <label>Fixed (Gross)</label>
-                                <input type="text" class="form-control"></input>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-12 well">
-                        <h3>Bonus</h3>
-                        <form>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Name</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Amount (INR)</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="form-group">
-                        <label>Bond Details</label>
-                        <textarea rows="3" class="form-control"></textarea>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <input type='button' id="exp_col_btn" class="btn btn-info" data-toggle="collapse" data-target="#p10" value='Expand/Collapse' />
-        <input id="b1" type='button' class="btn btn-info" value='Add New Position' />
-    </div>
-    <div class="col-md-12 well">
-        <h2 style="font-weight: bold">Internship Positions</h2>
-        <div class="row">
-            <form>
-                <div class="row" style="padding-left: .4cm;">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Title</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Type</label>
-                            <input type="text" class="form-control"></input>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12" id="p11" class="collapse">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Other Details</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Joining Date</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Duration (in months)</label>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Stipend</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="col-md-12 well" >
-                        <h3>Bonus</h3>
-                        <form>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Name</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Amount (INR)</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="form-group">
-                        <label>Bond Details</label>
-                        <textarea rows="3" class="form-control"></textarea>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <input type='button' id="exp_col_btn" class="btn btn-info" data-toggle="collapse" data-target="#p11" value='Expand/Collapse' />
-        <input id="b1" type='button' class="btn btn-info" value='Add New Position' />
-    </div>
-    <a href="./schedule.html" button class="btn btn-lg btn-info">Next</button> </a>
-    <a href="./event_details.html" button class="btn btn-lg btn-info">Previous</button> </a>
+                     </div>
+                  </div>
+               </div>
+               <div class="form-group">
+                  <label>Bond Details</label>
+                  <textarea id="bond_details" rows="3" class="form-control"></textarea>
+               </div>
+            </div>
+            <h1 id="id_error"></h1>
+            <button type="submit" class="btn btn-lg btn-info">Add New Job Position</button>
+         </form>
+      </div>
+   </div>
+   <a href="./schedule.html" button class="btn btn-lg btn-info">Next</button> </a>
+   <a href="./event_details.html" button class="btn btn-lg btn-info">Previous</button> </a>
 </div>
+<script>
+   $(document).ready(function() {
+     $('#id_new_job_form').submit(function() {
+       alert("fdsa");
+       $('#id_error').text('');
 
+       var frm = $('#id_new_job_form');
+
+       var data = JSON.stringify({
+         title: $('#title').val(),
+         type: $('#type').val(),
+         description: $('#description').val(),
+         job_other_details: $('#job_other_details').val(),
+         location: $('#location').val(),
+         joining_date: $('#joining_date').val(),
+         ctc: $('#ctc').val(),
+         fixed_gross: $('#fixed_gross').val(),
+         bonus_name: $('#bonus_name').val(),
+         bonus_amount: $('#bonus_amount').val(),
+         position_type: $('#position_type').val(),
+       });
+
+       $.ajax({
+         type: "POST",
+         url: "/api/v1/recuiter/create_position",
+         contentType: 'application/json',
+         data: data,
+         success: function(result) {
+           if (result.success === 1) {
+             $('#id_error').text(result.message);
+             $(location).attr('href', '../recuiter/position_details');
+           } else if (result.success === -99) {
+             $(location).attr('href', './logout');
+           } else {
+             $('#id_error').text(result.message);
+           }
+         },
+         error: function(XMLHttpRequest, textStatus, errorThrown) {
+           $('#id_error').text('Error: ' + errorThrown);
+         },
+       });
+       return false;
+     });
+   });
+</script>
 {% endblock %}

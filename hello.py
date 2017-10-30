@@ -809,6 +809,58 @@ def update_reg_details():
         'message': "Please try again",
     })
 
+
+@app.route(api_path + 'recuiter/create_position', methods=['POST'])
+def create_position():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """create_position"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                position_id = get_random_string(5)
+                doc['positions'][position_id]['title'] = request.json['title']
+                doc['positions'][position_id]['type'] = request.json['type']
+                doc['positions'][position_id]['position_type'] = request.json['position_type']
+                doc['positions'][position_id]['description'] = request.json['description']
+                doc['positions'][position_id]['job_other_details'] = request.json['job_other_details']
+                doc['positions'][position_id]['location'] = request.json['location']
+                doc['positions'][position_id]['joining_date'] = request.json['joining_date']
+                doc['positions'][position_id]['ctc'] = request.json['ctc']
+                doc['positions'][position_id]['fixed_gross'] = request.json['fixed_gross']
+                doc['positions'][position_id]['bonus_name'] = request.json['bonus_name']
+                doc['positions'][position_id]['bonus_amount'] = request.json['bonus_amount']
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+
 @app.route(api_path + 'recuiter/event_details', methods=['POST'])
 def update_event_details():
     if 'token' in request.cookies:
