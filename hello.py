@@ -38,6 +38,8 @@ DB_DOC_STUDENT_BASIC_FIELD_PROGRAM = "program"
 DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
 DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR = "addmission_year"
 
+DB_DOC_RECUITER = "recuiter"
+
 mis_db_name = 'mis'
 mis_client = None
 mis_db = None
@@ -350,6 +352,14 @@ def create_recuiter():
                     'person_type': 2,
                 }
                 db.create_document(data)
+
+                data = {
+                    DB_DOC_TYPE: DB_DOC_RECUITER,
+                    'companyName': companyName,
+                    DB_DOC_FIELD_ROLL_NO: userId,
+                }
+                db.create_document(data)
+
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully created",
@@ -528,9 +538,23 @@ def tro_dashboard():
         return redirect("./login")
     return redirect("./login")
 
-@app.route('/event')
+def get_recuiter_templete(page_name):
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            details = fetch_recuiter(token)
+            if (free_from_error(details)):
+                if (page_name == "event_details"):
+                    return render_template('event_details.html', details= details, page=page_name)
+            else:
+                """invalid token, redirect to logout"""
+                return redirect("./logout")
+        return redirect("./login")
+    return redirect("./login")
+
+@app.route('/recuiter')
 def event_details():
-    return render_template('event_details.html')
+    return get_recuiter_templete('event_details')
 
 @app.route('/position_details')
 def position_details():
@@ -619,6 +643,36 @@ def get_all_recuiters():
             )
         result = query(limit=100)['docs']
         return result
+
+    else:
+        return DB_CONNECT_ERROR
+
+def fetch_recuiter(token):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_LOGIN,
+                                 'person_type': 2,
+                                 'token': token
+                            }
+            )
+        result = query(limit=100)['docs']
+        print result
+        if (len(result) == 1):
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: result[0][DB_DOC_FIELD_ROLL_NO]
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                return result[0]
+            else:
+                return NO_RECORD_FOUND_ERROR
+
+        else:
+            return NO_RECORD_FOUND_ERROR
 
     else:
         return DB_CONNECT_ERROR
