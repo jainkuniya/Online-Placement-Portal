@@ -331,6 +331,46 @@ def get_student_details_from_mis(rollNo):
     else:
         return ACCOUNT_ALREADY_EXIXT
 
+@app.route(api_path + 'tpo/create_recuiter', methods=['POST'])
+def create_recuiter():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if (free_from_error(verify_token(token)))
+            companyName = request.json['companyName']
+            password = get_random_string(5)
+            userId = get_random_string(5)
+            try:
+                data = {
+                    DB_DOC_TYPE: DB_DOC_LOGIN,
+                    'companyName': companyName,
+                    DB_DOC_FIELD_ROLL_NO: userId,
+                    DB_DOC_LOGIN_FIELD_PASSWORD: password,
+                    DB_DOC_LOGIN_FIELD_TOKEN: '',
+                    DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN: 0,
+                    'person_type': 2,
+                }
+                db.create_document(data)
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully created",
+                    'password': password,
+                    'userId': userId,
+                    })
+            except Exception, e:
+                print str(e)
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                    })
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please login again",
+        })
+
 @app.route(api_path + 'create_account', methods=['POST'])
 def create_account():
     rollNo = request.json['rollNo']
@@ -564,6 +604,20 @@ def get_all_verified_students():
             )
         result = query(limit=100)['docs']
         students = []
+        return result
+
+    else:
+        return DB_CONNECT_ERROR
+
+def get_all_recuiters():
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_LOGIN,
+                                 'person_type': 2,
+                            }
+            )
+        result = query(limit=100)['docs']
         return result
 
     else:
