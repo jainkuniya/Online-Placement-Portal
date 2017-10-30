@@ -30,7 +30,7 @@
                         <div class="dropdown profile-element"> <span>
                             <img alt="image" class="img-circle" src="../static/img/profile_small.jpg" />
                              </span>
-                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Company</strong>
+                            <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"> {{ details.companyName }}</strong>
 
                         </div>
                         <div class="logo-element">
@@ -38,23 +38,44 @@
                         </div>
                     </li>
 
+                    {% if page == "event_details" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="#"><i class="fa"></i> <span class="nav-label">Event Details</span></a>
+                    {% endif %}
+                    <a href="./recuiter/event">Event Details</a>
                     </li>
+
+                    {% if page == "position_details" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="#"><i class="fa"></i> <span class="nav-label">Position Details</span></a>
+                    {% endif %}
+                    <a href="./recuiter/position_details">Position Details</a>
                     </li>
+
+                    {% if page == "schedule" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="#"><i class="fa"></i> <span class="nav-label">Schedule</span></a>
+                    {% endif %}
+                    <a href="./recuiter/schedule">Schedule</a>
                     </li>
+
+                    {% if page == "reg_details" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="#"><i class="fa"></i> <span class="nav-label">Registration Details</span></a>
+                    {% endif %}
+                    <a href="./recuiter/reg_details">Registration Details</a>
                     </li>
+
+                    {% if page == "offers" %}
+                    <li class="active">
+                    {% else %}
                     <li>
-                        <a href="#"><i class="fa"></i> <span class="nav-label">Job Offers</span></a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa"></i> <span class="nav-label">Notes</span></a>
+                    {% endif %}
+                    <a href="./recuiter/offers">Job Offers</a>
                     </li>
                     </div>
         </nav>
@@ -151,7 +172,8 @@
     <script src="../static/js/plugins/toastr/toastr.min.js"></script>
     <!-- Select multiple attributes JS -->
     <script src="../static/js/checkbox.js"></script>
-
+    <!-- JS for recruiter offers page-->
+    <script src="../static/js/offers_table.js"></script>
 
 </body>
 

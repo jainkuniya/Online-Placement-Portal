@@ -143,8 +143,11 @@ $(document).ready(function() {
           document.cookie = 'token=' + result.data.token + '; path=/';
           if (result.data.person_type == 1) {
             $(location).attr('href', '/');
-          } else {
+          } else if (result.data.person_type == 0)  {
             $(location).attr('href', '/tpo');
+          }
+          else if (result.data.person_type == 2)  {
+            $(location).attr('href', '/recuiter');
           }
         } else if (result.success === -99) {
           clearLoginCookie();

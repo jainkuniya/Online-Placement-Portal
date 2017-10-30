@@ -1,0 +1,49 @@
+{% extends './recuiter_base.html' %}
+{% block title %}Registration Details{% endblock %}
+{% block extrastyles %}
+{% endblock %}
+{% block body %}
+<div class="container" id="c1">
+    <div class="col-md-12 well">
+        <h2 style="font-weight: bold">Registration Details</h2>
+        <div class="row">
+            <form>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Start Date (dd/mm/yyyy)</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Start Time (hh:mm)</label>
+                            <input type="text" class="form-control"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>End Date (dd/mm/yyyy)</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>End Time (hh:mm)</label>
+                            <input type="text" class="form-control"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Other Details</label>
+                    <textarea rows="3" class="form-control"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+    <a href="./offers.html" button class="btn btn-lg btn-info">Next</button> </a>
+    <a href="./schedule.html" button class="btn btn-lg btn-info">Previous</button> </a>
+</div>
+{% endblock %}

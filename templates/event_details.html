@@ -10,12 +10,12 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label>Event Title</label>
-                    <input type="text" placeholder="Event Title" class="form-control">
+                    <input type="text" placeholder="Event Title" class="form-control" value="{{ details.eventTitle }}">
                 </div>
                 <div class="row">
                     <div class="col-sm-4 form-group">
                         <label>Company Name</label>
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" value="{{ details.companyName }}">
                     </div>
                     <div class="col-sm-4 form-group">
                         <label>Type</label>
@@ -135,7 +135,7 @@
                     <label>Other Details</label>
                     <textarea class="form-control" rows="5"></textarea>
                 </div>
-                <a href="#" button class="btn btn-lg btn-info">Next</button> </a>
+                <a href="./position_details.html" button class="btn btn-lg btn-info">Next</button> </a>
             </div>
         </form>
     </div>

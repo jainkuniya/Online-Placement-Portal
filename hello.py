@@ -38,6 +38,8 @@ DB_DOC_STUDENT_BASIC_FIELD_PROGRAM = "program"
 DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
 DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR = "addmission_year"
 
+DB_DOC_RECUITER = "recuiter"
+
 mis_db_name = 'mis'
 mis_client = None
 mis_db = None
@@ -331,6 +333,54 @@ def get_student_details_from_mis(rollNo):
     else:
         return ACCOUNT_ALREADY_EXIXT
 
+@app.route(api_path + 'tpo/create_recuiter', methods=['POST'])
+def create_recuiter():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if (free_from_error(verify_token(token))):
+            companyName = request.json['companyName']
+            password = get_random_string(5)
+            userId = get_random_string(5)
+            try:
+                data = {
+                    DB_DOC_TYPE: DB_DOC_LOGIN,
+                    'companyName': companyName,
+                    DB_DOC_FIELD_ROLL_NO: userId,
+                    DB_DOC_LOGIN_FIELD_PASSWORD: password,
+                    DB_DOC_LOGIN_FIELD_TOKEN: '',
+                    DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN: 0,
+                    'person_type': 2,
+                }
+                db.create_document(data)
+
+                data = {
+                    DB_DOC_TYPE: DB_DOC_RECUITER,
+                    'companyName': companyName,
+                    DB_DOC_FIELD_ROLL_NO: userId,
+                }
+                db.create_document(data)
+
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully created",
+                    'password': password,
+                    'userId': userId,
+                    })
+            except Exception, e:
+                print str(e)
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                    })
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please login again",
+        })
+
 @app.route(api_path + 'create_account', methods=['POST'])
 def create_account():
     rollNo = request.json['rollNo']
@@ -501,8 +551,23 @@ def tpo_recverify_page():
     return get_templete("tpo_recruiter_verify")               
 
 @app.route('/event')
+def get_recuiter_templete(page_name):
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            details = fetch_recuiter(token)
+            if (free_from_error(details)):
+                if (page_name == "event_details"):
+                    return render_template('event_details.html', details= details, page=page_name)
+            else:
+                """invalid token, redirect to logout"""
+                return redirect("./logout")
+        return redirect("./login")
+    return redirect("./login")
+
+@app.route('/recuiter')
 def event_details():
-    return render_template('event_details.html')
+    return get_recuiter_templete('event_details')
 
 @app.route('/position_details')
 def position_details():
@@ -511,6 +576,14 @@ def position_details():
 @app.route('/schedule')
 def schedule_details():
     return render_template('schedule.html')
+
+@app.route('/reg_details')
+def registration_details():
+    return render_template('reg_details.html')
+
+@app.route('/offers')
+def offers_details():
+    return render_template('offers.html')
 
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
@@ -569,6 +642,50 @@ def get_all_verified_students():
         result = query(limit=100)['docs']
         students = []
         return result
+
+    else:
+        return DB_CONNECT_ERROR
+
+def get_all_recuiters():
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_LOGIN,
+                                 'person_type': 2,
+                            }
+            )
+        result = query(limit=100)['docs']
+        return result
+
+    else:
+        return DB_CONNECT_ERROR
+
+def fetch_recuiter(token):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_LOGIN,
+                                 'person_type': 2,
+                                 'token': token
+                            }
+            )
+        result = query(limit=100)['docs']
+        print result
+        if (len(result) == 1):
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: result[0][DB_DOC_FIELD_ROLL_NO]
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                return result[0]
+            else:
+                return NO_RECORD_FOUND_ERROR
+
+        else:
+            return NO_RECORD_FOUND_ERROR
 
     else:
         return DB_CONNECT_ERROR
