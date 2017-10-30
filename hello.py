@@ -569,8 +569,15 @@ def get_recuiter_templete(page_name):
                 if (page_name == "event_details"):
                     return render_template('event_details.html', details= details, page=page_name)
                 elif (page_name == "position_details"):
-                    print "cool"
                     return render_template('position_details.html', details= details, page=page_name)
+                elif (page_name == "schedule"):
+                    return render_template('schedule.html', details= details, page=page_name)
+                elif (page_name == "reg_details"):
+                    return render_template('reg_details.html', details= details, page=page_name)
+                elif (page_name == "offers"):
+                    return render_template('offers.html', details= details, page=page_name)
+                else:
+                    return redirect("./logout")
             else:
                 """invalid token, redirect to logout"""
                 return redirect("./logout")
@@ -585,17 +592,17 @@ def event_details():
 def position_details():
     return get_recuiter_templete('position_details')
 
-@app.route('/schedule')
+@app.route('/recuiter/schedule')
 def schedule_details():
-    return render_template('schedule.html')
+    return get_recuiter_templete('schedule')
 
-@app.route('/reg_details')
+@app.route('/recuiter/reg_details')
 def registration_details():
-    return render_template('reg_details.html')
+    return get_recuiter_templete('reg_details')
 
-@app.route('/offers')
+@app.route('/recuiter/offers')
 def offers_details():
-    return render_template('offers.html')
+    return get_recuiter_templete('offers')
 
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
@@ -756,6 +763,51 @@ def get_pending_students():
     else:
         return DB_CONNECT_ERROR
 
+@app.route(api_path + 'recuiter/reg_details', methods=['POST'])
+def update_reg_details():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_event_details"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                doc['start_date'] = request.json['start_date']
+                doc['start_time'] = request.json['start_time']
+                doc['end_date'] = request.json['end_date']
+                doc['end_time'] = request.json['end_time']
+                doc['reg_details_other_details'] = request.json['reg_details_other_details']
+
+                doc.save()
+                print "vishwesh"
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                print "vishwesh 2"
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            print "vishwesh 3"
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
 
 @app.route(api_path + 'recuiter/event_details', methods=['POST'])
 def update_event_details():
@@ -804,7 +856,6 @@ def update_event_details():
                 'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
                 'message': "Please try again",
             })
-    print "vishwesh 4"
     return jsonify({
         'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
         'message': "Please try again",

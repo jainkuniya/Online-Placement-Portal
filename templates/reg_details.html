@@ -7,18 +7,18 @@
     <div class="col-md-12 well">
         <h2 style="font-weight: bold">Registration Details</h2>
         <div class="row">
-            <form>
+            <form id="reg_details">
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Start Date (dd/mm/yyyy)</label>
-                            <input type="text" class="form-control">
+                            <input id="start_date" type="text" class="form-control" value="{{ details.start_date }}">
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>Start Time (hh:mm)</label>
-                            <input type="text" class="form-control"></input>
+                            <input id="start_time" type="text" class="form-control" value="{{ details.start_time }}"></input>
                         </div>
                     </div>
                 </div>
@@ -26,24 +26,64 @@
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>End Date (dd/mm/yyyy)</label>
-                            <input type="text" class="form-control">
+                            <input id="end_date" type="text" class="form-control" value="{{ details.end_date }}"/>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label>End Time (hh:mm)</label>
-                            <input type="text" class="form-control"></input>
+                            <input id="end_time" type="text" class="form-control" value="{{ details.end_time }}"></input>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label>Other Details</label>
-                    <textarea rows="3" class="form-control"></textarea>
+                    <textarea id="other_details" rows="3" class="form-control">{{ details.reg_details_other_details }}</textarea>
                 </div>
+              <h1 id="id_error"></h1>
+              <button class="btn btn-lg btn-info">Next</button>
             </form>
         </div>
     </div>
-    <a href="./offers.html" button class="btn btn-lg btn-info">Next</button> </a>
-    <a href="./schedule.html" button class="btn btn-lg btn-info">Previous</button> </a>
 </div>
+
+<script>
+$(window).load(function() {
+  $('#reg_details').submit(function() {
+    $('#id_error').text('');
+
+    var frm = $('#reg_details');
+
+    var data = JSON.stringify({
+      'start_date': $('#start_date').val(),
+      'start_time': $('#start_time').val(),
+      'end_date': $('#end_date').val(),
+      'end_time': $('#end_time').val(),
+      'reg_details_other_details': $('#other_details').val(),
+    });
+
+    $.ajax({
+      type: "post",
+      url: "/api/v1/recuiter/reg_details",
+      contentType: 'application/json',
+      data: data,
+      success: function(result) {
+        if (result.success === 1) {
+          $('#id_error').text(result.message);
+          $(location).attr('href', '../recuiter');
+        } else if (result.success === -99) {
+          $(location).attr('href', './logout');
+        } else {
+          $('#id_error').text(result.message);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('#id_error').text('Error: ' + errorThrown);
+      },
+    });
+    return false;
+  });
+});
+</script>
+
 {% endblock %}
