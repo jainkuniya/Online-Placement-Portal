@@ -3,16 +3,54 @@
 <medium id ="msg" style="color:red;">Please generate credentials for the recruiting company</medium>
 <div class="container" id="form1">
   <div>
-    <form id="credForm">
       <div class="field-wrap" style="padding-top: 50px;padding-bottom: 50px">
         <label>
         Company Name<span class="req">*</span>
         </label>
-        <input id="id_cred" type="text" required autocomplete="off" />
+        <input id="company_name" type="text" required autocomplete="off" />
       </div>
-      <h1 id="id_error_cred"></h1>
-      <button id="id_cred_submit_button" type="submit" class="btn btn-primary"/>Generate</button>
-    </form>
+      <h1 id="id_error"></h1>
+      <h1 id="user_id"></h1>
+      <h1 id="password"></h1>
+      <button id="id_cred_submit_button" onClick="submit_form()" type="submit" class="btn btn-primary"/>Generate</button>
   </div>
 </div>
+
+<script>
+function submit_form() {
+  $('#id_error').text('');
+  var companyName = $('#company_name').val();
+
+  if(companyName === '')
+  {
+    $('#id_error').text('Please enter company name.');
+    return;
+  }
+
+  var data = JSON.stringify({
+    company_name: companyName,
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/tpo/create_recuiter',
+    contentType: 'application/json',
+    data: data,
+    success: function(result) {
+      if (result.success === 1) {
+        $('#user_id').text(result.userId);
+        $('#password').text(result.password);
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+</script>
 {% endblock %}

@@ -338,7 +338,7 @@ def create_recuiter():
     if 'token' in request.cookies:
         token = request.cookies['token']
         if (free_from_error(verify_token(token))):
-            companyName = request.json['companyName']
+            companyName = request.json['company_name']
             password = get_random_string(5)
             userId = get_random_string(5)
             try:
