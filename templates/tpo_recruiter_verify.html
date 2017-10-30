@@ -2,36 +2,27 @@
 {% block body %}
 <medium id ="msg" style="color:red;">You have to approve the details of the recruiting company</medium>
 <div class="tab container">
-  <button class="tablinks" onclick="showStatus(event, 'Unverified')">Unverified</button>
-  <button class="tablinks" onclick="showStatus(event, 'Verified')">Verified</button>
+  <button class="tablinks" onclick="showStatus(event, 'Unverified')">Unverified Recuiter</button>
+  <button class="tablinks" onclick="showStatus(event, 'Verified')">All Recuiter</button>
 </div>
 <div id="Unverified" class="tabcontent">
-  <!-- <h3>Unverified Recruiters</h3>
   <div class="container" id="form1">
     <div class="col-xs-12" id="1">
-      <div class="col-xs-2"><a>Id</a></div>
-      <div class="col-xs-2"><a>Password</a></div>
-      <div class="col-xs-2"><a>Phone Number</a></div>
-      <div class="col-xs-2"><a>Gender</a></div>
-      <div class="col-xs-2"><a>Branch</a></div>
-      <hr>
+      <div class="col-xs-3"><a>Id</a></div>
+      <div class="col-xs-3"><a>Company Name</a></div>
+      <div class="col-xs-6"><a>Action</a></div>
     </div>
     <hr>
-    {% for student in all_verified_students %}
+    {% for recuiter in pending_recuiter %}
     <div class="col-xs-12" id="1">
-      <div class="col-xs-2"><a>{{ student.roll_no }}</a></div>
-      <div class="col-xs-2"><a>{{ student.first_name + student.last_name }}</a></div>
-      <div class="col-xs-2"><a>{{ student.phone_number }}</a></div>
-      <div class="col-xs-2"><a>{{ student.gender }}</a></div>
-      <div class="col-xs-2"><a>{{ student.branch }}</a></div>
-      <hr>
-    </div>
-    <div>
-      <button id="approve" class="btn btn-success" >Approve</button>
-      <hr>
+      <div class="col-xs-3"><a>{{ recuiter.roll_no }}</a></div>
+      <div class="col-xs-3"><a>{{ recuiter.companyName }}</a></div>
+      <div class="col-xs-3"><button class="btn btn-lg btn-info">View</button></div>
+      <div class="col-xs-3"><button class="btn btn-lg btn-info">Approve</button></div>
     </div>
     {% endfor %}
-  </div> //-->
+    <hr>
+  </div>
 </div>
 <div id="Verified" class="tabcontent">
   <div class="container" id="form1">
@@ -44,7 +35,6 @@
     <div class="col-xs-12" id="1">
       <div class="col-xs-6"><a>{{ recuiter.roll_no }}</a></div>
       <div class="col-xs-6"><a>{{ recuiter.companyName }}</a></div>
-      <hr>
     </div>
     {% endfor %}
     <hr>
