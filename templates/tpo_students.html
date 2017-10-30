@@ -2,7 +2,7 @@
 {% block body %}
 <medium id ="msg" style="color:red;">You have to approve the details of the listed students</medium>
 <div class="tab container">
-  <button class="tablinks" onclick="showStatus(event, 'All_Students')">All Students</button>
+  <button class="tablinks" onclick="showStatus(event, 'All_Students')" id="defaultOpen">All Students</button>
   <button class="tablinks" onclick="showStatus(event, 'Approvable')">Approvable</button>
   <button class="tablinks" onclick="showStatus(event, 'Rejectable')">Rejectable</button>
 </div>
