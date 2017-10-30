@@ -652,6 +652,45 @@ def verify_individual_student(rollNo):
     else:
         return NO_RECORD_FOUND_ERROR
 
+@app.route(api_path + 'tpo/approve_recuiter', methods=['POST'])
+def approve_recuiter():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: request.json["id"],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                doc['verified'] = 1
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully verified",
+                    })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "No recuiter found",
+                    })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please login again",
+                })
+    else:
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+            'message': "Please login again",
+            })
+
 def get_all_verified_students():
     if client:
         query = cloudant.query.Query(
