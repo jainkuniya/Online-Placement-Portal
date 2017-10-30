@@ -559,6 +559,9 @@ def get_recuiter_templete(page_name):
             if (free_from_error(details)):
                 if (page_name == "event_details"):
                     return render_template('event_details.html', details= details, page=page_name)
+                elif (page_name == "position_details"):
+                    print "cool"
+                    return render_template('position_details.html', details= details, page=page_name)
             else:
                 """invalid token, redirect to logout"""
                 return redirect("./logout")
@@ -569,9 +572,9 @@ def get_recuiter_templete(page_name):
 def event_details():
     return get_recuiter_templete('event_details')
 
-@app.route('/position_details')
+@app.route('/recuiter/position_details')
 def position_details():
-    return render_template('position_details.html')
+    return get_recuiter_templete('position_details')
 
 @app.route('/schedule')
 def schedule_details():
@@ -670,7 +673,6 @@ def fetch_recuiter(token):
                             }
             )
         result = query(limit=100)['docs']
-        print result
         if (len(result) == 1):
             query = cloudant.query.Query(
                 db, selector = {
@@ -730,6 +732,55 @@ def get_pending_students():
 
     else:
         return DB_CONNECT_ERROR
+
+
+@app.route(api_path + 'recuiter/event_details', methods=['POST'])
+def update_event_details():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """update_event_details"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     DB_DOC_TYPE: DB_DOC_RECUITER,
+                                     DB_DOC_FIELD_ROLL_NO: status[DB_DOC_FIELD_ROLL_NO],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                doc['eventTitle'] = request.json['event_title']
+                doc['companyName'] = request.json['company_name']
+                doc['type'] = request.json['type']
+                doc['eligibility_criteria'] = request.json['eligibility_criteria']
+                doc['selection_process_details'] = request.json['selection_process_details']
+                doc['other_details'] = request.json['other_details']
+
+                doc.save()
+                print "vishwesh"
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                print "vishwesh 2"
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            print "vishwesh 3"
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    print "vishwesh 4"
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
 
 @app.route(api_path + 'update_basic_details', methods=['POST'])
 def update_basic_details():
@@ -1142,4 +1193,4 @@ def shutdown():
         client.disconnect()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True, threaded=True)

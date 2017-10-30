@@ -6,16 +6,15 @@
 <h1 class="well">Event Details</h1>
 <div class="col-lg-12 well">
     <div class="row">
-        <form>
             <div class="col-sm-12">
                 <div class="form-group">
                     <label>Event Title</label>
-                    <input type="text" placeholder="Event Title" class="form-control" value="{{ details.eventTitle }}">
+                    <input id="event_title" type="text" placeholder="Event Title" class="form-control" value="{{ details.eventTitle }}">
                 </div>
                 <div class="row">
                     <div class="col-sm-4 form-group">
                         <label>Company Name</label>
-                        <input type="text" class="form-control" value="{{ details.companyName }}">
+                        <input id="company_name" type="text" class="form-control" value="{{ details.companyName }}">
                     </div>
                     <div class="col-sm-4 form-group">
                         <label>Type</label>
@@ -125,20 +124,58 @@
                 </div>
                 <div class="form-group">
                     <label>Eligibility Criteria</label>
-                    <textarea class="common form-control" rows="5"></textarea>
+                    <textarea id="eligibility_criteria" class="common form-control" rows="5"> {{ details.eligibility_criteria }}</textarea>
                 </div>
                 <div class="form-group">
                     <label>Selection Process Details</label>
-                    <textarea class="form-control" rows="5"></textarea>
+                    <textarea id="selection_process_details" class="form-control" rows="5"> {{ details.selection_process_details }} </textarea>
                 </div>
                 <div class="form-group">
                     <label>Other Details</label>
-                    <textarea class="form-control" rows="5"></textarea>
+                    <textarea id="other_details" class="form-control" rows="5">{{ details.other_details }}</textarea>
                 </div>
-                <a href="./position_details.html" button class="btn btn-lg btn-info">Next</button> </a>
+                <h1 id="id_error"></h1>
+                <a> <button onClick="submit_form()" class="btn btn-lg btn-info">Save</button> </a>
             </div>
-        </form>
     </div>
 </div>
+
+<script>
+function submit_form() {
+  $('#id_error').text('');
+
+  var frm = $('#id_event_form');
+
+  var data = JSON.stringify({
+    event_title: $('#event_title').val(),
+    company_name: $('#company_name').val(),
+    type: $('#sel2').val(),
+    eligibility_criteria: $('#eligibility_criteria').val(),
+    selection_process_details: $('#selection_process_details').val(),
+    other_details: $('#other_details').val(),
+  });
+
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/recuiter/event_details',
+    contentType: 'application/json',
+    data: data,
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error').text(result.message);
+        $(location).attr('href', './position_details');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+</script>
 
 {% endblock %}
