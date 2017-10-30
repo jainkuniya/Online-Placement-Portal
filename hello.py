@@ -538,6 +538,19 @@ def tro_dashboard():
         return redirect("./login")
     return redirect("./login")
 
+@app.route('/tpo_students')
+def tpo_students_page():
+    return get_templete("tpo_students")
+
+@app.route('/tpo_recruiter_cred')
+def tpo_reccred_page():
+    return get_templete("tpo_recruiter_cred")
+
+@app.route('/tpo_recruiter_verify')
+def tpo_recverify_page():
+    return get_templete("tpo_recruiter_verify")               
+
+@app.route('/event')
 def get_recuiter_templete(page_name):
     if 'token' in request.cookies:
         token = request.cookies['token']
