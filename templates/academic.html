@@ -8,11 +8,11 @@
    <hr>
    <div style="margin-left:20px;margin-bottom:20px;">
       <table class="responsive-table" style="width:80%;">
-         <label>Current Academics</label>
+         <label><h3 style="color:#191970;">Current Academics</h3></label></hr>
          <thead>
             <tr>
-               <th scope="col">Semester</th>
-               <th scope="col">SGPA</th>
+               <th scope="col" style="padding-right:0px;">Semester</th>
+               <th scope="col" style="padding-left:0px;">SGPA</th>
             </tr>
          </thead>
          <tbody>
@@ -67,7 +67,9 @@
    <hr>
      <form id="id_academic_details_form" action="/api/v1/update_academic_details" method="post">
       <div class="col-sm-12">
-         <label>12th Standard</label>
+      
+         <label><h3 style="color:#191970;">12th Standard</h3></label>
+         <hr>
          <div class="form-group">
             <label>Institute Name</label>
             <input required id="id_12_institute" value="{{ academic_details["12_institute"] }}" type="text" class="form-control" placeholder="Enter Institute's name">
@@ -108,7 +110,8 @@
             </div>
          </div>
          <hr>
-         <label>10th Standard</label>
+         <label><h3 style="color:#191970;">10th Standard</h3></label>
+         <hr>
          <div class="form-group">
             <label>Institute Name</label>
             <input required id="id_10_institute" type="text" value="{{ academic_details["10_institute"] }}" class="form-control" placeholder="Enter Institute's name">

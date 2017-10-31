@@ -26,11 +26,11 @@
                                  </div>
                                </div>
                                <h1 id="id_error_update"></h1>
-                               <a> <button onclick="updateProject('{{ project }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
-                               <a> <button onclick="updateProject('{{ project }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
+                               <a> <button onclick="updateProject('{{ project }}', 0);" class="btn btn-info">Update</button> </a>
+                               <a> <button onclick="updateProject('{{ project }}', 1);" class="btn btn-info">Delete</button> </a>
 
                                <input hidden id="p{{ loop.index }}_state" value="0" type="text">
-                               <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-lg btn-info">Expand/Collapse</button>
+                               <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-info">Expand/Collapse</button>
 
 
                           {% else %}
@@ -58,7 +58,7 @@
                                  </div>
                                </div>
                                <h1 id="id_error"></h1>
-                               <a> <button class="btn btn-lg btn-info">Add New Project</button> </a>
+                               <a> <button class="btn btn-lg btn-primary">Add New Project</button> </a>
                            </form>
 
 
