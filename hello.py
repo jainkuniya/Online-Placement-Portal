@@ -515,6 +515,36 @@ def get_templete(page_name):
         return redirect("./login")
     return redirect("./login")
 
+def get_applied_candidate(cCode):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_APPLY,
+                                 'valid': 1,
+                                 'c_code': cCode,
+                                 'selected': 0,
+                            }
+            )
+        result = query(limit=100)['docs']
+        return result
+    else:
+        return []
+
+def get_recuiter_selected_candidate(cCode):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_APPLY,
+                                 'valid': 1,
+                                 'c_code': cCode,
+                                 'selected': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+        return result
+    else:
+        return []
+
 def get_status(roll_no, code):
     if client:
         query = cloudant.query.Query(
@@ -679,7 +709,9 @@ def get_recuiter_templete(page_name):
                 elif (page_name == "reg_details"):
                     return render_template('reg_details.html', details= details, page=page_name)
                 elif (page_name == "offers"):
-                    return render_template('offers.html', details= details, page=page_name)
+                    applied_candidates = get_applied_candidate(details[DB_DOC_FIELD_ROLL_NO])
+                    selected_candidate = get_recuiter_selected_candidate(details[DB_DOC_FIELD_ROLL_NO])
+                    return render_template('offers.html', details= details, applied_candidates=applied_candidates, selected_candidate=selected_candidate, page=page_name)
                 else:
                     return redirect("./logout")
             else:
@@ -928,6 +960,46 @@ def update_reg_details():
                 doc['end_date'] = request.json['end_date']
                 doc['end_time'] = request.json['end_time']
                 doc['reg_details_other_details'] = request.json['reg_details_other_details']
+
+                doc.save()
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully updated",
+                })
+            else:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                })
+        else:
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please try again",
+    })
+
+@app.route(api_path + 'recuiter/select_candidate', methods=['POST'])
+def select_candidate():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        status = verify_token(token)
+        if free_from_error(status):
+            """select candidate"""
+            query = cloudant.query.Query(
+                db, selector = {
+                                     '_id': request.json["id"],
+                                }
+                )
+            result = query(limit=100)['docs']
+            if (len(result) == 1):
+                doc = db[result[0]['_id']]
+                doc.fetch()
+                doc['selected'] = 1
+                doc['position'] = request.json['position']
+                doc['package'] = request.json['package']
 
                 doc.save()
                 return jsonify({
