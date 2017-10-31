@@ -281,7 +281,7 @@ def fetch_from_mis():
     elif student == NO_RECORD_FOUND_ERROR:
         return jsonify({
             'success': SUCCESS_CODE_IN_VALID,
-            'message': "Invalid Roll No",
+            'message': "Invalid credentials",
             'data': {}
             })
     elif (student == NOT_FINAL_YEAR):
@@ -499,7 +499,7 @@ def login():
     else:
         return jsonify({
             'success': SUCCESS_CODE_IN_VALID,
-            'message': "Invalid rollNo password",
+            'message': "Invalid credentials",
         })
 
 def get_random_string(length):
