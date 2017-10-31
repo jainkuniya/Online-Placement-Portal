@@ -115,7 +115,7 @@
             </div>
             <div class="row  border-bottom white-bg dashboard-header">
                 <div class="col-md-12">
-                    <h2>Welcome Company</h2>
+                    <h2>Welcome {{ details.companyName }}</h2>
                     {% if details.verified == 0 %}
                     <medium style="color:red;">You have to complete your profile before final verification by Training & Placement Officer.</medium>
                     {% endif %}

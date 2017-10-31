@@ -103,10 +103,10 @@
           </div>
          </div>
          <h1 id="{{ position }}_id_error_update"></h1>
-         <a> <button onclick="updatePosition('{{ position }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
-         <a> <button onclick="updatePosition('{{ position }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
+         <a> <button onclick="updatePosition('{{ position }}', 0);" class="btn btn-info"><i class="material-icons">mode_edit</i></button> </a>
+         <a> <button onclick="updatePosition('{{ position }}', 1);" class="btn btn-info"><i class="material-icons">delete</i></button> </a>
          <input hidden id="p{{ loop.index }}_state" value="0" type="text">
-         <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-lg btn-info">Expand/Collapse</button>
+         <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-info"><i class="material-icons">open_with</i></button>
       </div>
    </div>
    {% else %}
@@ -196,12 +196,13 @@
                </div>
             </div>
             <h1 id="id_error"></h1>
-            <button type="submit" class="btn btn-lg btn-info">Add New Job Position</button>
+            <button type="submit" class="btn btn-lg btn-primary"><i class="material-icons">note_add</i></button>
          </form>
       </div>
    </div>
-   <a href="./schedule" button class="btn btn-lg btn-info">Next</button> </a>
+   
    <a href="../recuiter" button class="btn btn-lg btn-info">Previous</button> </a>
+   <a href="./schedule" button class="btn btn-lg btn-info">Next</button> </a>
 </div>
 <script>
    $(document).ready(function() {

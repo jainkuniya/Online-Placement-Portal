@@ -3,7 +3,7 @@
 {% block extrastyles %}
 {% endblock %}
 {% block body %}
-<div class="container" id="c1">
+<h1 class="well">Drive Schedule </h1>
   {% for schedule in details.schedule %}
   {% if details.schedule[schedule] != -1 %}
   <div class="row well">
@@ -36,17 +36,17 @@
           </div>
         </div>
           <h1 id="{{ schedule }}_id_error_update"></h1>
-          <a> <button onclick="updateSchedule('{{ schedule }}', 0);" class="btn btn-lg btn-info">Update</button> </a>
-          <a> <button onclick="updateSchedule('{{ schedule }}', 1);" class="btn btn-lg btn-info">Delete</button> </a>
+          <a> <button onclick="updateSchedule('{{ schedule }}', 0);" class="btn btn-info"><i class="material-icons">mode_edit</i></button> </a>
+          <a> <button onclick="updateSchedule('{{ schedule }}', 1);" class="btn btn-info"><i class="material-icons">delete</i></button> </a>
           <input hidden id="p{{ loop.index }}_state" value="0" type="text">
-          <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-lg btn-info">Expand/Collapse</button>
+          <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-info"><i class="material-icons">open_with</i></button>
   </div>
 </div>
   {% else %}
   {% endif %}
   {% endfor %}
-    <div class="col-md-12 well">
-        <h2 style="font-weight: bold">Drive Schedule</h2>
+    <div class="row well">
+        
         <div class="row">
             <form id="id_new_schedule_form">
                 <div class="form-group">
@@ -76,12 +76,13 @@
                     <textarea id="details" rows="3" class="form-control"></textarea>
                 </div>
                 <h1 id="id_error"></h1>
-                <button type="submit" class="btn btn-lg btn-info">Add New Agenda</button>
+                <button type="submit" class="btn btn-lg btn-primary"><i class="material-icons">note_add</i></button>
             </form>
         </div>
     </div>
-    <a href="./reg_details.html" button class="btn btn-lg btn-info">Next</button> </a>
     <a href="./position_details.html" button class="btn btn-lg btn-info">Previous</button> </a>
+    <a href="./reg_details.html" button class="btn btn-lg btn-info">Next</button> </a>
+    
 </div>
 
 <script>
