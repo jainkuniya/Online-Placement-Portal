@@ -3,10 +3,9 @@
 {% block extrastyles %}
 {% endblock %}
 {% block body %}
-                  <div class="container" id="c1">
-                     <div class="col-lg-12 well" >
-                        <h2>Projects</h2>
-                        <div class="row">
+                  <h1 class="well">Projects</h1>
+                  <div class="col-lg-12 well" >
+                    <div class="row">
                           {% for project in projects.projects %}
 
                           {% if projects.projects[project] != -1 %}
@@ -16,21 +15,21 @@
                              <div class="col-sm-12">
                                 <div class="row">
                                    <div class="form-group">
-                                      <label>Project Title</label>
+                                      <h3 style="color:#191970;">Project Title</h3>
                                       <input required id="id_{{ project }}_title"  value="{{ projects.projects[project].title }}" placeholder="Enter Project Title Here.." type="text" class="form-control">
                                    </div>
                                    <div class="form-group" id="p{{ loop.index }}" style="visibility: hidden; height:0">
-                                      <label>Description</label>
+                                      <h3 style="color:#191970;">Description</h3>
                                       <textarea required id="id_{{ project }}_description"  placeholder="Enter Project Description Here.." rows="3" class="form-control">{{ projects.projects[project].project_description }}</textarea>
                                    </div>
                                  </div>
                                </div>
-                               <h1 id="id_error_update"></h1>
-                               <a> <button onclick="updateProject('{{ project }}', 0);" class="btn btn-info">Update</button> </a>
-                               <a> <button onclick="updateProject('{{ project }}', 1);" class="btn btn-info">Delete</button> </a>
+                               <h2 id="id_error_update"></h2>
+                               <a> <button style="margin-left:950px;" onclick="updateProject('{{ project }}', 0);" class="btn btn-info"><i class="material-icons">mode_edit</i></button> </a>
+                               <a> <button onclick="updateProject('{{ project }}', 1);" class="btn btn-info"><i class="material-icons">delete</i></button> </a>
 
                                <input hidden id="p{{ loop.index }}_state" value="0" type="text">
-                               <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-info">Expand/Collapse</button>
+                               <button onclick="toggleState('p{{ loop.index }}')" class="btn btn-info"><i class="material-icons">open_with</i></button>
 
 
                           {% else %}
@@ -48,16 +47,16 @@
                              <div class="col-sm-12">
                                 <div class="row">
                                    <div class="form-group">
-                                      <label>Project Title</label>
+                                      <h3 style="color:#191970;">Project Title</h3>
                                       <input required id="id_new_project_title" placeholder="Enter Project Title Here.." type="text" class="form-control">
                                    </div>
                                    <div class="form-group" id="p1" class="collapse">
-                                      <label>Description</label>
+                                      <h3 style="color:#191970;">Description</h3>
                                       <textarea required id="id_new_project_description" placeholder="Enter Project Description Here.." rows="3" class="form-control"></textarea>
                                    </div>
                                  </div>
                                </div>
-                               <h1 id="id_error"></h1>
+                               <h2 id="id_error"></h2>
                                <a> <button class="btn btn-lg btn-primary">Add New Project</button> </a>
                            </form>
 
@@ -85,12 +84,12 @@
     }),
     success: function(result) {
       if (result.success === 1) {
-        $('#id_error_update').text(result.message);
+        //$('#id_error_update').text(result.message);
         $(location).attr('href', './projects');
       } else if (result.success === -99) {
         $(location).attr('href', './logout');
       } else {
-        $('#id_error_update').text(result.message);
+        //$('#id_error_update').text(result.message);
       }
     },
     error: function(XMLHttpRequest, textStatus, errorThrown) {
