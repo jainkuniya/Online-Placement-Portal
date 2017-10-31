@@ -42,6 +42,8 @@ DB_DOC_RECUITER = "recuiter"
 
 DB_DOC_APPLY = "apply"
 
+DB_DOC_NOTIFICATION = "notifications"
+
 mis_db_name = 'mis'
 mis_client = None
 mis_db = None
@@ -69,6 +71,8 @@ TOEKN_LENGTH = 10
 
 REQUIRED_ADMISSION_YEAR = 14
 NOT_FINAL_YEAR = 3
+
+TPO_USER_NAME = "TPO"
 
 def free_from_error(object):
     if object == DB_CONNECT_ERROR or object == NO_RECORD_FOUND_ERROR or object == ACCOUNT_ALREADY_EXIXT or object == INVALID_TOKEN or object == NOT_FINAL_YEAR:
@@ -386,6 +390,20 @@ def create_recuiter():
         'message': "Please login again",
         })
 
+def create_notification(roll_no, message):
+    try:
+        data = {
+            DB_DOC_TYPE: DB_DOC_NOTIFICATION,
+            'to': roll_no,
+            'message': message,
+        }
+        db.create_document(data)
+
+        return 1
+    except Exception, e:
+        print str(e)
+        return 0
+
 @app.route(api_path + 'create_account', methods=['POST'])
 def create_account():
     rollNo = request.json['rollNo']
@@ -424,6 +442,8 @@ def create_account():
             }
             data.update(student[MIS_DB_DOC_STUDENTS_STUDENT_LIST_ACADEMIC])
             db.create_document(data)
+
+            create_notification(TPO_USER_NAME, "New student to verify: " + rollNo)
 
             return jsonify({
                 'success': SUCCESS_CODE_VALID,
@@ -491,24 +511,25 @@ def get_templete(page_name):
         token = request.cookies['token']
         if token != '':
             basic_details = fetch_student_basic_details(token)
+            notifications = get_notifications(basic_details[DB_DOC_FIELD_ROLL_NO])
             if (free_from_error(basic_details)):
                 if (page_name == "family"):
                     family_details = fetch_student_family_details(basic_details[DB_DOC_FIELD_ROLL_NO])
-                    return render_template('family.html', basic_details= basic_details, family_details= family_details, page=page_name)
+                    return render_template('family.html', notifications=notifications, basic_details= basic_details, family_details= family_details, page=page_name)
                 elif (page_name == "academic"):
                     academic_details = fetch_student_academic_details(basic_details[DB_DOC_FIELD_ROLL_NO])
-                    return render_template('academic.html', basic_details= basic_details, academic_details= academic_details, page=page_name)
+                    return render_template('academic.html', notifications=notifications, basic_details= basic_details, academic_details= academic_details, page=page_name)
                 elif (page_name == "projects"):
                     projects = fetch_student_project(basic_details[DB_DOC_FIELD_ROLL_NO])
-                    return render_template('projects.html', basic_details= basic_details, projects=projects, page=page_name)
+                    return render_template('projects.html', notifications=notifications, basic_details= basic_details, projects=projects, page=page_name)
                 elif (page_name == "exprience"):
                     expriences = fetch_student_expriences(basic_details[DB_DOC_FIELD_ROLL_NO])
-                    return render_template('exprience.html', basic_details= basic_details, expriences=expriences, page=page_name)
+                    return render_template('exprience.html', notifications=notifications, basic_details= basic_details, expriences=expriences, page=page_name)
                 elif (page_name == "companies"):
                     positions = fetch_positions(basic_details[DB_DOC_FIELD_ROLL_NO], basic_details[DB_DOC_STUDENT_BASIC_FIELD_BRANCH])
-                    return render_template('students_positions.html', basic_details= basic_details, positions= positions, page=page_name)
+                    return render_template('students_positions.html', notifications=notifications, basic_details= basic_details, positions= positions, page=page_name)
                 else:
-                    return render_template('index.html', basic_details= basic_details, page=page_name)
+                    return render_template('index.html', notifications=notifications, basic_details= basic_details, page=page_name)
             else:
                 """invalid token, redirect to logout"""
                 return redirect("./logout")
@@ -538,6 +559,19 @@ def get_recuiter_selected_candidate(cCode):
                                  'valid': 1,
                                  'c_code': cCode,
                                  'selected': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+        return result
+    else:
+        return []
+
+def get_notifications(roll_no):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_NOTIFICATION,
+                                 'to': roll_no,
                             }
             )
         result = query(limit=100)['docs']
@@ -642,16 +676,17 @@ def get_tpo_templete(page_name):
     if 'token' in request.cookies:
         token = request.cookies['token']
         if token != '':
+            notifications = get_notifications("TPO")
             if (page_name == "tpo_students"):
                 pending_students = get_pending_students()
                 all_verified_students = get_all_verified_students()
-                return render_template('tpo_students.html', pending_students=pending_students, all_verified_students=all_verified_students, page_name=page_name)
+                return render_template('tpo_students.html', notifications=notifications, pending_students=pending_students, all_verified_students=all_verified_students, page_name=page_name)
             elif (page_name == "tpo_recruiter_cred"):
-                return render_template('tpo_recruiter_cred.html', page_name=page_name)
+                return render_template('tpo_recruiter_cred.html', notifications=notifications, page_name=page_name)
             elif (page_name == "tpo_recruiter_verify"):
                 pending_recuiter = get_pending_recuiters()
                 all_recuiter = get_all_verified_recuiters()
-                return render_template('tpo_recruiter_verify.html', pending_recuiter=pending_recuiter, all_recuiter=all_recuiter, page_name=page_name)
+                return render_template('tpo_recruiter_verify.html', notifications=notifications, pending_recuiter=pending_recuiter, all_recuiter=all_recuiter, page_name=page_name)
             else:
                 return redirect("./logout")
         return redirect("./logout")
@@ -700,14 +735,15 @@ def get_recuiter_templete(page_name):
         if token != '':
             details = fetch_recuiter(token)
             if (free_from_error(details)):
+                notifications = get_notifications(details[DB_DOC_FIELD_ROLL_NO])
                 if (page_name == "event_details"):
-                    return render_template('event_details.html', details= details, page=page_name)
+                    return render_template('event_details.html', notifications=notifications, details= details, page=page_name)
                 elif (page_name == "position_details"):
-                    return render_template('position_details.html', details= details, page=page_name)
+                    return render_template('position_details.html', notifications=notifications, details= details, page=page_name)
                 elif (page_name == "schedule"):
-                    return render_template('schedule.html', details= details, page=page_name)
+                    return render_template('schedule.html', notifications=notifications, details= details, page=page_name)
                 elif (page_name == "reg_details"):
-                    return render_template('reg_details.html', details= details, page=page_name)
+                    return render_template('reg_details.html', notifications=notifications, details= details, page=page_name)
                 elif (page_name == "offers"):
                     applied_candidates = get_applied_candidate(details[DB_DOC_FIELD_ROLL_NO])
                     selected_candidate = get_recuiter_selected_candidate(details[DB_DOC_FIELD_ROLL_NO])
@@ -782,6 +818,9 @@ def verify_individual_student(rollNo):
         doc['verified'] = 1
 
         doc.save()
+
+        create_notification(rollNo, "Your account is verified! ")
+
         return doc
     else:
         return NO_RECORD_FOUND_ERROR
@@ -805,6 +844,10 @@ def approve_recuiter():
                 doc['verified'] = 1
 
                 doc.save()
+
+                """send notification to all verified students"""
+                send_notification_to_all_verified_students("New company is listed! ")
+
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully verified",
@@ -838,7 +881,14 @@ def get_all_verified_students():
         return result
 
     else:
-        return DB_CONNECT_ERROR
+        return []
+
+def send_notification_to_all_verified_students(message):
+    students = get_all_verified_students()
+    for student in students:
+        create_notification(student[DB_DOC_FIELD_ROLL_NO], message)
+
+    return 1
 
 def get_all_verified_recuiters():
     if client:
@@ -1006,6 +1056,8 @@ def select_candidate():
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully updated",
                 })
+
+                create_notification(doc['roll_no'], "Congrats!! Selected for " + request.json['position'] + ", package " + request.json['package'])
             else:
                 return jsonify({
                     'success': SUCCESS_CODE_IN_VALID,
