@@ -36,8 +36,8 @@
                IN+
                </div>
             </li>
-            <li class="active">
-            <a href="index.html"><i class="material-icons">person</i> <span class="nav-label">Edit Profile</span></a>
+            <li>
+            <a><i class="material-icons">person</i> <span class="nav-label">Edit Profile</span></a>
             <ul class="nav nav-second-level">
             {% if page == "home" %}
             <li class="active">
@@ -82,8 +82,15 @@
             <li>
                <a href="#"><i class="material-icons">description</i> <span class="nav-label">View Resume</span></a>
             </li>
-            <li>
-               <a href="index.html#"><i class="material-icons">widgets</i><span class="nav-label">Companies</span></a>
+
+              {% if page == "companies" %}
+              <li class="active">
+              {% else %}
+              <li>
+              {% endif %}
+
+
+               <a href="./companies"><i class="material-icons">widgets</i><span class="nav-label">Companies</span></a>
             </li>
             <li>
                <a href="#"><i class="material-icons">event</i> <span class="nav-label">Calendar</span>  </a>
@@ -188,7 +195,7 @@
   <!-- Toastr -->
   <script src="../static/js/plugins/toastr/toastr.min.js"></script>
    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-   
+
 
    {% block extrajavascripts %}
    {% endblock %}

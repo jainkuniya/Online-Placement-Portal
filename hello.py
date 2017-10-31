@@ -40,6 +40,8 @@ DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR = "addmission_year"
 
 DB_DOC_RECUITER = "recuiter"
 
+DB_DOC_APPLY = "apply"
+
 mis_db_name = 'mis'
 mis_client = None
 mis_db = None
@@ -502,6 +504,9 @@ def get_templete(page_name):
                 elif (page_name == "exprience"):
                     expriences = fetch_student_expriences(basic_details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('exprience.html', basic_details= basic_details, expriences=expriences, page=page_name)
+                elif (page_name == "companies"):
+                    positions = fetch_positions(basic_details[DB_DOC_FIELD_ROLL_NO], basic_details[DB_DOC_STUDENT_BASIC_FIELD_BRANCH])
+                    return render_template('students_positions.html', basic_details= basic_details, positions= positions, page=page_name)
                 else:
                     return render_template('index.html', basic_details= basic_details, page=page_name)
             else:
@@ -509,6 +514,99 @@ def get_templete(page_name):
                 return redirect("./logout")
         return redirect("./login")
     return redirect("./login")
+
+def get_status(roll_no, code):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_APPLY,
+                                 'valid': 1,
+                                 DB_DOC_FIELD_ROLL_NO: roll_no,
+                                 'p_code': code,
+                            }
+            )
+        result = query(limit=100)['docs']
+        if (len(result) == 1):
+            if (result[0]["selected"] == 1):
+                return "Selected!!"
+            return "applied"
+        return "can_apply"
+
+    else:
+        return "can_apply"
+
+def fetch_positions(roll_no, branch):
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_RECUITER,
+                                 'verified': 1,
+                            }
+            )
+        data = []
+        result = query(limit=100)['docs']
+        for com in result:
+            if "positions" in com:
+                positions = []
+                for po in com["positions"]:
+                    """check if already applied"""
+                    if (com["positions"][po] != -1):
+                        positions.append({
+                            'position': com["positions"][po],
+                            'status': get_status(roll_no, po),
+                            'code': po,
+                        })
+                data.append({
+                    'companyName': com["companyName"],
+                    'companyCode': com["roll_no"],
+                    'positions': positions,
+                })
+            else:
+                data.append({
+                    'companyName': com["companyName"],
+                    'companyCode': com["roll_no"],
+                    'positions': {},
+                })
+        return data
+
+    else:
+        return []
+
+@app.route(api_path + 'apply_for_position', methods=['POST'])
+def apply_for_position():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        basic = verify_token(token)
+        if (free_from_error(basic)):
+            try:
+                data = {
+                    DB_DOC_TYPE: DB_DOC_APPLY,
+                    'c_code': request.json["cCode"],
+                    'p_code': request.json["pCode"],
+                    DB_DOC_FIELD_ROLL_NO: basic[DB_DOC_FIELD_ROLL_NO],
+                    'selected': 0,
+                    'valid': 1,
+                }
+                db.create_document(data)
+
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully created",
+                    })
+            except Exception, e:
+                print str(e)
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                    })
+        return jsonify({
+            'success': SUCCESS_CODE_IN_VALID,
+            'message': "Please try again",
+            })
+    return jsonify({
+        'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+        'message': "Please login again",
+        })
 
 def get_tpo_templete(page_name):
     if 'token' in request.cookies:
@@ -548,6 +646,10 @@ def projects_page():
 @app.route('/exprience')
 def exprience_page():
     return get_templete("exprience")
+
+@app.route('/companies')
+def companies():
+    return get_templete("companies")
 
 @app.route('/tpo')
 def tpo_students_page():
