@@ -27,9 +27,14 @@
                         <h4 class="modal-title">{{ recuiter.companyName }} Details</h4>
                      </div>
                      <div class="modal-body">
-                        <p>User ID: </p> {{ recuiter.roll_no }}
+                        <p style="font-weight:bold;">User ID: </p> {{ recuiter.roll_no }}
                         <hr>
-                        {{ recuiter }}
+                        <p style="font-weight:bold;">Company Name: </p> {{ recuiter.companyName }}
+                        <hr>
+                        <p style="font-weight:bold;">Job Position: </p> {{ recuiter.roll_no }}
+                        <hr>
+                        <p style="font-weight:bold;">Schedule: </p> {{ recuiter.roll_no }}
+                        
                      </div>
                      <div class="modal-footer"><button type="button" class="btn btn-success" onClick="approveRecuiter('{{ recuiter.roll_no }}')">Approve</button></div>
                   </div>
@@ -45,31 +50,39 @@
 <div id="Verified" class="tabcontent">
    <div class="container" id="form1">
       <div class="col-xs-12" id="1">
-         <div class="col-xs-6"><a style="font-weight:bold;">Id</a></div>
-         <div class="col-xs-6"><a style="font-weight:bold;">Company Name</a></div>
+         <div class="col-xs-3"><a style="font-weight:bold;">Id</a></div>
+         <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
+         <div class="col-xs-6"><a style="font-weight:bold;">Action</a></div>
       </div>
       <hr>
       {% for recuiter in all_recuiter %}
       <div class="col-xs-12" id="1">
-         <div class="col-xs-4"><a>{{ recuiter.roll_no }}</a></div>
-         <div class="col-xs-4"><a>{{ recuiter.companyName }}</a></div>
-         <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal_{{ recuiter.roll_no }}">View</button>
-         <div class="modal fade" id="myModal_{{ recuiter.roll_no }}" role="dialog">
-            <div class="modal-dialog">
-               <div class="modal-content">
-                  <div class="modal-header">
-                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                     <h4 class="modal-title">{{ recuiter.companyName }} Details</h4>
+         <div class="col-xs-3"><a>{{ recuiter.roll_no }}</a></div>
+         <div class="col-xs-3"><a>{{ recuiter.companyName }}</a></div>
+         <div class="col-xs-6">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal_{{ recuiter.roll_no }}">View</button>
+            <div class="modal fade" id="myModal_{{ recuiter.roll_no }}" role="dialog">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">{{ recuiter.companyName }} Details</h4>
+                     </div>
+                     <div class="modal-body">
+                        <p style="font-weight:bold;">User ID: </p> {{ recuiter.roll_no }}
+                        <hr>
+                        <p style="font-weight:bold;">Company Name: </p> {{ recuiter.companyName }}
+                        <hr>
+                        <p style="font-weight:bold;">Job Position: </p> {{ recuiter.roll_no }}
+                        <hr>
+                        <p style="font-weight:bold;">Schedule: </p> {{ recuiter.roll_no }}
+                     </div>
+                     <div class="modal-footer"><button type="button" class="btn btn-success" onClick="approveRecuiter('{{ recuiter.roll_no }}')">Approve</button></div>
                   </div>
-                  <div class="modal-body">
-                     <p>User ID: </p> {{ recuiter.roll_no }}
-                     <hr>
-                     {{ recuiter }}
-                  </div>
-                  <div class="modal-footer"><button type="button" class="btn btn-success" data-dismiss="modal">Close</button></div>
                </div>
             </div>
          </div>
+         <hr>
       </div>
       {% endfor %}
       <hr>
