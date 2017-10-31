@@ -848,6 +848,8 @@ def approve_recuiter():
                 """send notification to all verified students"""
                 send_notification_to_all_verified_students("New company is listed! ")
 
+                create_notification(doc[DB_DOC_FIELD_ROLL_NO], "Your account is verified by TPO, positions are visible to students.")
+
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully verified",
