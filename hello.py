@@ -1052,12 +1052,12 @@ def select_candidate():
                 doc['package'] = request.json['package']
 
                 doc.save()
+                create_notification(doc['roll_no'], "Congrats!! Selected for " + request.json['position'] + ", package " + request.json['package'])
+
                 return jsonify({
                     'success': SUCCESS_CODE_VALID,
                     'message': "Successfully updated",
                 })
-
-                create_notification(doc['roll_no'], "Congrats!! Selected for " + request.json['position'] + ", package " + request.json['package'])
             else:
                 return jsonify({
                     'success': SUCCESS_CODE_IN_VALID,

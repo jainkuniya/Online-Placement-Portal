@@ -89,29 +89,21 @@
                         <li class="dropdown">
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
-                        <i class="material-icons">add_alert</i>  <span class="label label-primary">8</span>
-                    </a>
-                            <ul class="dropdown-menu dropdown-alerts">
+                           <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                           <i class="material-icons">add_alert</i>  <span class="label label-primary">{{ notifications|length }}</span>
+                           </a>
+                           <ul class="dropdown-menu dropdown-alerts">
+                              {% for notification in notifications %}
                                 <li>
-                                    <a href="#">
-                                        <div>
-                                            <i class="material-icons">email</i> You have 16 messages
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
+                                   <a href="#">
+                                      <div>
+                                        {{ notification.message }}
+                                      </div>
+                                   </a>
                                 </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="#">
-                                        <div>
-                                            <i class="material-icons">cloud_upload</i> Server Rebooted
-                                            <span class="pull-right text-muted small">4 minutes ago</span>
-                                        </div>
-                                    </a>
-                                </li>
+                              {% endfor %}
 
-                            </ul>
+                           </ul>
                         </li>
                         <li>
                             <a href="/logout">

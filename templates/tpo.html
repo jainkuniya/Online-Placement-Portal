@@ -69,26 +69,19 @@
                      </li>
                      <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
-                        <i class="material-icons">add_alert</i>  <span class="label label-primary">8</span>
+                        <i class="material-icons">add_alert</i>  <span class="label label-primary">{{ notifications|length }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-alerts">
-                           <li>
-                              <a href="#">
-                                 <div>
-                                    <i class="material-icons">email</i> You have 16 messages
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                 </div>
-                              </a>
-                           </li>
-                           <li class="divider"></li>
-                           <li>
-                              <a href="#">
-                                 <div>
-                                    <i class="material-icons">cloud_upload</i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                 </div>
-                              </a>
-                           </li>
+                           {% for notification in notifications %}
+                             <li>
+                                <a href="#">
+                                   <div>
+                                     {{ notification.message }}
+                                   </div>
+                                </a>
+                             </li>
+                           {% endfor %}
+
                         </ul>
                      </li>
                      <li>
@@ -148,75 +141,74 @@
       <script src="../static/js/plugins/toastr/toastr.min.js"></script>
       <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
       <script type="text/javascript">
-         document.getElementById("defaultOpen").click();
-         function verifyStudent(rollNo) {
-         $('#id_error').text();
-         $.ajax({
-         type: 'POST',
-         url: '/api/v1/tpo/verify_student',
-         contentType: 'application/json',
-         data: JSON.stringify({
-         rollNo: rollNo,
-         }),
-         success: function(result) {
-         if (result.success === 1) {
-           $('#id_error').text(result.message);
-           $(location).attr('href', './tpo');
-         } else if (result.success === -99) {
-           $(location).attr('href', './logout');
-         } else {
-           $('#id_error').text(result.message);
-         }
-         },
-         error: function(XMLHttpRequest, textStatus, errorThrown) {
-         $('#id_error').text('Error: ' + errorThrown);
-         },
-         });
-         return false;
-         }
-         function selectAll(whichGroup) {
-         $('#id_error').text();
-         $.ajax({
-         type: 'POST',
-         url: '/api/v1/tpo/verify_all_student',
-         contentType: 'application/json',
-         data: JSON.stringify({
-         whichGroup: whichGroup,
-         }),
-         success: function(result) {
-         if (result.success === 1) {
-           $('#id_error').text(result.message);
-           $(location).attr('href', './tpo');
-         } else if (result.success === -99) {
-           $(location).attr('href', './logout');
-         } else {
-           $('#id_error').text(result.message);
-         }
-         },
-         error: function(XMLHttpRequest, textStatus, errorThrown) {
-         $('#id_error').text('Error: ' + errorThrown);
-         },
-         });
-         return false;
-         }
-         function showStatus(evt, status) {
+      document.getElementById('defaultOpen').click();
+function verifyStudent(rollNo) {
+  $('#id_error').text();
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/tpo/verify_student',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      rollNo: rollNo,
+    }),
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error').text(result.message);
+        $(location).attr('href', './tpo');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+function selectAll(whichGroup) {
+  $('#id_error').text();
+  $.ajax({
+    type: 'POST',
+    url: '/api/v1/tpo/verify_all_student',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      whichGroup: whichGroup,
+    }),
+    success: function(result) {
+      if (result.success === 1) {
+        $('#id_error').text(result.message);
+        $(location).attr('href', './tpo');
+      } else if (result.success === -99) {
+        $(location).attr('href', './logout');
+      } else {
+        $('#id_error').text(result.message);
+      }
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+      $('#id_error').text('Error: ' + errorThrown);
+    },
+  });
+  return false;
+}
+function showStatus(evt, status) {
+  var i, tabcontent, tablinks;
 
-         var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName('tabcontent');
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = 'none';
+  }
 
-         tabcontent = document.getElementsByClassName("tabcontent");
-         for (i = 0; i < tabcontent.length; i++) {
-           tabcontent[i].style.display = "none";
-         }
+  tablinks = document.getElementsByClassName('tablinks');
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(' active', '');
+  }
 
-         tablinks = document.getElementsByClassName("tablinks");
-         for (i = 0; i < tablinks.length; i++) {
-           tablinks[i].className = tablinks[i].className.replace(" active", "");
-         }
-
-         // Show the current tab, and add an "active" class to the button that opened the tab
-         document.getElementById(status).style.display = "initial";
-         evt.currentTarget.className += " active";
-         }
-      </script>
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(status).style.display = 'initial';
+  evt.currentTarget.className += ' active';
+}
+</script>
    </body>
 </html>
