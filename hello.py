@@ -694,7 +694,25 @@ def get_tpo_templete(page_name):
 
 @app.route('/')
 def home():
-    return get_templete("home")
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        if token != '':
+            person = verify_token(token)
+            if (free_from_error(person)):
+                if (person["person_type"] == 1):
+                    return get_templete("home")
+                elif (person["person_type"] == 0):
+                    return get_tpo_templete("tpo")
+                elif (person["person_type"] == 2):
+                    return get_tpo_templete("recuiter")
+                else:
+                    return redirect("./logout")
+            else:
+                return redirect("./logout")
+        else:
+            return redirect("./logout")
+    else:
+        return redirect("./logout")
 
 @app.route('/family')
 def family_page():
