@@ -699,12 +699,13 @@ def home():
         if token != '':
             person = verify_token(token)
             if (free_from_error(person)):
+                print person["person_type"]
                 if (person["person_type"] == 1):
                     return get_templete("home")
                 elif (person["person_type"] == 0):
-                    return get_tpo_templete("tpo")
+                    return get_tpo_templete("tpo_students")
                 elif (person["person_type"] == 2):
-                    return get_tpo_templete("recuiter")
+                    return get_recuiter_templete("event_details")
                 else:
                     return redirect("./logout")
             else:
