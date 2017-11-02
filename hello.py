@@ -511,8 +511,8 @@ def get_templete(page_name):
         token = request.cookies['token']
         if token != '':
             basic_details = fetch_student_basic_details(token)
-            notifications = get_notifications(basic_details[DB_DOC_FIELD_ROLL_NO])
             if (free_from_error(basic_details)):
+                notifications = get_notifications(basic_details[DB_DOC_FIELD_ROLL_NO])
                 if (page_name == "family"):
                     family_details = fetch_student_family_details(basic_details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('family.html', notifications=notifications, basic_details= basic_details, family_details= family_details, page=page_name)
@@ -620,7 +620,7 @@ def fetch_positions(roll_no, branch):
                             'status': get_status(roll_no, po),
                             'code': po,
                         })
-                    time.sleep(100)
+                    time.sleep(0.1)
                 data.append({
                     'companyName': com["companyName"],
                     'companyCode': com["roll_no"],
