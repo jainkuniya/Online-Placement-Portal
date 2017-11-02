@@ -620,6 +620,7 @@ def fetch_positions(roll_no, branch):
                             'status': get_status(roll_no, po),
                             'code': po,
                         })
+                    time.sleep(100)
                 data.append({
                     'companyName': com["companyName"],
                     'companyCode': com["roll_no"],
