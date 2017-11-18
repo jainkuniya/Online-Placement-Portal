@@ -620,7 +620,7 @@ def fetch_positions(roll_no, branch):
                             'status': get_status(roll_no, po),
                             'code': po,
                         })
-                    time.sleep(0.1)
+                    time.sleep(0.5)
                 data.append({
                     'companyName': com["companyName"],
                     'companyCode': com["roll_no"],
@@ -752,7 +752,7 @@ def tpo_recverify_page():
 
 @app.route('/tpo_analysis')
 def tpo_analysis_page():
-    return get_tpo_templete("tpo_analysis")    
+    return get_tpo_templete("tpo_analysis")
 
 @app.route('/event')
 def get_recuiter_templete(page_name):
@@ -775,7 +775,7 @@ def get_recuiter_templete(page_name):
                     selected_candidate = get_recuiter_selected_candidate(details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('offers.html', details= details, applied_candidates=applied_candidates, selected_candidate=selected_candidate, page=page_name)
                 elif(page_name == "feedback"):
-                    return render_template('feedback.html', notifications=notifications, details= details, page=page_name)    
+                    return render_template('feedback.html', notifications=notifications, details= details, page=page_name)
                 else:
                     return redirect("./logout")
             else:
@@ -807,7 +807,7 @@ def offers_details():
 @app.route('/recuiter/feedback')
 def feedback_details():
     return get_recuiter_templete('feedback')
-    
+
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
     status = verify_individual_student(request.json['rollNo'])
