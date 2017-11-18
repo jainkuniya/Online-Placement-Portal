@@ -31,10 +31,33 @@
                         <hr>
                         <p style="font-weight:bold;">Company Name: </p> {{ recuiter.companyName }}
                         <hr>
-                        <p style="font-weight:bold;">Job Position: </p> {{ recuiter.roll_no }}
+                        <p style="font-weight:bold;">Job Position: </p>
+                          {% for position in recuiter.positions %}
+                            {% if recuiter.positions[position] != -1 %}
+                              Title:- {{ recuiter.positions[position].title }}
+                              Description:- {{ recuiter.positions[position].description }}
+                              Position Type:- {{ recuiter.positions[position].position_type }}
+                              Bonus Amount:- {{ recuiter.positions[position].bonus_amount }}
+                              Bonus Name:- {{ recuiter.positions[position].bonus_name }}
+                              Location:- {{ recuiter.positions[position].location }}
+                              CTC:- {{ recuiter.positions[position].ctc }}
+                              Fixed Gross:- {{ recuiter.positions[position].fixed_gross }}
+                              Type:- {{ recuiter.positions[position].type }}
+                              Other details:- {{ recuiter.positions[position].job_other_details }}
+                            {% endif %}
+                          {% endfor %}
                         <hr>
-                        <p style="font-weight:bold;">Schedule: </p> {{ recuiter.roll_no }}
-                        
+                        <p style="font-weight:bold;">Schedule: </p>
+                        {% for sc in recuiter.schedule %}
+                          {% if recuiter.schedule[sc] != -1 %}
+                            Date:- {{ recuiter.schedule[sc].date }}
+                            Venue:- {{ recuiter.schedule[sc].venue }}
+                            Details:- {{ recuiter.schedule[sc].details }}
+                            Agenda:- {{ recuiter.schedule[sc].agenda }}
+                            Time:- {{ recuiter.schedule[sc].time }}
+                          {% endif %}
+                        {% endfor %}
+
                      </div>
                      <div class="modal-footer"><button type="button" class="btn btn-success" onClick="approveRecuiter('{{ recuiter.roll_no }}')">Approve</button></div>
                   </div>
@@ -77,7 +100,7 @@
                         <hr>
                         <p style="font-weight:bold;">Schedule: </p> {{ recuiter.roll_no }}
                      </div>
-                     
+
                   </div>
                </div>
             </div>
