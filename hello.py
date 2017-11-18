@@ -767,6 +767,8 @@ def get_recuiter_templete(page_name):
                     applied_candidates = get_applied_candidate(details[DB_DOC_FIELD_ROLL_NO])
                     selected_candidate = get_recuiter_selected_candidate(details[DB_DOC_FIELD_ROLL_NO])
                     return render_template('offers.html', details= details, applied_candidates=applied_candidates, selected_candidate=selected_candidate, page=page_name)
+                elif(page_name == "feedback"):
+                    return render_template('feedback.html', notifications=notifications, details= details, page=page_name)    
                 else:
                     return redirect("./logout")
             else:
@@ -795,6 +797,10 @@ def registration_details():
 def offers_details():
     return get_recuiter_templete('offers')
 
+@app.route('/recuiter/feedback')
+def feedback_details():
+    return get_recuiter_templete('feedback')
+    
 @app.route(api_path + 'tpo/verify_student', methods=['POST'])
 def verify_student():
     status = verify_individual_student(request.json['rollNo'])

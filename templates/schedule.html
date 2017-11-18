@@ -6,7 +6,8 @@
 <h1 class="well">Drive Schedule </h1>
   {% for schedule in details.schedule %}
   {% if details.schedule[schedule] != -1 %}
-  <div class="row well">
+  <div class="col-lg-12 well">
+  <div class="row">
           <div class="form-group">
               <label>Agenda</label>
               <input id="{{ schedule }}_agenda" value="{{ details.schedule[schedule].agenda }}" type="text" class="form-control">
@@ -45,7 +46,7 @@
   {% else %}
   {% endif %}
   {% endfor %}
-    <div class="row well">
+    <div class="col-lg-12 well">
         
         <div class="row">
             <form id="id_new_schedule_form">
