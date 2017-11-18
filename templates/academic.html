@@ -15,21 +15,20 @@
                <th scope="col" style="padding-left:0px;">SGPA</th>
             </tr>
          </thead>
+         {% set score = [] %}
          <tbody>
-           {% set count = 0 %}
-           {% set total = 0 %}
            {% for sem in academic_details.spi %}
-
+                {% if score.append(academic_details.spi[sem]) %}{% endif %}
                <tr>
                   <td data-title="Semester">{{ sem }}</td>
                   <td data-title="SGPA">{{ academic_details.spi[sem] }}</td>
-                  {% set count = count + 1 %}
-                  {% set total = total + academic_details.spi[sem] %}
                </tr>
 
           {% endfor %}
          </tbody>
       </table>
+      <hr>
+      CPI:- {{ score | sum / score | count }}
       <hr>
       <label>Backlogs</label>
 
@@ -61,11 +60,6 @@
 
 
       <br>
-      {% if count != 0 %}
-    <label>Aggregate CGPA : {{ total/count }}</label>
-      {% else %}
-
-      {% endif %}
 
    </div>
    <hr>
