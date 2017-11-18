@@ -24,24 +24,23 @@
                      </div>
                      <div class="modal-body">
                         {% for p in po.positions %}
-                          <p>Position Title: </p>
+                          <p><b>Position Title:</b> </p>
                           {{ p.position.title }}
                           <br>
-                          <p>Description: </p>
+                          <p><b>Description:</b> </p>
                           {{ p.position.description }}
-                          <p>CTC: </p>
+                          <p><b>CTC:</b></p>
                           {{ p.position.ctc }}
-                          <p>Position Type: </p>
+                          <p><b>Position Type: </b></p>
                           {{ p.position.position_type }}
                           <hr>
-
                           {% if p.status == "can_apply" %}
-                            <button type="button" class="btn btn-success" onClick="applyForPosition('{{ p.code }}', '{{ po.companyCode }}')">Apply</button></div>
+                            <button type="button" class="btn btn-primary" onClick="applyForPosition('{{ p.code }}', '{{ po.companyCode }}')">Apply</button><hr>
                           {% else %}
-                            <p>Status: {{ p.status }}</p>
+                            <p><b>Status:</b> {{ p.status }}</p>
                           {% endif %}
                         {% endfor %}
-                        <div class="modal-footer"><button type="button" class="btn btn-success" data-dismiss="modal">Close</button></div>
+                        
                      </div>
                   </div>
                </div>
@@ -50,7 +49,7 @@
          <hr>
       </div>
       {% endfor %}
-      <hr>
+      
    </div>
 </div>
 
