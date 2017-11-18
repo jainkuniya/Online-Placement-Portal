@@ -35,6 +35,7 @@
 
 
       <table class="responsive-table" style="width:80%;">
+         {% if academic_details.active_backlog|length > 0 %}
          <thead>
             <tr>
                <th scope="col">S.No</th>
@@ -42,17 +43,20 @@
                <th scope="col">Course</th>
             </tr>
          </thead>
-         <tbody>
-           {% for backlog in academic_details.active_backlog %}
+           <tbody>
+             {% for backlog in academic_details.active_backlog %}
 
-               <tr>
-                 <td data-title="S.no">{{ backlog }}</td>
-                  <td data-title="Semester">{{ academic_details.active_backlog[backlog].sem }}</td>
-                  <td data-title="Course">{{ academic_details.active_backlog[backlog].course }}</td>
-               </tr>
+                 <tr>
+                   <td data-title="S.no">{{ backlog }}</td>
+                    <td data-title="Semester">{{ academic_details.active_backlog[backlog].sem }}</td>
+                    <td data-title="Course">{{ academic_details.active_backlog[backlog].course }}</td>
+                 </tr>
 
-          {% endfor %}
-         </tbody>
+            {% endfor %}
+           </tbody>
+         {% else %}
+          <p>No backlog</p>
+         {% endif %}
       </table>
 
 
@@ -67,7 +71,7 @@
    <hr>
      <form id="id_academic_details_form" action="/api/v1/update_academic_details" method="post">
       <div class="col-sm-12">
-      
+
          <label><h3 style="color:#191970;">12th Standard</h3></label>
          <hr>
          <div class="form-group">
