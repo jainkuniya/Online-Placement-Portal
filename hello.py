@@ -688,6 +688,8 @@ def get_tpo_templete(page_name):
                 pending_recuiter = get_pending_recuiters()
                 all_recuiter = get_all_verified_recuiters()
                 return render_template('tpo_recruiter_verify.html', notifications=notifications, pending_recuiter=pending_recuiter, all_recuiter=all_recuiter, page_name=page_name)
+            elif (page_name == "tpo_analysis"):
+                return render_template('tpo_analysis.html', notifications=notifications, page_name=page_name)
             else:
                 return redirect("./logout")
         return redirect("./logout")
@@ -747,6 +749,10 @@ def tpo_reccred_page():
 @app.route('/tpo_recruiter_verify')
 def tpo_recverify_page():
     return get_tpo_templete("tpo_recruiter_verify")
+
+@app.route('/tpo_analysis')
+def tpo_analysis_page():
+    return get_tpo_templete("tpo_analysis")    
 
 @app.route('/event')
 def get_recuiter_templete(page_name):

@@ -15,6 +15,7 @@
       <link href="../static/css/animate.css" rel="stylesheet">
       <link href="../static/css/style.css" rel="stylesheet">
    </head>
+
    <body>
       <div id="wrapper">
          <nav class="navbar-default navbar-static-side" role="navigation">
@@ -25,7 +26,7 @@
                      <span>
                      <img alt="image" class="img-circle" src="../static/img/profile_small.jpg" />
                      </span>
-                     <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">Desiree Rockhall (Admin)</strong>
                   </div>
                   <div class="logo-element">
@@ -53,13 +54,20 @@
                {% endif %}
                <a href="tpo_recruiter_cred"><i class="material-icons">laptop</i> <span class="nav-label">Recruiter Credentials</span></a>
                </li>
+               {% if page_name == "tpo_analysis" %}
+               <li class="active">
+               {% else %}
+               <li>
+               {% endif %}
+               <a href="tpo_analysis"><i class="material-icons">laptop</i> <span class="nav-label">Placements Analysis</span></a>
+               </li>
             </div>
          </nav>
          <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="row border-bottom">
                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                   <div class="navbar-header">
-                     <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="index.html#"><i class="material-icons">menu</i> </a>
+                     
                   </div>
                   <ul class="nav navbar-top-links navbar-right">
                      <li>
@@ -68,7 +76,7 @@
                      <li class="dropdown">
                      </li>
                      <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                         <i class="material-icons">add_alert</i>  <span class="label label-primary">{{ notifications|length }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-alerts">
