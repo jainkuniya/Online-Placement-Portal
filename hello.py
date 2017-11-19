@@ -39,6 +39,7 @@ DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
 DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR = "addmission_year"
 
 DB_DOC_RECUITER = "recuiter"
+DB_DOC_FEEDBACK = "feedback"
 
 DB_DOC_APPLY = "apply"
 
@@ -403,6 +404,44 @@ def create_notification(roll_no, message):
     except Exception, e:
         print str(e)
         return 0
+
+@app.route(api_path + 'recuiter/feedback', methods=['POST'])
+def recuiter_feedback():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        recuiter = verify_token(token)
+        if (free_from_error(recuiter)):
+            try:
+                """create a new doc of type login"""
+                data = {
+                    DB_DOC_TYPE: DB_DOC_FEEDBACK,
+                    DB_DOC_FIELD_ROLL_NO: recuiter[DB_DOC_FIELD_ROLL_NO],
+                    'feedback': request.json['feedback'],
+                }
+                db.create_document(data)
+
+                create_notification(TPO_USER_NAME, "New Feedback from recuiter")
+
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully registered! Please login to continue",
+                    })
+            except Exception, e:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                    })
+        else:
+            jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please login again!",
+                })
+    else:
+        jsonify({
+            'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+            'message': "Please login again!",
+            })
+
 
 @app.route(api_path + 'create_account', methods=['POST'])
 def create_account():
