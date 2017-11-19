@@ -1,0 +1,26 @@
+{% extends './tpo.html' %}
+{% block body %}
+<div class="container">
+<div class="row">
+   <div class="col-xs-12">
+      <div class="col-xs-1"><a style="font-weight:bold;">S. No</a></div>
+      <div class="col-xs-2"><a style="font-weight:bold;">Recuiter ID:-</a></div>
+      <div class="col-xs-3"><a style="font-weight:bold;">How was the drive?</a></div>
+      <div class="col-xs-3"><a style="font-weight:bold;">Did you get the right candidates for your company?</a></div>
+      <div class="col-xs-3"><a style="font-weight:bold;">What things the Training and Placement Cell should improve upon?</a></div>
+   </div>
+   <hr>
+   <br>
+   {% for feedback in feedbacks %}
+    <div class="col-xs-12">
+     <div class="col-xs-1">{{ loop.index }}</div>
+     <div class="col-xs-2">{{ feedback.roll_no }}</div>
+     <div class="col-xs-3">{{ feedback.feedback.how_was_the_drive }}</div>
+     <div class="col-xs-3">{{ feedback.feedback.did_you_get_the_right_candidates_for_your_company }}</div>
+     <div class="col-xs-3">{{ feedback.feedback.what_things_the_training_and_placement_cell_should_improve_upon }}</div>
+    </div>
+   <br>
+   <hr>
+   {% endfor %}
+</div>
+{% endblock %}

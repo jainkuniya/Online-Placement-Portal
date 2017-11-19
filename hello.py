@@ -729,6 +729,9 @@ def get_tpo_templete(page_name):
                 return render_template('tpo_recruiter_verify.html', notifications=notifications, pending_recuiter=pending_recuiter, all_recuiter=all_recuiter, page_name=page_name)
             elif (page_name == "tpo_analysis"):
                 return render_template('tpo_analysis.html', notifications=notifications, page_name=page_name)
+            elif (page_name == "feedback"):
+                feedbacks = get_feedbacks()
+                return render_template('tpo_feedback.html', feedbacks=feedbacks, page_name=page_name)
             else:
                 return redirect("./logout")
         return redirect("./logout")
@@ -792,6 +795,10 @@ def tpo_recverify_page():
 @app.route('/tpo_analysis')
 def tpo_analysis_page():
     return get_tpo_templete("tpo_analysis")
+
+@app.route('/feedback')
+def tpo_feedback_page():
+    return get_tpo_templete("feedback")
 
 @app.route('/event')
 def get_recuiter_templete(page_name):
@@ -969,6 +976,19 @@ def get_all_verified_recuiters():
             db, selector = {
                                  DB_DOC_TYPE: DB_DOC_RECUITER,
                                  'verified': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+        return result
+
+    else:
+        return DB_CONNECT_ERROR
+
+def get_feedbacks():
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_FEEDBACK,
                             }
             )
         result = query(limit=100)['docs']
