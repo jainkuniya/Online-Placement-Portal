@@ -686,6 +686,7 @@ def apply_for_position():
                 data = {
                     DB_DOC_TYPE: DB_DOC_APPLY,
                     'c_code': request.json["cCode"],
+                    'c_name': request.json["cName"],
                     'p_code': request.json["pCode"],
                     DB_DOC_FIELD_ROLL_NO: basic[DB_DOC_FIELD_ROLL_NO],
                     'selected': 0,
@@ -728,7 +729,8 @@ def get_tpo_templete(page_name):
                 all_recuiter = get_all_verified_recuiters()
                 return render_template('tpo_recruiter_verify.html', notifications=notifications, pending_recuiter=pending_recuiter, all_recuiter=all_recuiter, page_name=page_name)
             elif (page_name == "tpo_analysis"):
-                return render_template('tpo_analysis.html', notifications=notifications, page_name=page_name)
+                analysis = get_placement_analysis()
+                return render_template('tpo_analysis.html', analysis=analysis, notifications=notifications, page_name=page_name)
             elif (page_name == "feedback"):
                 feedbacks = get_feedbacks()
                 return render_template('tpo_feedback.html', feedbacks=feedbacks, notifications=notifications, page_name=page_name)
@@ -962,6 +964,28 @@ def get_all_verified_students():
 
     else:
         return []
+
+def get_placement_analysis():
+    registered_students_count = len(get_all_verified_students())
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_APPLY,
+                                 'selected': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+
+        return {
+            'selected_students': result,
+            'selected_students_count': len(result),
+            'registered_students_count': registered_students_count,
+            'unplaced_students_count': registered_students_count - len(result),
+        }
+
+    else:
+        return {}
+
 
 def send_notification_to_all_verified_students(message):
     students = get_all_verified_students()

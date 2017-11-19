@@ -6,6 +6,8 @@
       <a href="#" class="thumbnail" title="">
          <div class="caption">
             <p><b> Number of Registered Students:</b> </p>
+            <h3>
+            {{ analysis.registered_students_count }} </n3>
          </div>
       </a>
    </div>
@@ -13,6 +15,8 @@
       <a href="#" class="thumbnail" title="">
          <div class="caption">
             <p><b> Number of Unplaced Students:</b> </p>
+            <h3>
+            {{ analysis.unplaced_students_count }} </n3>
          </div>
       </a>
    </div>
@@ -20,6 +24,8 @@
       <a href="#" class="thumbnail" title="">
          <div class="caption">
             <p><b> Number of Placed Students:</b> </p>
+            <h3>
+            {{ analysis.selected_students_count }} </n3>
          </div>
       </a>
    </div>
@@ -43,98 +49,18 @@
                   <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
                   <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
                </div>
-               <!--test starts-->
+               <br>
+               <hr>
+               {% for student in analysis.selected_students %}
                <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
+                  <div class="col-xs-3">{{ student.roll_no }}</div>
+                  <div class="col-xs-3">{{ student.c_code }} : {{ student.c_name }}</div>
+                  <div class="col-xs-3">{{ student.position }}</div>
+                  <div class="col-xs-3">{{ student.package }}</div>
                </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <div class="col-xs-12" id="1">
-                  <div class="col-xs-3"><a style="font-weight:bold;">Student</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Designation</a></div>
-                  <div class="col-xs-3"><a style="font-weight:bold;">Package</a></div>
-               </div>
-               <!--test ends-->
+               <br>
+               <hr>
+               {% endfor %}
             </div>
          </div>
       </div>
