@@ -731,7 +731,7 @@ def get_tpo_templete(page_name):
                 return render_template('tpo_analysis.html', notifications=notifications, page_name=page_name)
             elif (page_name == "feedback"):
                 feedbacks = get_feedbacks()
-                return render_template('tpo_feedback.html', feedbacks=feedbacks, page_name=page_name)
+                return render_template('tpo_feedback.html', feedbacks=feedbacks, notifications=notifications, page_name=page_name)
             else:
                 return redirect("./logout")
         return redirect("./logout")
