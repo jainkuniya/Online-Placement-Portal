@@ -9,43 +9,31 @@
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/css/login.css" rel="stylesheet">
-    <style>
-    body {
-        background-image: url("../static/img/lnmiit.jpeg");
-    }
-    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-default" style="display:block;height:100px;background-color:rgba(160, 179, 176, 0.25);">
         <div class="container-fluid">
             <div class="navbar-header">
-                <div class="navbar-left" ><img style="height:70px;width:auto;" src="../static/img/logo.png"></div>
-
-                
+                <div class="navbar-left" ><img style="height:70px;" src="../static/img/logo.png"></div>
             </div>
-
-
         </div>
     </nav>
+
     <div class="row">
-
         <div class="col-sm-12">
-            <div class="form" style="margin-top:200px;height:550px">
-
+            <div class="form" style="height:480px; margin-top:20px; margin-bottom:20px;">
                 <ul class="tab-group">
-                    
                     <li id="id_login_tab" class="tab active"><a href="#login">Log In</a></li>
                     <li id="id_signup_tab" class="tab"><a href="#signup">Sign Up</a></li>
                 </ul>
-                <div style="height:30px;" class="text-danger" >
-                    <h4>*If you are recruiting company, request the TPO for ID and Password.</h4>
+                <div class="text-danger" style="padding-top:10px; padding-bottom: 10px;">
+                    <h5>*If you are recruiting company, request the TPO for ID and Password.</h5>
                 </div> 
-                
                 <div class="tab-content">
                     
                     <div id="login">
-                        <h1 style="margin-top:20px;">Welcome Back!</h1>
+                        <h1 >Welcome Back!</h1>
                         <form id="id_login_form" action="/api/v1/login" method="post">
                             <div class="field-wrap">
                                 <label>
@@ -64,9 +52,9 @@
                         </form>
                     </div>
                     <div id="signup">
-                        <!-- <h1>Sign Up</h1> -->
+                        <h1>Welcome aboard</h1>
                         <form id="roll_no_form" action="/api/v1/fetch_from_mis" method="post">
-                            <div class="field-wrap" style="padding-top: 50px;padding-bottom: 80px">
+                            <div class="field-wrap">
                                 <label>
                                     Enter your Roll No.<span class="req">*</span>
                                 </label>

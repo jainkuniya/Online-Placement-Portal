@@ -1,30 +1,29 @@
 {% extends './tpo.html' %}
 {% block body %}
-<div class="container">
-<div class="row">
-   <div class="col-xs-12">
-      <div class="col-xs-1"><a style="font-weight:bold;">S. No</a></div>
-      <div class="col-xs-2"><a style="font-weight:bold;">Recuiter ID:-</a></div>
-      <div class="col-xs-3"><a style="font-weight:bold;">How was the drive?</a></div>
-      <div class="col-xs-3"><a style="font-weight:bold;">Did you get the right candidates for your company?</a></div>
-      <div class="col-xs-3"><a style="font-weight:bold;">What things the Training and Placement Cell should improve upon?</a></div>
-   </div>
-   <hr>
-   <br>
-    {% if feedbacks|length > 0 %}
-     {% for feedback in feedbacks %}
-      <div class="col-xs-12">
-       <div class="col-xs-1">{{ loop.index }}</div>
-       <div class="col-xs-2">{{ feedback.roll_no }}</div>
-       <div class="col-xs-3">{{ feedback.feedback.how_was_the_drive }}</div>
-       <div class="col-xs-3">{{ feedback.feedback.did_you_get_the_right_candidates_for_your_company }}</div>
-       <div class="col-xs-3">{{ feedback.feedback.what_things_the_training_and_placement_cell_should_improve_upon }}</div>
-      </div>
-     <br>
-     <hr>
-     {% endfor %}
-   {% else %}
-     <h5 class="well"> No data available in this section <h5>
-   {% endif %}
-</div>
+  {% if feedbacks|length > 0 %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Recuiter ID</th>
+        <th scope="col">How was the drive?</th>
+        <th scope="col">Did you get the right candidates for your company?</th>
+        <th scope="col">What things the Training and Placement Cell should improve upon?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for feedback in feedbacks %}
+      <tr>
+        <th scope="row">{{loop.index}}</th>
+        <td>{{ feedback.roll_no }}</td>
+        <td>{{ feedback.feedback.how_was_the_drive }}</td>
+        <td>{{ feedback.feedback.did_you_get_the_right_candidates_for_your_company }}</td>
+        <td>{{ feedback.feedback.what_things_the_training_and_placement_cell_should_improve_upon }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <h5 class="well"> No data available in this section <h5>
+  {% endif %}
 {% endblock %}

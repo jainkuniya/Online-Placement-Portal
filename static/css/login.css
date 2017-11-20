@@ -5,11 +5,11 @@
 }
 
 html {
-  overflow-y: scroll;
+  overflow-x: hidden;
 }
-
 body {
   background: #c1bdba;
+  background-image: url("../img/lnmiit.jpeg");
   font-family: 'Titillium Web', sans-serif;
 }
 
@@ -35,7 +35,7 @@ a:hover {
 .tab-group {
   list-style: none;
   padding: 0;
-  margin: 0 0 40px 0;
+  margin: 0 0 0 0;
 }
 .tab-group:after {
   content: '';
