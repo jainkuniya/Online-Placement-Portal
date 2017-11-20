@@ -1,41 +1,94 @@
 {% extends './tpo.html' %}
 {% block body %}
 <medium id ="msg" style="color:red;">You have to approve the details of the listed students</medium>
-<div class="tab container">
+<div class="tab" style="margin-top: 25px;">
   <button class="tablinks" onclick="showStatus(event, 'All_Students')" id="defaultOpen">All Students</button>
   <button class="tablinks" onclick="showStatus(event, 'Approvable')">Approvable</button>
   <button class="tablinks" onclick="showStatus(event, 'Rejectable')">Rejectable</button>
 </div>
 <div id="All_Students" class="tabcontent">
   
-  <div class="container" id="form1">
-    <div class="col-xs-12" id="1">
-      <div class="col-xs-2"><a style="font-weight:bold;">Roll No</a></div>
-      <div class="col-xs-2"><a style="font-weight:bold;">Name</a></div>
-      <div class="col-xs-2"><a style="font-weight:bold;">Phone Number</a></div>
-      <div class="col-xs-2"><a style="font-weight:bold;">Gender</a></div>
-      <div class="col-xs-2"><a style="font-weight:bold;">Branch</a></div>
+  <div class="" id="form1">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Roll No</th>
+          <th scope="col">Name</th>
+          <th scope="col">Phone No</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Branch</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in all_verified_students %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{ student.roll_no }}</td>
+          <td>{{ student.first_name + student.last_name }}</td>
+          <td>{{ student.phone_number }}</td>
+          <td>{{ student.gender }}</td>
+          <td>{{ student.branch }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!--<div class="col-xs-12" id="1">
+      <div class="col-xs-2"><span style="font-weight:bold;">Roll No</span></div>
+      <div class="col-xs-2"><span style="font-weight:bold;">Name</span></div>
+      <div class="col-xs-2"><span style="font-weight:bold;">Phone Number</span></div>
+      <div class="col-xs-2"><span style="font-weight:bold;">Gender</a></div>
+      <div class="col-xs-2"><span style="font-weight:bold;">Branch</a></div>
       <hr>
     </div>
     <hr>
     {% for student in all_verified_students %}
     <div class="col-xs-12" id="1">
-      <div class="col-xs-2"><a>{{ student.roll_no }}</a></div>
-      <div class="col-xs-2"><a>{{ student.first_name + student.last_name }}</a></div>
-      <div class="col-xs-2"><a>{{ student.phone_number }}</a></div>
-      <div class="col-xs-2"><a>{{ student.gender }}</a></div>
-      <div class="col-xs-2"><a>{{ student.branch }}</a></div>
+      <div class="col-xs-2">{{ student.roll_no }}</div>
+      <div class="col-xs-2">{{ student.first_name + student.last_name }}</div>
+      <div class="col-xs-2">{{ student.phone_number }}</div>
+      <div class="col-xs-2">{{ student.gender }}</div>
+      <div class="col-xs-2">{{ student.branch }}</div>
       <hr>
     </div>
     {% endfor %}
-    <hr>
+    <hr>-->
   </div>
 </div>
 <div id="Approvable" class="tabcontent">
-  <div class="container" id="form1">
-    <hr>
+  
+  <div class="" id="form1">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Roll No</th>
+          <th scope="col">Name</th>
+          <th scope="col">Active Backlog</th>
+          <th scope="col">Approve</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in pending_students.noBacklog %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{ student.rollNo }}</td>
+          <td>{{ student.name }}</td>
+          <td>
+            {% for backlog in student.backlog %}
+            Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
+            {% endfor %}
+            None
+          </td>
+          <td>
+            <button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     
-    {% for student in pending_students.noBacklog %}
+    <!--{% for student in pending_students.noBacklog %}
     <div class="col-xs-12" id="1">
       <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
       <div class="col-xs-3"><a>{{ student.name }}</a></div>
@@ -49,12 +102,43 @@
       <hr>
     </div>
     {% endfor %}
-    <hr>
+    <hr>-->
     <button id="approve" class="btn btn-success" onclick="selectAll(0)">Approve all</button>
   </div>
 </div>
 <div id="Rejectable" class="tabcontent">
-  <div class="container" id="form1">
+  <div class="" id="form1">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Roll No</th>
+          <th scope="col">Name</th>
+          <th scope="col">Active Backlog</th>
+          <th scope="col">Approve</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in pending_students.backlog %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{ student.rollNo }}</td>
+          <td>{{ student.name }}</td>
+          <td>
+            {% for backlog in student.backlog %}
+            Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
+            {% endfor %}
+            None
+          </td>
+          <td>
+            <button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  <!--<div class="container" id="form1">
     <hr>
     
     {% for student in pending_students.backlog %}
@@ -71,8 +155,7 @@
       <hr>
     </div>
     {% endfor %}
-    <hr>
-    <!-- <button id="approve" class="btn btn-success" onclick="selectAll(1)">Approve all</button> !-->
+    <hr>-->
   </div>
 </div>
 </div>

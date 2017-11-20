@@ -1,21 +1,29 @@
 {% extends "tpo.html" %}
 {% block body %}
 <medium id ="msg" style="color:red;">Please generate credentials for the recruiting company</medium>
-<div class="container" id="form1">
+<div class="" id="form1">
   <div>
-      <div class="field-wrap" style="padding-top: 50px;padding-bottom: 50px">
-        <label>
-        Company Name<span class="req">*</span>
-        </label>
-        <input id="company_name" type="text" required autocomplete="off" />
-      </div>
+    <div class="field-wrap" style="padding-top: 25px;padding-bottom: 25px; margin-top: 25px; background-color: #f1f1f1;">
+      <form class="container-fluid">
+        <div class="form-group row">
+          <label for="inputEmail3" class="col-sm-2 col-form-label">Company Name*</label>
+          <div class="col-sm-10">
+          <input id="company_name" class="form-control" type="text" required autocomplete="off" placeholder="Microsoft"/>  
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-10">
+            <button id="id_cred_submit_button" onClick="submit_form()" type="submit" class="btn btn-info"/>Generate</button>
+          </div>
+        </div>
+      </form>        
+    </div>
       <h2 id="id_error"></h2>
       <div style="border:black;">
       <h2 id="user_id"></h2>
       <h2 id="password"></h2>
       </div>
       <div id="show"></div>
-      <button id="id_cred_submit_button" onClick="submit_form()" type="submit" class="btn btn-info"/>Generate</button>
   </div>
 </div>
 

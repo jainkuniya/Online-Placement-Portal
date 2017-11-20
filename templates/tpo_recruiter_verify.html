@@ -1,12 +1,81 @@
 {% extends "tpo.html" %}
 {% block body %}
 <medium id ="msg" style="color:red;">You have to approve the details of the recruiting company</medium>
-<div class="tab container">
+<div class="tab" style="margin-top: 25px;">
    <button class="tablinks" onclick="showStatus(event, 'Unverified')" id="defaultOpen">Unverified Recruiter</button>
    <button class="tablinks" onclick="showStatus(event, 'Verified')">Verified Recuiter</button>
 </div>
 <div id="Unverified" class="tabcontent">
-   <div class="container" id="form1">
+
+  <div class="" id="form1">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Company Id</th>
+          <th scope="col">Company Name</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for recuiter in pending_recuiter %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{ recuiter.roll_no }}</td>
+          <td>{{ recuiter.companyName }}</td>
+          <td>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal_{{ recuiter.roll_no }}" style="padding: 5px 10px 5px 10px;">View</button>
+            <div class="modal fade" id="myModal_{{ recuiter.roll_no }}" role="dialog">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">{{ recuiter.companyName }} Details</h4>
+                     </div>
+                     <div class="modal-body">
+                        <p style="font-weight:bold;">User ID: </p> {{ recuiter.roll_no }}
+                        <hr>
+                        <p style="font-weight:bold;">Company Name: </p> {{ recuiter.companyName }}
+                        <hr>
+                        <p style="font-weight:bold;">Job Position: </p>
+                          {% for position in recuiter.positions %}
+                            {% if recuiter.positions[position] != -1 %}
+                              Title:- {{ recuiter.positions[position].title }}
+                              Description:- {{ recuiter.positions[position].description }}
+                              Position Type:- {{ recuiter.positions[position].position_type }}
+                              Bonus Amount:- {{ recuiter.positions[position].bonus_amount }}
+                              Bonus Name:- {{ recuiter.positions[position].bonus_name }}
+                              Location:- {{ recuiter.positions[position].location }}
+                              CTC:- {{ recuiter.positions[position].ctc }}
+                              Fixed Gross:- {{ recuiter.positions[position].fixed_gross }}
+                              Type:- {{ recuiter.positions[position].type }}
+                              Other details:- {{ recuiter.positions[position].job_other_details }}
+                            {% endif %}
+                          {% endfor %}
+                        <hr>
+                        <p style="font-weight:bold;">Schedule: </p>
+                        {% for sc in recuiter.schedule %}
+                          {% if recuiter.schedule[sc] != -1 %}
+                            Date:- {{ recuiter.schedule[sc].date }}
+                            Venue:- {{ recuiter.schedule[sc].venue }}
+                            Details:- {{ recuiter.schedule[sc].details }}
+                            Agenda:- {{ recuiter.schedule[sc].agenda }}
+                            Time:- {{ recuiter.schedule[sc].time }}
+                          {% endif %}
+                        {% endfor %}
+
+                     </div>
+                     <div class="modal-footer"><button type="button" class="btn btn-success" onClick="approveRecuiter('{{ recuiter.roll_no }}')">Approve</button></div>
+                  </div>
+               </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!--<div class="container" id="form1">
       <div class="col-xs-12" id="1">
          <div class="col-xs-3"><a style="font-weight:bold;">Id</a></div>
          <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
@@ -68,10 +137,77 @@
       </div>
       {% endfor %}
       <hr>
-   </div>
+   </div>-->
 </div>
 <div id="Verified" class="tabcontent">
-   <div class="container" id="form1">
+  <div class="" id="form1">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Company Id</th>
+          <th scope="col">Company Name</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for recuiter in all_recuiter %}
+        <tr>
+          <th scope="row">{{loop.index}}</th>
+          <td>{{ recuiter.roll_no }}</td>
+          <td>{{ recuiter.companyName }}</td>
+          <td>
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal_{{ recuiter.roll_no }}" style="padding: 5px 10px 5px 10px;">View</button>
+            <div class="modal fade" id="myModal_{{ recuiter.roll_no }}" role="dialog">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">{{ recuiter.companyName }} Details</h4>
+                     </div>
+                     <div class="modal-body">
+                        <p style="font-weight:bold;">User ID: </p> {{ recuiter.roll_no }}
+                        <hr>
+                        <p style="font-weight:bold;">Company Name: </p> {{ recuiter.companyName }}
+                        <hr>
+                        <p style="font-weight:bold;">Job Position: </p>
+                          {% for position in recuiter.positions %}
+                            {% if recuiter.positions[position] != -1 %}
+                              Title:- {{ recuiter.positions[position].title }}
+                              Description:- {{ recuiter.positions[position].description }}
+                              Position Type:- {{ recuiter.positions[position].position_type }}
+                              Bonus Amount:- {{ recuiter.positions[position].bonus_amount }}
+                              Bonus Name:- {{ recuiter.positions[position].bonus_name }}
+                              Location:- {{ recuiter.positions[position].location }}
+                              CTC:- {{ recuiter.positions[position].ctc }}
+                              Fixed Gross:- {{ recuiter.positions[position].fixed_gross }}
+                              Type:- {{ recuiter.positions[position].type }}
+                              Other details:- {{ recuiter.positions[position].job_other_details }}
+                            {% endif %}
+                          {% endfor %}
+                        <hr>
+                        <p style="font-weight:bold;">Schedule: </p>
+                        {% for sc in recuiter.schedule %}
+                          {% if recuiter.schedule[sc] != -1 %}
+                            Date:- {{ recuiter.schedule[sc].date }}
+                            Venue:- {{ recuiter.schedule[sc].venue }}
+                            Details:- {{ recuiter.schedule[sc].details }}
+                            Agenda:- {{ recuiter.schedule[sc].agenda }}
+                            Time:- {{ recuiter.schedule[sc].time }}
+                          {% endif %}
+                        {% endfor %}
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+   <!--<div class="container" id="form1">
       <div class="col-xs-12" id="1">
          <div class="col-xs-3"><a style="font-weight:bold;">Id</a></div>
          <div class="col-xs-3"><a style="font-weight:bold;">Company Name</a></div>
@@ -132,7 +268,7 @@
       </div>
       {% endfor %}
       <hr>
-   </div>
+   </div>-->
 </div>
 
 <script>
