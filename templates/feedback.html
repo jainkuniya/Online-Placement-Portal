@@ -3,33 +3,65 @@
 {% block extrastyles %}
 {% endblock %}
 {% block body %}
-<h1 class="well">We would love your feedback!</h1>
-    <div class="col-md-12 well">
-        
-        <div class="row">
-            <form id="reg_details">
-                <div class="row">
-                    <div class="form-group">
-                    	<label>How was the drive?</label>
-                    	<textarea rows="3" class="form-control"></textarea>
-                	</div>
-                    <div class="form-group">
-                    	<label>Did you get the right candidates for your company?</label>
-                    	<textarea rows="3" class="form-control"></textarea>
-                	</div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                    	<label>What things the Training and Placement Cell should improve upon?</label>
-                    	<textarea rows="3" class="form-control"></textarea>
-                	</div>
-                	</div>
-                    
-              
-              <button class="btn btn-lg btn-info">Submit</button>
-            </form>
-        </div>
-    </div>
+<h5 class="well">We would love your feedback!</h5>
+<div class="col-md-12">
+   <div class="row">
+      <form id="id_feedback_form" method="post" action="/api/v1/recuiter/feedback">
+         <div class="row well">
+            <div class="form-group">
+               <label>How was the drive?</label>
+               <textarea id="id_que1" rows="3" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+               <label>Did you get the right candidates for your company?</label>
+               <textarea id="id_que2" rows="3" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+               <label>What things the Training and Placement Cell should improve upon?</label>
+               <textarea id="id_que3" rows="3" class="form-control"></textarea>
+            </div>
+            <h5 id="id_error"></h5>
+         </div>
+         <button class="btn btn-lg btn-info">Submit</button>
+      </form>
+   </div>
 </div>
+<script>
+$(window).load(function() {
+  $('#id_feedback_form').submit(function() {
+    $('#id_error').text('');
 
+    var frm = $('#id_feedback_form');
+
+    var data = JSON.stringify({
+      feedback: {
+        how_was_the_drive: $('#id_que1').val(),
+        did_you_get_the_right_candidates_for_your_company: $('#id_que2').val(),
+        what_things_the_training_and_placement_cell_should_improve_upon: $('#id_que3').val(),
+      },
+    });
+
+    $.ajax({
+      type: frm.attr('method'),
+      url: frm.attr('action'),
+      contentType: 'application/json',
+      data: data,
+      success: function(result) {
+        if (result.success === 1) {
+          $('#id_error').text(result.message);
+          $(location).attr('href', '../recuiter');
+        } else if (result.success === -99) {
+          $(location).attr('href', './logout');
+        } else {
+          $('#id_error').text(result.message);
+        }
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        $('#id_error').text('Error: ' + errorThrown);
+      },
+    });
+    return false;
+  });
+});
+</script>
 {% endblock %}

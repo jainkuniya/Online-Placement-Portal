@@ -35,12 +35,12 @@
                           {{ p.position.position_type }}
                           <hr>
                           {% if p.status == "can_apply" %}
-                            <button type="button" class="btn btn-primary" onClick="applyForPosition('{{ p.code }}', '{{ po.companyCode }}')">Apply</button><hr>
+                            <button type="button" class="btn btn-primary" onClick="applyForPosition('{{ p.code }}', '{{ po.companyCode }}', '{{ po.companyName }}')">Apply</button><hr>
                           {% else %}
                             <p><b>Status:</b> {{ p.status }}</p>
                           {% endif %}
                         {% endfor %}
-                        
+
                      </div>
                   </div>
                </div>
@@ -49,7 +49,7 @@
          <hr>
       </div>
       {% endfor %}
-      
+
    </div>
 </div>
 
@@ -60,6 +60,7 @@ function applyForPosition(pCode, cCode) {
   var data = JSON.stringify({
     pCode: pCode,
     cCode: cCode,
+    cName: cName,
   });
 
   $.ajax({

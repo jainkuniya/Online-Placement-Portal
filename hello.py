@@ -39,6 +39,7 @@ DB_DOC_STUDENT_BASIC_FIELD_BRANCH = "branch"
 DB_DOC_STUDENT_BASIC_FIELD_ADMISSION_YEAR = "addmission_year"
 
 DB_DOC_RECUITER = "recuiter"
+DB_DOC_FEEDBACK = "feedback"
 
 DB_DOC_APPLY = "apply"
 
@@ -404,6 +405,44 @@ def create_notification(roll_no, message):
         print str(e)
         return 0
 
+@app.route(api_path + 'recuiter/feedback', methods=['POST'])
+def recuiter_feedback():
+    if 'token' in request.cookies:
+        token = request.cookies['token']
+        recuiter = verify_token(token)
+        if (free_from_error(recuiter)):
+            try:
+                """create a new doc of type login"""
+                data = {
+                    DB_DOC_TYPE: DB_DOC_FEEDBACK,
+                    DB_DOC_FIELD_ROLL_NO: recuiter[DB_DOC_FIELD_ROLL_NO],
+                    'feedback': request.json['feedback'],
+                }
+                db.create_document(data)
+
+                create_notification(TPO_USER_NAME, "New Feedback from recuiter")
+
+                return jsonify({
+                    'success': SUCCESS_CODE_VALID,
+                    'message': "Successfully registered! Please login to continue",
+                    })
+            except Exception, e:
+                return jsonify({
+                    'success': SUCCESS_CODE_IN_VALID,
+                    'message': "Please try again",
+                    })
+        else:
+            jsonify({
+                'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+                'message': "Please login again!",
+                })
+    else:
+        jsonify({
+            'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
+            'message': "Please login again!",
+            })
+
+
 @app.route(api_path + 'create_account', methods=['POST'])
 def create_account():
     rollNo = request.json['rollNo']
@@ -647,6 +686,7 @@ def apply_for_position():
                 data = {
                     DB_DOC_TYPE: DB_DOC_APPLY,
                     'c_code': request.json["cCode"],
+                    'c_name': request.json["cName"],
                     'p_code': request.json["pCode"],
                     DB_DOC_FIELD_ROLL_NO: basic[DB_DOC_FIELD_ROLL_NO],
                     'selected': 0,
@@ -689,7 +729,11 @@ def get_tpo_templete(page_name):
                 all_recuiter = get_all_verified_recuiters()
                 return render_template('tpo_recruiter_verify.html', notifications=notifications, pending_recuiter=pending_recuiter, all_recuiter=all_recuiter, page_name=page_name)
             elif (page_name == "tpo_analysis"):
-                return render_template('tpo_analysis.html', notifications=notifications, page_name=page_name)
+                analysis = get_placement_analysis()
+                return render_template('tpo_analysis.html', analysis=analysis, notifications=notifications, page_name=page_name)
+            elif (page_name == "feedback"):
+                feedbacks = get_feedbacks()
+                return render_template('tpo_feedback.html', feedbacks=feedbacks, notifications=notifications, page_name=page_name)
             else:
                 return redirect("./logout")
         return redirect("./logout")
@@ -753,6 +797,10 @@ def tpo_recverify_page():
 @app.route('/tpo_analysis')
 def tpo_analysis_page():
     return get_tpo_templete("tpo_analysis")
+
+@app.route('/feedback')
+def tpo_feedback_page():
+    return get_tpo_templete("feedback")
 
 @app.route('/event')
 def get_recuiter_templete(page_name):
@@ -917,6 +965,28 @@ def get_all_verified_students():
     else:
         return []
 
+def get_placement_analysis():
+    registered_students_count = len(get_all_verified_students())
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_APPLY,
+                                 'selected': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+
+        return {
+            'selected_students': result,
+            'selected_students_count': len(result),
+            'registered_students_count': registered_students_count,
+            'unplaced_students_count': registered_students_count - len(result),
+        }
+
+    else:
+        return {}
+
+
 def send_notification_to_all_verified_students(message):
     students = get_all_verified_students()
     for student in students:
@@ -930,6 +1000,19 @@ def get_all_verified_recuiters():
             db, selector = {
                                  DB_DOC_TYPE: DB_DOC_RECUITER,
                                  'verified': 1,
+                            }
+            )
+        result = query(limit=100)['docs']
+        return result
+
+    else:
+        return DB_CONNECT_ERROR
+
+def get_feedbacks():
+    if client:
+        query = cloudant.query.Query(
+            db, selector = {
+                                 DB_DOC_TYPE: DB_DOC_FEEDBACK,
                             }
             )
         result = query(limit=100)['docs']

@@ -9,6 +9,7 @@
 <div id="All_Students" class="tabcontent">
   
   <div class="" id="form1">
+    {% if all_verified_students|length > 0 %}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -33,31 +34,15 @@
         {% endfor %}
       </tbody>
     </table>
-    <!--<div class="col-xs-12" id="1">
-      <div class="col-xs-2"><span style="font-weight:bold;">Roll No</span></div>
-      <div class="col-xs-2"><span style="font-weight:bold;">Name</span></div>
-      <div class="col-xs-2"><span style="font-weight:bold;">Phone Number</span></div>
-      <div class="col-xs-2"><span style="font-weight:bold;">Gender</a></div>
-      <div class="col-xs-2"><span style="font-weight:bold;">Branch</a></div>
-      <hr>
-    </div>
-    <hr>
-    {% for student in all_verified_students %}
-    <div class="col-xs-12" id="1">
-      <div class="col-xs-2">{{ student.roll_no }}</div>
-      <div class="col-xs-2">{{ student.first_name + student.last_name }}</div>
-      <div class="col-xs-2">{{ student.phone_number }}</div>
-      <div class="col-xs-2">{{ student.gender }}</div>
-      <div class="col-xs-2">{{ student.branch }}</div>
-      <hr>
-    </div>
-    {% endfor %}
-    <hr>-->
+    {% else %}
+      <h5 class="well"> No data available in this section <h5>
+    {% endif %}
   </div>
 </div>
 <div id="Approvable" class="tabcontent">
   
   <div class="" id="form1">
+    {% if pending_students.noBacklog|length > 0 %}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -87,27 +72,15 @@
         {% endfor %}
       </tbody>
     </table>
-    
-    <!--{% for student in pending_students.noBacklog %}
-    <div class="col-xs-12" id="1">
-      <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
-      <div class="col-xs-3"><a>{{ student.name }}</a></div>
-      <div class="col-xs-3"><a>
-        {% for backlog in student.backlog %}
-        Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-        {% endfor %}
-        </a>
-      </div>
-      <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button></a></div>
-      <hr>
-    </div>
-    {% endfor %}
-    <hr>-->
     <button id="approve" class="btn btn-success" onclick="selectAll(0)">Approve all</button>
+    {% else %}
+      <h5 class="well"> No data available in this section <h5>
+    {% endif %}
   </div>
 </div>
 <div id="Rejectable" class="tabcontent">
   <div class="" id="form1">
+    {% if pending_students.backlog|length > 0 %}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -137,25 +110,9 @@
         {% endfor %}
       </tbody>
     </table>
-
-  <!--<div class="container" id="form1">
-    <hr>
-    
-    {% for student in pending_students.backlog %}
-    <div class="col-xs-12" id="1">
-      <div class="col-xs-3"><a>{{ student.rollNo }}</a></div>
-      <div class="col-xs-3"><a>{{ student.name }}</a></div>
-      <div class="col-xs-3"><a>
-        {% for backlog in student.backlog %}
-        Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-        {% endfor %}
-        </a>
-      </div>
-      <div class="col-xs-3"><a><button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button></a></div>
-      <hr>
-    </div>
-    {% endfor %}
-    <hr>-->
+    {% else %}
+      <h5 class="well"> No data available in this section <h5>
+    {% endif %}
   </div>
 </div>
 </div>

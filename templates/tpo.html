@@ -61,13 +61,20 @@
                {% endif %}
                <a href="tpo_analysis"><i class="material-icons">show_chart</i> <span class="nav-label">Placements Analysis</span></a>
                </li>
+               {% if page_name == "feedback" %}
+               <li class="active">
+               {% else %}
+               <li>
+               {% endif %}
+               <a href="feedback"><i class="material-icons">feedback</i> <span class="nav-label">Recuiter Feedback</span></a>
+               </li>
             </div>
          </nav>
          <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="row border-bottom">
                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                   <div class="navbar-header">
-                     
+
                   </div>
                   <ul class="nav navbar-top-links navbar-right">
                      <li>
