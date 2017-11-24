@@ -1102,6 +1102,7 @@ def get_pending_students():
                                 }
                 )
             acad_result = acad_query(limit=100)['docs']
+            time.sleep(0.5)
             if (len(acad_result) == 1):
                 if (len(acad_result[0]['active_backlog'].keys()) == 0):
                     noBacklog.append({
