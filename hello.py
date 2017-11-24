@@ -344,48 +344,49 @@ def get_student_details_from_mis(rollNo):
 def create_recuiter():
     if 'token' in request.cookies:
         token = request.cookies['token']
-        if (free_from_error(verify_token(token))):
-            companyName = request.json['company_name']
-            password = get_random_string(5)
-            userId = get_random_string(5)
-            try:
-                data = {
-                    DB_DOC_TYPE: DB_DOC_LOGIN,
-                    'companyName': companyName,
-                    DB_DOC_FIELD_ROLL_NO: userId,
-                    DB_DOC_LOGIN_FIELD_PASSWORD: password,
-                    DB_DOC_LOGIN_FIELD_TOKEN: '',
-                    DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN: 0,
-                    'person_type': 2,
-                }
-                db.create_document(data)
-
-                data = {
-                    DB_DOC_TYPE: DB_DOC_RECUITER,
-                    'companyName': companyName,
-                    DB_DOC_FIELD_ROLL_NO: userId,
-                    'verified': 0,
-                    'positions': {},
-                    'schedule': {},
-                }
-                db.create_document(data)
-
-                return jsonify({
-                    'success': SUCCESS_CODE_VALID,
-                    'message': "Successfully created",
-                    'password': password,
-                    'userId': userId,
-                    })
-            except Exception, e:
-                print str(e)
-                return jsonify({
-                    'success': SUCCESS_CODE_IN_VALID,
-                    'message': "Please try again",
-                    })
-        return jsonify({
+        """if (free_from_error(verify_token(token))):"""
+        companyName = request.json['company_name']
+        password = get_random_string(5)
+        userId = get_random_string(5)
+        try:
+            data = {
+                DB_DOC_TYPE: DB_DOC_LOGIN,
+                'companyName': companyName,
+                DB_DOC_FIELD_ROLL_NO: userId,
+                DB_DOC_LOGIN_FIELD_PASSWORD: password,
+                DB_DOC_LOGIN_FIELD_TOKEN: '',
+                DB_DOC_LOGIN_FIELD_LAST_LOGGED_IN: 0,
+                'person_type': 2,
+            }
+            db.create_document(data)
+            print data
+            data = {
+                DB_DOC_TYPE: DB_DOC_RECUITER,
+                'companyName': companyName,
+                DB_DOC_FIELD_ROLL_NO: userId,
+                'verified': 0,
+                'positions': {},
+                'schedule': {},
+            }
+            db.create_document(data)
+            print data
+            return jsonify({
+                'success': SUCCESS_CODE_VALID,
+                'message': "Successfully created",
+                'password': password,
+                'userId': userId,
+                })
+        except Exception, e:
+            print str(e)
+            print "vishwesh"
+            return jsonify({
+                'success': SUCCESS_CODE_IN_VALID,
+                'message': "Please try again",
+                })
+        """return jsonify({
             'success': SUCCESS_CODE_IN_VALID,
             'message': "Please try again",
-            })
+            })"""
     return jsonify({
         'success': SUCCESS_CODE_IN_VALID_LOG_OUT,
         'message': "Please login again",

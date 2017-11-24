@@ -4,11 +4,11 @@
 <div class="" id="form1">
   <div>
     <div class="field-wrap" style="padding-top: 25px;padding-bottom: 25px; margin-top: 25px; background-color: #f1f1f1;">
-      <form class="container-fluid">
+
         <div class="form-group row">
           <label for="inputEmail3" class="col-sm-2 col-form-label">Company Name*</label>
           <div class="col-sm-10">
-          <input id="company_name" class="form-control" type="text" required autocomplete="off" placeholder="Microsoft"/>  
+          <input id="company_name" class="form-control" type="text" required autocomplete="off" placeholder="Microsoft"/>
           </div>
         </div>
         <div class="form-group row">
@@ -16,7 +16,6 @@
             <button id="id_cred_submit_button" onClick="submit_form()" type="submit" class="btn btn-info"/>Generate</button>
           </div>
         </div>
-      </form>        
     </div>
       <h2 id="id_error"></h2>
       <div style="border:black;">
@@ -32,8 +31,7 @@ function submit_form() {
   $('#id_error').text('');
   var companyName = $('#company_name').val();
 
-  if(companyName === '')
-  {
+  if (companyName === '') {
     $('#id_error').text('Please enter company name.');
     return;
   }
@@ -41,7 +39,6 @@ function submit_form() {
   var data = JSON.stringify({
     company_name: companyName,
   });
-
   $.ajax({
     type: 'POST',
     url: '/api/v1/tpo/create_recuiter',
@@ -49,14 +46,19 @@ function submit_form() {
     data: data,
     success: function(result) {
       if (result.success === 1) {
-        document.getElementById("msg").innerHTML = "The credentials have been generated";
+        document.getElementById('msg').innerHTML = 'The credentials have been generated';
         var div = document.createElement('div');
-        div.style.height = "100px";
-        div.id = "show1";        
-        document.getElementById("show").appendChild(div);
-        document.getElementById("show1").innerHTML = '<div class="container"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">View Credentials</button><div class="modal fade" id="myModal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">Credentials</h4></div><div class="modal-body"><p><b>User ID:</b> '+result.userId+'</p><hr><p><b>Password:</b> '+result.password+'</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal"><a href="mailto:taybawasim@gmail.com">Share Via Mail</a></button></div></div></div></div></div>';
-      
-        document.getElementById('id_cred_submit_button').style.visibility ="hidden";
+        div.style.height = '100px';
+        div.id = 'show1';
+        document.getElementById('show').appendChild(div);
+        document.getElementById('show1').innerHTML =
+          '<div class="container"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">View Credentials</button><div class="modal fade" id="myModal" role="dialog"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal">&times;</button><h4 class="modal-title">Credentials</h4></div><div class="modal-body"><p><b>User ID:</b> ' +
+          result.userId +
+          '</p><hr><p><b>Password:</b> ' +
+          result.password +
+          '</div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal"><a href="mailto:taybawasim@gmail.com">Share Via Mail</a></button></div></div></div></div></div>';
+
+        document.getElementById('id_cred_submit_button').style.visibility = 'hidden';
       } else if (result.success === -99) {
         $(location).attr('href', './logout');
       } else {
