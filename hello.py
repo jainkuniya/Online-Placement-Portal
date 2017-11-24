@@ -975,12 +975,30 @@ def get_placement_analysis():
                             }
             )
         result = query(limit=100)['docs']
+        average_package = 0
+        highest_package = 0
+        lowest_package = 999999999999
+
+        for offer in result:
+            average_package = (average_package + offer.package)/2
+            if offer.package > highest_package:
+                highest_package = offer.package
+            if offer.package < lowest_package:
+                lowest_package = offer.package
+
+        if (len(result) == 0):
+            lowest_package = 0
 
         return {
             'selected_students': result,
             'selected_students_count': len(result),
             'registered_students_count': registered_students_count,
             'unplaced_students_count': registered_students_count - len(result),
+            'package': {
+                'highest': highest_package,
+                'average': average_package,
+                'lowest': lowest_package,
+            },
         }
 
     else:

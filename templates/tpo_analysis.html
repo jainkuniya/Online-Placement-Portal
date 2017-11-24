@@ -1,34 +1,64 @@
 {% extends './tpo.html' %}
 {% block body %}
 <div class="">
-<div class="row">
-   <div class="col-xs-8 col-md-4">
-      <a href="#" class="thumbnail" title="">
-         <div class="caption">
-            <p><b> Number of Registered Students:</b> </p>
-            <h3>
-            {{ analysis.registered_students_count }} </n3>
-         </div>
-      </a>
-   </div>
-   <div class="col-xs-8 col-md-4">
-      <a href="#" class="thumbnail" title="">
-         <div class="caption">
-            <p><b> Number of Unplaced Students:</b> </p>
-            <h3>
-            {{ analysis.unplaced_students_count }} </n3>
-         </div>
-      </a>
-   </div>
-   <div class="col-xs-8 col-md-4">
-      <a href="#" class="thumbnail" title="">
-         <div class="caption">
-            <p><b> Number of Placed Students:</b> </p>
-            <h3>
-            {{ analysis.selected_students_count }} </n3>
-         </div>
-      </a>
-   </div>
+  <div class="row">
+     <div class="col-xs-8 col-md-4">
+        <a href="#" class="thumbnail" title="">
+           <div class="caption">
+              <p><b> Number of Registered Students:</b> </p>
+              <h3>
+              {{ analysis.registered_students_count }} </n3>
+           </div>
+        </a>
+     </div>
+     <div class="col-xs-8 col-md-4">
+        <a href="#" class="thumbnail" title="">
+           <div class="caption">
+              <p><b> Number of Unplaced Students:</b> </p>
+              <h3>
+              {{ analysis.unplaced_students_count }} </n3>
+           </div>
+        </a>
+     </div>
+     <div class="col-xs-8 col-md-4">
+        <a href="#" class="thumbnail" title="">
+           <div class="caption">
+              <p><b> Number of Placed Students:</b> </p>
+              <h3>
+              {{ analysis.selected_students_count }} </n3>
+           </div>
+        </a>
+     </div>
+  </div>
+  <div class="row">
+     <div class="col-xs-8 col-md-4">
+        <a href="#" class="thumbnail" title="">
+           <div class="caption">
+              <p><b> Highest Package:</b> </p>
+              <h3>
+              {{ analysis.package.highest }} </n3>
+           </div>
+        </a>
+     </div>
+     <div class="col-xs-8 col-md-4">
+        <a href="#" class="thumbnail" title="">
+           <div class="caption">
+              <p><b> Average Package:</b> </p>
+              <h3>
+              {{ analysis.package.average }} </n3>
+           </div>
+        </a>
+     </div>
+     <div class="col-xs-8 col-md-4">
+        <a href="#" class="thumbnail" title="">
+           <div class="caption">
+              <p><b> Lowest Package:</b> </p>
+              <h3>
+              {{ analysis.package.lowest }} </n3>
+           </div>
+        </a>
+     </div>
+  </div>
 </div>
 <!-- Trigger the modal with a button -->
 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">View Placed Students</button>
