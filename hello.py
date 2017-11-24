@@ -989,6 +989,7 @@ def get_placement_analysis():
 
         if (len(result) == 0):
             lowest_package = 0
+        else:
             average_package = average_package / len(result)
 
         return {
