@@ -7,7 +7,7 @@
   <button class="tablinks" onclick="showStatus(event, 'Rejectable')">Rejectable</button>
 </div>
 <div id="All_Students" class="tabcontent">
-  
+
   <div class="" id="form1">
     {% if all_verified_students|length > 0 %}
     <table class="table table-striped">
@@ -40,7 +40,7 @@
   </div>
 </div>
 <div id="Approvable" class="tabcontent">
-  
+
   <div class="" id="form1">
     {% if pending_students.noBacklog|length > 0 %}
     <table class="table table-striped">
@@ -60,10 +60,13 @@
           <td>{{ student.rollNo }}</td>
           <td>{{ student.name }}</td>
           <td>
-            {% for backlog in student.backlog %}
-            Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-            {% endfor %}
-            None
+            {% if student.backlog|length != 0 %}
+              {% for backlog in student.backlog %}
+              Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
+              {% endfor %}
+            {% else %}
+              None
+            {% endif %}
           </td>
           <td>
             <button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button>
@@ -98,10 +101,13 @@
           <td>{{ student.rollNo }}</td>
           <td>{{ student.name }}</td>
           <td>
-            {% for backlog in student.backlog %}
-            Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
-            {% endfor %}
-            None
+            {% if student.backlog|length != 0 %}
+              {% for backlog in student.backlog %}
+              Sem:- {{ student.backlog[backlog].sem }} Course:- {{ student.backlog[backlog].course }} <br>
+              {% endfor %}
+            {% else %}
+              None
+            {% endif %}
           </td>
           <td>
             <button id = "1" class="btn btn-primary" onclick="verifyStudent('{{ student.rollNo }}');">Approve</button>
