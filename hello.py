@@ -981,7 +981,7 @@ def get_placement_analysis():
         lowest_package = 999999999999
         for offer in result:
 
-            average_package = (average_package + int(offer["package"]))/2
+            average_package = (average_package + int(offer["package"]))
             if int(offer["package"]) > highest_package:
                 highest_package = int(offer["package"])
             if int(offer["package"]) < lowest_package:
@@ -989,6 +989,7 @@ def get_placement_analysis():
 
         if (len(result) == 0):
             lowest_package = 0
+            average_package = average_package / len(result)
 
         return {
             'selected_students': result,
